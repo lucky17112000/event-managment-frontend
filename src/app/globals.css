@@ -1,0 +1,476 @@
+@import "tailwindcss";
+@import "tw-animate-css";
+@import "shadcn/tailwind.css";
+
+@custom-variant dark (&:is(.dark *));
+
+@theme inline {
+  --color-background: var(--background);
+  --color-foreground: var(--foreground);
+  --font-sans: var(--font-sans);
+  --font-mono: var(--font-geist-mono);
+  --font-heading: var(--font-sans);
+  --color-sidebar-ring: var(--sidebar-ring);
+  --color-sidebar-border: var(--sidebar-border);
+  --color-sidebar-accent-foreground: var(--sidebar-accent-foreground);
+  --color-sidebar-accent: var(--sidebar-accent);
+  --color-sidebar-primary-foreground: var(--sidebar-primary-foreground);
+  --color-sidebar-primary: var(--sidebar-primary);
+  --color-sidebar-foreground: var(--sidebar-foreground);
+  --color-sidebar: var(--sidebar);
+  --color-chart-5: var(--chart-5);
+  --color-chart-4: var(--chart-4);
+  --color-chart-3: var(--chart-3);
+  --color-chart-2: var(--chart-2);
+  --color-chart-1: var(--chart-1);
+  --color-ring: var(--ring);
+  --color-input: var(--input);
+  --color-border: var(--border);
+  --color-destructive: var(--destructive);
+  --color-accent-foreground: var(--accent-foreground);
+  --color-accent: var(--accent);
+  --color-muted-foreground: var(--muted-foreground);
+  --color-muted: var(--muted);
+  --color-secondary-foreground: var(--secondary-foreground);
+  --color-secondary: var(--secondary);
+  --color-primary-foreground: var(--primary-foreground);
+  --color-primary: var(--primary);
+  --color-popover-foreground: var(--popover-foreground);
+  --color-popover: var(--popover);
+  --color-card-foreground: var(--card-foreground);
+  --color-card: var(--card);
+  --radius-sm: calc(var(--radius) * 0.6);
+  --radius-md: calc(var(--radius) * 0.8);
+  --radius-lg: var(--radius);
+  --radius-xl: calc(var(--radius) * 1.4);
+  --radius-2xl: calc(var(--radius) * 1.8);
+  --radius-3xl: calc(var(--radius) * 2.2);
+  --radius-4xl: calc(var(--radius) * 2.6);
+}
+
+:root {
+  --background: oklch(1 0 0);
+  --foreground: oklch(0.145 0 0);
+  --card: oklch(1 0 0);
+  --card-foreground: oklch(0.145 0 0);
+  --popover: oklch(1 0 0);
+  --popover-foreground: oklch(0.145 0 0);
+  --primary: oklch(0.205 0 0);
+  --primary-foreground: oklch(0.985 0 0);
+  --secondary: oklch(0.97 0 0);
+  --secondary-foreground: oklch(0.205 0 0);
+  --muted: oklch(0.97 0 0);
+  --muted-foreground: oklch(0.556 0 0);
+  --accent: oklch(0.97 0 0);
+  --accent-foreground: oklch(0.205 0 0);
+  --destructive: oklch(0.577 0.245 27.325);
+  --border: oklch(0.922 0 0);
+  --input: oklch(0.922 0 0);
+  --ring: oklch(0.708 0 0);
+  --chart-1: oklch(0.87 0 0);
+  --chart-2: oklch(0.556 0 0);
+  --chart-3: oklch(0.439 0 0);
+  --chart-4: oklch(0.371 0 0);
+  --chart-5: oklch(0.269 0 0);
+  --radius: 0.625rem;
+  --sidebar: oklch(0.985 0 0);
+  --sidebar-foreground: oklch(0.145 0 0);
+  --sidebar-primary: oklch(0.205 0 0);
+  --sidebar-primary-foreground: oklch(0.985 0 0);
+  --sidebar-accent: oklch(0.97 0 0);
+  --sidebar-accent-foreground: oklch(0.205 0 0);
+  --sidebar-border: oklch(0.922 0 0);
+  --sidebar-ring: oklch(0.708 0 0);
+}
+
+.dark {
+  --background: oklch(0.145 0 0);
+  --foreground: oklch(0.985 0 0);
+  --card: oklch(0.205 0 0);
+  --card-foreground: oklch(0.985 0 0);
+  --popover: oklch(0.205 0 0);
+  --popover-foreground: oklch(0.985 0 0);
+  --primary: oklch(0.922 0 0);
+  --primary-foreground: oklch(0.205 0 0);
+  --secondary: oklch(0.269 0 0);
+  --secondary-foreground: oklch(0.985 0 0);
+  --muted: oklch(0.269 0 0);
+  --muted-foreground: oklch(0.708 0 0);
+  --accent: oklch(0.269 0 0);
+  --accent-foreground: oklch(0.985 0 0);
+  --destructive: oklch(0.704 0.191 22.216);
+  --border: oklch(1 0 0 / 10%);
+  --input: oklch(1 0 0 / 15%);
+  --ring: oklch(0.556 0 0);
+  --chart-1: oklch(0.87 0 0);
+  --chart-2: oklch(0.556 0 0);
+  --chart-3: oklch(0.439 0 0);
+  --chart-4: oklch(0.371 0 0);
+  --chart-5: oklch(0.269 0 0);
+  --sidebar: oklch(0.205 0 0);
+  --sidebar-foreground: oklch(0.985 0 0);
+  --sidebar-primary: oklch(0.55 0 0);
+  --sidebar-primary-foreground: oklch(0.985 0 0);
+  --sidebar-accent: oklch(0.269 0 0);
+  --sidebar-accent-foreground: oklch(0.985 0 0);
+  --sidebar-border: oklch(1 0 0 / 10%);
+  --sidebar-ring: oklch(0.556 0 0);
+}
+
+@layer base {
+  * {
+    @apply border-border outline-ring/50;
+  }
+  body {
+    @apply bg-background text-foreground;
+  }
+  html {
+    @apply font-sans;
+  }
+}
+
+@layer utilities {
+  @keyframes eco-float {
+    0%,
+    100% {
+      transform: translateY(0);
+    }
+    50% {
+      transform: translateY(-10px);
+    }
+  }
+
+  .animate-eco-float {
+    animation: eco-float 6s ease-in-out infinite;
+  }
+
+  @keyframes eco-marquee-ltr {
+    from {
+      transform: translateX(-50%);
+    }
+    to {
+      transform: translateX(0);
+    }
+  }
+
+  .eco-marquee {
+    mask-image: linear-gradient(
+      to right,
+      transparent,
+      black 10%,
+      black 90%,
+      transparent
+    );
+  }
+
+  .eco-marquee-track {
+    animation: eco-marquee-ltr 18s linear infinite;
+    will-change: transform;
+  }
+
+  /* ── Idea infinite slider (right → left) ── */
+  @keyframes eco-idea-slide {
+    from {
+      transform: translateX(0);
+    }
+    to {
+      transform: translateX(-50%);
+    }
+  }
+
+  .eco-idea-slider {
+    mask-image: linear-gradient(
+      to right,
+      transparent,
+      black 8%,
+      black 92%,
+      transparent
+    );
+  }
+
+  .eco-idea-slider-track {
+    animation: eco-idea-slide 35s linear infinite;
+    will-change: transform;
+  }
+
+  .eco-idea-slider-track:hover {
+    animation-play-state: paused;
+  }
+
+  /* ── Global entrance animation system ─────────────────────────────── */
+
+  @keyframes eco-fade-up {
+    from {
+      opacity: 0;
+      transform: translateY(22px);
+    }
+    to {
+      opacity: 1;
+      transform: translateY(0);
+    }
+  }
+
+  @keyframes eco-fade-in {
+    from {
+      opacity: 0;
+    }
+    to {
+      opacity: 1;
+    }
+  }
+
+  /* Slide in from top — top-to-bottom direction of travel */
+  @keyframes eco-fade-down {
+    from {
+      opacity: 0;
+      transform: translateY(-28px);
+    }
+    to {
+      opacity: 1;
+      transform: translateY(0);
+    }
+  }
+
+  /* Section / card entrance — apply once on mount */
+  .animate-eco-fade-up {
+    animation: eco-fade-up 0.65s cubic-bezier(0.16, 1, 0.3, 1) both;
+  }
+
+  /* Slide card in from top — used for stat cards with left-to-right stagger */
+  .animate-eco-fade-down {
+    animation: eco-fade-down 0.65s cubic-bezier(0.16, 1, 0.3, 1) both;
+  }
+
+  /* Simple opacity reveal */
+  .animate-eco-fade-in {
+    animation: eco-fade-in 0.5s ease both;
+  }
+
+  /* Stagger delay utilities — combine with animate-eco-fade-up / fade-in */
+  .animate-delay-100 {
+    animation-delay: 100ms;
+  }
+  .animate-delay-200 {
+    animation-delay: 200ms;
+  }
+  .animate-delay-300 {
+    animation-delay: 300ms;
+  }
+  .animate-delay-400 {
+    animation-delay: 400ms;
+  }
+  .animate-delay-500 {
+    animation-delay: 500ms;
+  }
+  .animate-delay-600 {
+    animation-delay: 600ms;
+  }
+  .animate-delay-700 {
+    animation-delay: 700ms;
+  }
+  .animate-delay-800 {
+    animation-delay: 800ms;
+  }
+  .animate-delay-1000 {
+    animation-delay: 1000ms;
+  }
+
+  /* ── Hero image Ken Burns effect ─────────────────────────────────────── */
+
+  @keyframes eco-ken-burns {
+    0% {
+      transform: scale(1) translate(0, 0);
+    }
+    100% {
+      transform: scale(1.08) translate(-1%, -0.5%);
+    }
+  }
+
+  .animate-eco-ken-burns {
+    animation: eco-ken-burns 10s ease-in-out alternate infinite;
+    will-change: transform;
+  }
+
+  /* ── Bar chart shimmer progress line ─────────────────────────────────── */
+  @keyframes eco-shimmer {
+    0%   { opacity: 0; transform: translateX(-100%); }
+    40%  { opacity: 1; }
+    100% { opacity: 0; transform: translateX(100%); }
+  }
+
+  /* ── Skeleton shimmer sweep ───────────────────────────────────────────── */
+  @keyframes eco-shimmer-slide {
+    from { transform: translateX(-100%); }
+    to   { transform: translateX(200%); }
+  }
+
+  .eco-skeleton {
+    position: relative;
+    overflow: hidden;
+    background-color: var(--muted);
+    border-radius: var(--radius-md);
+  }
+
+  .eco-skeleton::after {
+    content: "";
+    position: absolute;
+    inset: 0;
+    background: linear-gradient(
+      90deg,
+      transparent 0%,
+      oklch(0.72 0 0 / 0.35) 50%,
+      transparent 100%
+    );
+    animation: eco-shimmer-slide 1.8s ease-in-out infinite;
+  }
+
+  .dark .eco-skeleton::after {
+    background: linear-gradient(
+      90deg,
+      transparent 0%,
+      oklch(0.6 0 0 / 0.22) 50%,
+      transparent 100%
+    );
+  }
+
+  /* ── Spinner ring ─────────────────────────────────────────────────────── */
+  @keyframes eco-spinner-rotate {
+    to { transform: rotate(360deg); }
+  }
+
+  @keyframes eco-pulse-ring {
+    0%   { transform: scale(0.9); opacity: 0.6; }
+    50%  { transform: scale(1.1); opacity: 0.2; }
+    100% { transform: scale(0.9); opacity: 0.6; }
+  }
+
+  /* ── Top-bar loader ───────────────────────────────────────────────────── */
+  @keyframes eco-topbar-fill {
+    from { width: 0%; opacity: 1; }
+    80%  { width: 90%; opacity: 1; }
+    to   { width: 100%; opacity: 0; }
+  }
+
+  .eco-topbar {
+    position: fixed;
+    top: 0;
+    left: 0;
+    height: 3px;
+    background: linear-gradient(
+      90deg,
+      oklch(0.85 0 0),
+      oklch(0.65 0 0),
+      oklch(0.45 0 0)
+    );
+    box-shadow: 0 0 12px oklch(0.75 0 0 / 0.5);
+    animation: eco-topbar-fill 2.4s cubic-bezier(0.4, 0, 0.2, 1) forwards;
+    z-index: 9999;
+  }
+
+  /* ── Music slide: expanding sound rings ─────────────────────────────── */
+  @keyframes eco-ring-expand {
+    0%   { opacity: 0.55; transform: scale(0.7);  }
+    75%  { opacity: 0.08; }
+    100% { opacity: 0;    transform: scale(1.35); }
+  }
+  .animate-eco-ring-1 { animation: eco-ring-expand 5s ease-out infinite 0s;    }
+  .animate-eco-ring-2 { animation: eco-ring-expand 5s ease-out infinite 1.25s; }
+  .animate-eco-ring-3 { animation: eco-ring-expand 5s ease-out infinite 2.5s;  }
+  .animate-eco-ring-4 { animation: eco-ring-expand 5s ease-out infinite 3.75s; }
+
+  /* ── Equalizer bars ──────────────────────────────────────────────────── */
+  @keyframes eco-eq-bar {
+    from { transform: scaleY(0.2); }
+    to   { transform: scaleY(1);   }
+  }
+
+  /* ── Tech slide: network node pulse ─────────────────────────────────── */
+  @keyframes eco-node-pulse {
+    0%, 100% { transform: translate(-50%, -50%) scale(1);   opacity: 0.7;  }
+    50%       { transform: translate(-50%, -50%) scale(3);   opacity: 0.12; }
+  }
+
+  /* ── Tech slide: horizontal scan line ───────────────────────────────── */
+  @keyframes eco-scan-line {
+    0%   { left: -4px;  opacity: 0;   }
+    6%   { opacity: 1;                }
+    94%  { opacity: 0.7;              }
+    100% { left: 100%;  opacity: 0;   }
+  }
+
+  /* ── Community slide: rising particles ──────────────────────────────── */
+  @keyframes eco-float-particle {
+    0%   { transform: translateY(0)     scale(1);   opacity: 0;    }
+    12%  { opacity: 0.55; }
+    88%  { opacity: 0.15; }
+    100% { transform: translateY(-75vh) scale(0.3); opacity: 0;    }
+  }
+
+  /* ── Hero text entrance per slide ────────────────────────────────────── */
+  @keyframes eco-hero-text-in {
+    from {
+      opacity: 0;
+      transform: translateY(36px);
+    }
+    to {
+      opacity: 1;
+      transform: translateY(0);
+    }
+  }
+
+  .animate-eco-hero-text-in {
+    animation: eco-hero-text-in 0.9s cubic-bezier(0.16, 1, 0.3, 1) both;
+  }
+
+  /* ── Hero slide progress bar ──────────────────────────────────────────── */
+  @keyframes eco-slide-progress {
+    from {
+      transform: scaleX(0);
+    }
+    to {
+      transform: scaleX(1);
+    }
+  }
+
+  .animate-slide-progress {
+    animation: eco-slide-progress 5s linear forwards;
+    transform-origin: left;
+    width: 100%;
+  }
+
+  /* ── Video section pulse glow ─────────────────────────────────────────── */
+  @keyframes eco-glow-pulse {
+    0%, 100% { opacity: 0.2; }
+    50%       { opacity: 0.45; }
+  }
+
+  .animate-eco-glow-pulse {
+    animation: eco-glow-pulse 3s ease-in-out infinite;
+  }
+
+  @media (prefers-reduced-motion: reduce) {
+    .animate-eco-float {
+      animation: none;
+    }
+    .eco-marquee-track {
+      animation: none;
+    }
+    .eco-idea-slider-track {
+      animation: none;
+    }
+    .animate-eco-fade-up,
+    .animate-eco-fade-down,
+    .animate-eco-fade-in {
+      animation: none;
+    }
+    .animate-eco-ken-burns {
+      animation: none;
+    }
+    .eco-skeleton::after {
+      animation: none;
+    }
+    .eco-topbar {
+      animation: none;
+    }
+  }
+}
