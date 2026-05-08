@@ -1,4 +1,5 @@
 "use server";
+
 import LandingNavbar from "@/components/shared/LandingNavbar";
 import LandingPage from "@/components/shared/LandingPage";
 import { getLimitedidea } from "@/services/idea.services";
@@ -18,6 +19,7 @@ export default async function Home() {
     <div className="min-h-screen gap-6">
       {/* <LandingNavbar /> */}
       <LandingPage />
+      {/* <Chat /> */}
     </div>
   );
 }

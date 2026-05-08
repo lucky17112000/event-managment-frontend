@@ -6,6 +6,8 @@ import { ThemeProvider } from "@/components/theme-provider";
 import { Toaster } from "@/components/ui/sonner";
 import { TooltipProvider } from "@/components/ui/tooltip";
 import Chatbot from "@/components/chatbot/Chatbot";
+// import Chat from "@/components/chat/Chat";
+import FloatingChatIcon from "@/components/chat/FloatingChatIcon";
 
 const geistSans = Geist({
   variable: "--font-geist-sans",
@@ -46,7 +48,10 @@ export default function RootLayout({
             <TooltipProvider>{children}</TooltipProvider>
             <Toaster />
           </QueryProviders>
-          <Chatbot />
+          {/* Floating FAQ / Chat icon (mount after providers) */}
+          <FloatingChatIcon />
+          {/* <Chatbot /> */}
+          {/* <Chat /> */}
         </ThemeProvider>
       </body>
     </html>
