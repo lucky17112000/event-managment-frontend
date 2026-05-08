@@ -88,10 +88,10 @@ export const deleteUserByAdminAction = async (
     "data": {
         "totalUsers": 3,
         "totalAdmins": 2,
-        "totalEnergyIdeas": 12,
-        "totalPlasticIdeas": 1,
-        "totalTreeIdeas": 4,
-        "totalOthersIdeas": 2
+        "totalEnergyideas": 12,
+        "totalPlasticideas": 1,
+        "totalTreeideas": 4,
+        "totalOthersideas": 2
     }
 }
 */
@@ -99,10 +99,10 @@ export const deleteUserByAdminAction = async (
 export type AdminDashboardStats = {
   totalUsers?: number;
   totalAdmins?: number;
-  totalEnergyIdeas?: number;
-  totalPlasticIdeas?: number;
-  totalTreeIdeas?: number;
-  totalOthersIdeas?: number;
+  totalEnergyideas?: number;
+  totalPlasticideas?: number;
+  totalTreeideas?: number;
+  totalOthersideas?: number;
 };
 export const getAdminDashboardStatsAction = async (): Promise<
   ApiResponse<AdminDashboardStats>
@@ -125,8 +125,8 @@ export const getAdminDashboardStatsAction = async (): Promise<
     "success": true,
     "message": "Individual user stats retrieved successfully",
     "data": {
-        "totalIdeas": 8,
-        "approvedIdeas": 4,
+        "totalideas": 8,
+        "approvedideas": 4,
         "totalVotes": 0,
         "totalUpVotes": 0,
         "totalDownVotes": 0
@@ -135,8 +135,8 @@ export const getAdminDashboardStatsAction = async (): Promise<
 */
 
 export type AdminIndividualUserStats = {
-  totalIdeas?: number;
-  approvedIdeas?: number;
+  totalideas?: number;
+  approvedideas?: number;
   totalVotes?: number;
   totalUpVotes?: number;
   totalDownVotes?: number;
@@ -154,5 +154,29 @@ export const getAdminIndividualUserStatsAction = async (): Promise<
   } catch (error) {
     console.error("Error fetching individual user stats:", error);
     throw error;
+  }
+};
+// localhost:5000/api/v1/booking/8013f109-03a3-4ad0-aad1-08cbb7abd6ba
+export const getBookingDetailsByideaIdAction = async (
+  ideaId: string,
+): Promise<ApiResponse<unknown>> => {
+  if (!API_BASE_URL) throw new Error("NEXT_PUBLIC_API_BASE_URL is not defined");
+  if (!ideaId) throw new Error("Missing ideaId");
+  try {
+    const response = await httpClient.get<unknown>(`/booking/${ideaId}`);
+    return response;
+  } catch (error) {
+    console.error("Error fetching booking details:", error);
+    const body =
+      error && typeof error === "object" && "response" in error
+        ? (error as { response?: { data?: { message?: string } } }).response
+            ?.data
+        : undefined;
+    return {
+      success: false,
+      message:
+        body?.message || "Failed to fetch booking details. Please try again.",
+      data: null,
+    };
   }
 };

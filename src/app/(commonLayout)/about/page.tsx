@@ -28,7 +28,7 @@ import { AnimatedStatCard } from "@/components/modules/mission/MissonPage";
 const SERVICES = [
   {
     icon: LightbulbIcon,
-    title: "Idea Platform",
+    title: "idea Platform",
     description:
       "Submit, discover, and vote on sustainability ideas from across the community.",
   },
@@ -54,7 +54,7 @@ const SERVICES = [
     icon: GlobeIcon,
     title: "Global Reach",
     description:
-      "Ideas from across the world, united by one mission: a greener future.",
+      "ideas from across the world, united by one mission: a greener future.",
   },
   {
     icon: HeartIcon,
@@ -65,7 +65,7 @@ const SERVICES = [
 ];
 
 const STATS = [
-  { label: "Ideas Shared", value: "2,400+", icon: LightbulbIcon },
+  { label: "ideas Shared", value: "2,400+", icon: LightbulbIcon },
   { label: "Community Members", value: "18K+", icon: UsersIcon },
   { label: "Projects Funded", value: "320+", icon: RocketIcon },
   { label: "Countries Reached", value: "42+", icon: GlobeIcon },
@@ -127,7 +127,7 @@ const AboutPage = () => {
       <main>
         {/* ── 1. Hero ── */}
         <section className="relative overflow-hidden">
-          <div className="pointer-events-none absolute inset-0 select-none ">
+          <div className="pointer-ideas-none absolute inset-0 select-none ">
             <div className="absolute -top-40 -right-32 size-125 rounded-full bg-zinc-100/60 blur-3xl dark:bg-zinc-900/20" />
             <div className="absolute bottom-0 -left-24 size-80 rounded-full bg-teal-50/80 blur-2xl dark:bg-teal-900/10" />
           </div>
@@ -167,7 +167,7 @@ const AboutPage = () => {
                       "bg-zinc-600 text-white shadow-md shadow-zinc-600/20 hover:bg-zinc-700",
                     )}
                   >
-                    Explore Ideas
+                    Explore ideas
                     <ArrowRightIcon
                       className="ml-2 size-4"
                       aria-hidden="true"
@@ -205,7 +205,7 @@ const AboutPage = () => {
 
               {/* Right: image card (existing) */}
               <div className="relative animate-eco-fade-up animate-delay-500">
-                <div className="pointer-events-none absolute -inset-6 hidden md:block">
+                <div className="pointer-ideas-none absolute -inset-6 hidden md:block">
                   <div className="absolute top-8 left-10 size-24 rounded-full border border-zinc-200 bg-zinc-50/40 animation-duration-[22s] animate-spin" />
                   <div className="absolute bottom-10 right-10 size-20 rounded-full border border-zinc-200 bg-zinc-50/40 animate-pulse" />
                 </div>
@@ -531,7 +531,7 @@ const AboutPage = () => {
         {/* ── 7. CTA ── */}
         <section className="border-t">
           <div className="relative overflow-hidden bg-linear-to-br from-zinc-600 to-zinc-700 py-20 sm:py-28">
-            <div className="pointer-events-none absolute inset-0">
+            <div className="pointer-ideas-none absolute inset-0">
               <div className="absolute -top-24 -right-24 size-80 rounded-full bg-white/10 blur-3xl" />
               <div className="absolute -bottom-24 -left-24 size-80 rounded-full bg-white/10 blur-3xl" />
             </div>
@@ -562,7 +562,7 @@ const AboutPage = () => {
                     "border-white/40 text-white hover:bg-white/10 hover:text-white",
                   )}
                 >
-                  Explore Ideas
+                  Explore ideas
                 </Link>
               </div>
             </div>

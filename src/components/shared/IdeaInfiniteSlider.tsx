@@ -1,7 +1,8 @@
 ﻿"use client";
 
+import { Fragment } from "react";
 import { cn } from "@/lib/utils";
-import type { IIdeaResponse } from "@/types/idea.type";
+import type { IideaResponse } from "@/types/idea.type";
 import { Skeleton } from "@/components/ui/skeleton";
 
 // ── helpers ───────────────────────────────────────────────────────────────────
@@ -36,9 +37,9 @@ const safeShortDate = (value: unknown): string => {
   }).format(date);
 };
 
-// ── IdeaSlideCard — proper card (image top, text below) ──────────────────────
+// ── ideaSlideCard — proper card (image top, text below) ──────────────────────
 
-const IdeaSlideCard = ({ idea }: { idea: IIdeaResponse }) => {
+const ideaSlideCard = ({ idea }: { idea: IideaResponse }) => {
   const coverImage = normalizeFirstImage(idea.images);
   const authorName =
     (idea as any)?.author?.name || (idea as any)?.authorName || "";
@@ -62,7 +63,7 @@ const IdeaSlideCard = ({ idea }: { idea: IIdeaResponse }) => {
       <div className="relative h-36 shrink-0 overflow-hidden sm:h-40">
         <img
           src={coverImage}
-          alt={idea.title || "Idea"}
+          alt={idea.title || "idea"}
           aria-hidden="true"
           className="h-full w-full object-cover transition-transform duration-500 ease-out group-hover:scale-[1.07]"
           loading="lazy"
@@ -98,7 +99,7 @@ const IdeaSlideCard = ({ idea }: { idea: IIdeaResponse }) => {
       <div className="flex flex-1 flex-col gap-2 p-3">
         {/* Title */}
         <h3 className="line-clamp-2 text-[13px] font-semibold leading-snug text-foreground">
-          {idea.title || "Untitled Idea"}
+          {idea.title || "Untitled idea"}
         </h3>
 
         {/* Author + date */}
@@ -141,19 +142,19 @@ const SliderSkeleton = () => (
   </div>
 );
 
-// ── IdeaInfiniteSlider — public-facing horizontal scroll ──────────────────────
+// ── ideaInfiniteSlider — public-facing horizontal scroll ──────────────────────
 
-interface IdeaInfiniteSliderProps {
-  ideas: IIdeaResponse[];
+interface ideaInfiniteSliderProps {
+  ideas: IideaResponse[];
   isLoading?: boolean;
   className?: string;
 }
 
-export const IdeaInfiniteSlider = ({
+export const ideaInfiniteSlider = ({
   ideas,
   isLoading,
   className,
-}: IdeaInfiniteSliderProps) => {
+}: ideaInfiniteSliderProps) => {
   if (isLoading) {
     return (
       <div className={cn("overflow-hidden", className)}>
@@ -175,7 +176,9 @@ export const IdeaInfiniteSlider = ({
         aria-label="Live ideas from the community"
       >
         {doubled.map((idea, idx) => (
-          <IdeaSlideCard key={`${idea.id}-${idx}`} idea={idea} />
+          <Fragment key={`${idea.id ?? idea.title ?? "idea"}-${idx}`}>
+            {ideaSlideCard({ idea })}
+          </Fragment>
         ))}
       </div>
     </div>

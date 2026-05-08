@@ -1,10 +1,10 @@
 "use client";
 
-import { getIdea, ideaUpdatebyAdminAction } from "@/services/idea.services";
+import { getidea, ideaUpdatebyAdminAction } from "@/services/idea.services";
 import { useMutation, useQuery } from "@tanstack/react-query";
 import React, { useEffect, useMemo, useState } from "react";
 import { useRouter } from "next/navigation";
-import type { IIdeaResponse } from "@/types/idea.type";
+import type { IideaResponse } from "@/types/idea.type";
 import {
   Card,
   CardAction,
@@ -70,7 +70,7 @@ const getPaginationItems = (currentPage: number, totalPages: number) => {
 };
 //pagination
 
-const DEFAULT_IDEA_IMAGE = "/window.svg";
+const DEFAULT_idea_IMAGE = "/window.svg";
 
 type ImageLike = string | { url?: unknown };
 
@@ -110,11 +110,11 @@ const safeFormatDate = (value: unknown) => {
 };
 
 const pickImage = (urls: string[], preferredIndex: number): string => {
-  return urls[preferredIndex] || urls[0] || DEFAULT_IDEA_IMAGE;
+  return urls[preferredIndex] || urls[0] || DEFAULT_idea_IMAGE;
 };
 //dialog
 
-const UnderReviewIdea = () => {
+const UnderReviewidea = () => {
   const router = useRouter();
   const handlclick = ({ id, isPaid }: { id: string; isPaid: boolean }) => {
     const paidParam = isPaid ? "1" : "0";
@@ -123,13 +123,13 @@ const UnderReviewIdea = () => {
   const [drawerOpen, setDrawerOpen] = useState(false);
   //   const [editDrawerOpen, setEditDrawerOpen] = useState(false);
   const [openDialog, setOpenDialog] = useState(false);
-  const [selectedIdea, setSelectedIdea] = useState<IIdeaResponse | null>(null);
+  const [selectedidea, setSelectedidea] = useState<IideaResponse | null>(null);
   const [page, setPage] = useState(1);
   const [limit] = useState(20);
 
   const { data } = useQuery({
     queryKey: ["idea", page, limit],
-    queryFn: () => getIdea({ page, limit }),
+    queryFn: () => getidea({ page, limit }),
   });
   //!SECTION pagination
   const meta = data?.meta;
@@ -165,15 +165,15 @@ const UnderReviewIdea = () => {
   //   });
 
   const ideas = useMemo(() => {
-    return Array.isArray(data?.data) ? data.data : ([] as IIdeaResponse[]);
+    return Array.isArray(data?.data) ? data.data : ([] as IideaResponse[]);
   }, [data]);
 
-  const underReviewIdeas = useMemo(() => {
+  const underReviewideas = useMemo(() => {
     return ideas.filter((idea) => idea?.status === "UNDER_REVIEW");
   }, [ideas]);
 
   const selectedImages = useMemo(() => {
-    const urls = normalizeImageUrls(selectedIdea?.images);
+    const urls = normalizeImageUrls(selectedidea?.images);
     const coverImage = pickImage(urls, 0);
     const descriptionImage = pickImage(urls, 1);
     const solutionImage = pickImage(urls, 2);
@@ -190,7 +190,7 @@ const UnderReviewIdea = () => {
       solutionImage,
       extraImages,
     };
-  }, [selectedIdea]);
+  }, [selectedidea]);
 
   return (
     //dialog
@@ -199,17 +199,17 @@ const UnderReviewIdea = () => {
         <div className="flex items-end justify-between gap-3">
           <div>
             <h1 className="text-lg font-semibold tracking-tight">
-              Under Review Ideas
+              Under Review ideas
             </h1>
             <p className="text-sm text-muted-foreground">
               Showing only ideas with status UNDER_REVIEW.
             </p>
           </div>
-          <Badge variant="secondary">{underReviewIdeas.length}</Badge>
+          <Badge variant="secondary">{underReviewideas.length}</Badge>
         </div>
 
         <div className="mt-5 grid gap-4 sm:grid-cols-2 lg:grid-cols-3">
-          {underReviewIdeas.map((idea) => {
+          {underReviewideas.map((idea) => {
             const imageUrls = normalizeImageUrls(idea?.images);
             const coverImage = pickImage(imageUrls, 0);
 
@@ -228,12 +228,12 @@ const UnderReviewIdea = () => {
                 <div className="relative">
                   <img
                     src={coverImage}
-                    alt={idea?.title || "Idea image"}
+                    alt={idea?.title || "idea image"}
                     className="h-48 w-full object-cover transition-transform duration-300 ease-out group-hover/card:scale-105"
                     loading="eager"
                     onError={(e) => {
                       (e.currentTarget as HTMLImageElement).src =
-                        DEFAULT_IDEA_IMAGE;
+                        DEFAULT_idea_IMAGE;
                     }}
                   />
 
@@ -303,7 +303,7 @@ const UnderReviewIdea = () => {
                         );
                         return;
                       }
-                      setSelectedIdea(idea);
+                      setSelectedidea(idea);
                       setDrawerOpen(true);
                     }}
                   >
@@ -318,7 +318,7 @@ const UnderReviewIdea = () => {
                       });
                     }}
                   >
-                    Edit Idea
+                    Edit idea
                   </Button>
                 </CardFooter>
               </Card>
@@ -330,7 +330,7 @@ const UnderReviewIdea = () => {
           open={drawerOpen}
           onOpenChange={(open) => {
             setDrawerOpen(open);
-            if (!open) setSelectedIdea(null);
+            if (!open) setSelectedidea(null);
           }}
         >
           <DrawerContent className="outline-none data-[vaul-drawer-direction=bottom]:h-[92vh] data-[vaul-drawer-direction=bottom]:max-h-[92vh]">
@@ -339,25 +339,25 @@ const UnderReviewIdea = () => {
                 <div className="flex items-start justify-between gap-3">
                   <div className="min-w-0">
                     <DrawerTitle className="line-clamp-2">
-                      {selectedIdea?.title || "Idea Details"}
+                      {selectedidea?.title || "idea Details"}
                     </DrawerTitle>
                     <DrawerDescription className="mt-1">
-                      {selectedIdea?.author?.name ||
-                        selectedIdea?.authorName ||
+                      {selectedidea?.author?.name ||
+                        selectedidea?.authorName ||
                         "Unknown"}
-                      {selectedIdea?.createdAt
-                        ? ` • ${safeFormatDate(selectedIdea.createdAt)}`
+                      {selectedidea?.createdAt
+                        ? ` • ${safeFormatDate(selectedidea.createdAt)}`
                         : ""}
                     </DrawerDescription>
                   </div>
 
                   <div className="flex shrink-0 items-center gap-2">
-                    {selectedIdea?.category?.name ? (
+                    {selectedidea?.category?.name ? (
                       <Badge variant="outline">
-                        {selectedIdea.category.name}
+                        {selectedidea.category.name}
                       </Badge>
                     ) : null}
-                    {selectedIdea?.isPaid ? (
+                    {selectedidea?.isPaid ? (
                       <Badge className="border-destructive/30 bg-destructive text-destructive-foreground">
                         PAID
                       </Badge>
@@ -375,12 +375,12 @@ const UnderReviewIdea = () => {
               <div className="px-4 pb-2">
                 <img
                   src={selectedImages.coverImage}
-                  alt="Idea cover"
+                  alt="idea cover"
                   className="h-56 w-full rounded-xl object-cover"
                   loading="lazy"
                   onError={(e) => {
                     (e.currentTarget as HTMLImageElement).src =
-                      DEFAULT_IDEA_IMAGE;
+                      DEFAULT_idea_IMAGE;
                   }}
                 />
               </div>
@@ -392,7 +392,7 @@ const UnderReviewIdea = () => {
                       Problem Statement
                     </p>
                     <p className="mt-1 whitespace-pre-line text-sm leading-relaxed text-foreground/90">
-                      {selectedIdea?.problemStatement || "—"}
+                      {selectedidea?.problemStatement || "—"}
                     </p>
                   </div>
 
@@ -406,13 +406,13 @@ const UnderReviewIdea = () => {
                       loading="lazy"
                       onError={(e) => {
                         (e.currentTarget as HTMLImageElement).src =
-                          DEFAULT_IDEA_IMAGE;
+                          DEFAULT_idea_IMAGE;
                       }}
                     />
                     <div>
                       <p className="text-sm font-semibold">Description</p>
                       <p className="mt-1 whitespace-pre-line text-sm leading-relaxed text-foreground/85">
-                        {selectedIdea?.description || "—"}
+                        {selectedidea?.description || "—"}
                       </p>
                     </div>
                   </div>
@@ -427,7 +427,7 @@ const UnderReviewIdea = () => {
                       loading="lazy"
                       onError={(e) => {
                         (e.currentTarget as HTMLImageElement).src =
-                          DEFAULT_IDEA_IMAGE;
+                          DEFAULT_idea_IMAGE;
                       }}
                     />
                     <div>
@@ -436,7 +436,7 @@ const UnderReviewIdea = () => {
                       </p>
                       <div className="mt-2 rounded-xl border bg-muted/30 p-3 sm:p-4">
                         <p className="whitespace-pre-wrap wrap-break-word text-base leading-7 text-foreground">
-                          {selectedIdea?.solution || "—"}
+                          {selectedidea?.solution || "—"}
                         </p>
                       </div>
                     </div>
@@ -452,12 +452,12 @@ const UnderReviewIdea = () => {
                             <img
                               key={url}
                               src={url}
-                              alt="Idea image"
+                              alt="idea image"
                               className="aspect-square w-full rounded-xl object-cover"
                               loading="lazy"
                               onError={(e) => {
                                 (e.currentTarget as HTMLImageElement).src =
-                                  DEFAULT_IDEA_IMAGE;
+                                  DEFAULT_idea_IMAGE;
                               }}
                             />
                           ))}
@@ -478,7 +478,7 @@ const UnderReviewIdea = () => {
         </Drawer>
         {/*  */}
 
-        {/* {underReviewIdeas.length === 0 ? (
+        {/* {underReviewideas.length === 0 ? (
           <div className="mt-10 rounded-xl border bg-muted/30 p-6 text-sm text-muted-foreground">
             No UNDER_REVIEW ideas found.
           </div>
@@ -499,7 +499,7 @@ const UnderReviewIdea = () => {
                 <PaginationPrevious
                   href="#"
                   aria-disabled={!canGoPrev}
-                  className={!canGoPrev ? "pointer-events-none opacity-50" : ""}
+                  className={!canGoPrev ? "pointer-ideas-none opacity-50" : ""}
                   onClick={(e) => {
                     e.preventDefault();
                     if (!canGoPrev) return;
@@ -540,7 +540,7 @@ const UnderReviewIdea = () => {
                 <PaginationNext
                   href="#"
                   aria-disabled={!canGoNext}
-                  className={!canGoNext ? "pointer-events-none opacity-50" : ""}
+                  className={!canGoNext ? "pointer-ideas-none opacity-50" : ""}
                   onClick={(e) => {
                     e.preventDefault();
                     if (!canGoNext) return;
@@ -556,4 +556,4 @@ const UnderReviewIdea = () => {
   );
 };
 
-export default UnderReviewIdea;
+export default UnderReviewidea;

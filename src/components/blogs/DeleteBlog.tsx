@@ -88,11 +88,11 @@ function DeleteBlogCard({
           {/* Decorative blobs */}
           <div
             aria-hidden
-            className="pointer-events-none absolute -right-4 -top-4 size-20 rounded-full bg-zinc-200/40 blur-xl dark:bg-zinc-700/20"
+            className="pointer-ideas-none absolute -right-4 -top-4 size-20 rounded-full bg-zinc-200/40 blur-xl dark:bg-zinc-700/20"
           />
           <div
             aria-hidden
-            className="pointer-events-none absolute -bottom-4 -left-4 size-16 rounded-full bg-teal-200/40 blur-lg dark:bg-teal-700/15"
+            className="pointer-ideas-none absolute -bottom-4 -left-4 size-16 rounded-full bg-teal-200/40 blur-lg dark:bg-teal-700/15"
           />
 
           <LeafIcon className="relative z-10 size-14 text-zinc-300 transition-all duration-300 group-hover:scale-110 group-hover:text-zinc-400 dark:text-zinc-700 dark:group-hover:text-zinc-600" />
@@ -237,15 +237,15 @@ const DeleteBlog = () => {
         {/* Orbs */}
         <div
           aria-hidden
-          className="pointer-events-none absolute -right-16 -top-16 size-52 rounded-full bg-white/10 blur-3xl"
+          className="pointer-ideas-none absolute -right-16 -top-16 size-52 rounded-full bg-white/10 blur-3xl"
         />
         <div
           aria-hidden
-          className="pointer-events-none absolute -bottom-10 left-1/3 size-40 rounded-full bg-orange-400/20 blur-2xl"
+          className="pointer-ideas-none absolute -bottom-10 left-1/3 size-40 rounded-full bg-orange-400/20 blur-2xl"
         />
         <div
           aria-hidden
-          className="pointer-events-none absolute -left-8 top-4 size-28 rounded-full bg-rose-300/15 blur-xl"
+          className="pointer-ideas-none absolute -left-8 top-4 size-28 rounded-full bg-rose-300/15 blur-xl"
         />
 
         {/* Dot grid */}

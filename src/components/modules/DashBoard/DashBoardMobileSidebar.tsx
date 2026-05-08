@@ -35,11 +35,11 @@ const DashboardMobileSidebar = ({
         {/* Decorative orbs */}
         <div
           aria-hidden
-          className="pointer-events-none absolute -right-4 -top-4 size-16 rounded-full bg-white/10 blur-xl"
+          className="pointer-ideas-none absolute -right-4 -top-4 size-16 rounded-full bg-white/10 blur-xl"
         />
         <div
           aria-hidden
-          className="pointer-events-none absolute -bottom-2 left-1/3 size-10 rounded-full bg-teal-400/20 blur-lg"
+          className="pointer-ideas-none absolute -bottom-2 left-1/3 size-10 rounded-full bg-teal-400/20 blur-lg"
         />
         {/* Dot texture */}
         <div

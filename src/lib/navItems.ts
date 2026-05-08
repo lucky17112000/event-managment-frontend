@@ -69,10 +69,10 @@ export const adminNavItems: NavSection[] = [
   },
 
   {
-    title: "Ecosystem Management",
+    title: "idea Management",
     items: [
       {
-        title: "Ideas",
+        title: "ideas",
         href: "/admin/dashboard/idea-managment",
         icon: "Calendar",
       },
@@ -81,17 +81,17 @@ export const adminNavItems: NavSection[] = [
   {
     items: [
       {
-        title: "Rejected Ideas",
+        title: "Rejected ideas",
         href: "/admin/dashboard/rejected-idea",
         icon: "ClipboardList",
       },
     ],
   },
   // {
-  //   title: "Approved Ideas",
+  //   title: "Approved ideas",
   //   items: [
   //     {
-  //       title: "Approved Ideas",
+  //       title: "Approved ideas",
   //       href: "/admin/dashboard/selected-idea",
   //       icon: "Calendar",
   //     },
@@ -100,19 +100,9 @@ export const adminNavItems: NavSection[] = [
   {
     items: [
       {
-        title: "Under Review Ideas",
+        title: "Under Review ideas",
         href: "/admin/dashboard/under-review-idea",
         icon: "FileText",
-      },
-    ],
-  },
-  {
-    title: "Payment Managment",
-    items: [
-      {
-        title: "Payments",
-        href: "/admin/dashboard/payment-managment",
-        icon: "CreditCard",
       },
     ],
   },
@@ -120,41 +110,41 @@ export const adminNavItems: NavSection[] = [
 
 export const userNavItems: NavSection[] = [
   {
-    title: "Ideas world",
+    title: "ideas Worlds",
     items: [
       {
-        title: "Create Idea",
+        title: "Create idea",
         href: "/dashboard/create-idea",
         icon: "Calendar",
       },
       {
-        title: "Approved Ideas",
+        title: "Approved ideas",
         href: "/dashboard/selected-idea",
         icon: "Calendar",
       },
     ],
   },
   {
-    title: "Idea Monitoring",
+    title: "idea Monitoring",
     items: [
       {
-        title: "Under Review Ideas",
+        title: "Under Review ideas",
         href: "/dashboard/under-review-idea",
         icon: "FileText",
       },
       {
-        title: "Rejected Ideas",
+        title: "Rejected ideas",
         href: "/dashboard/rejected-idea",
         icon: "ClipboardList",
       },
     ],
   },
   {
-    title: "Purchased Ideas",
+    title: "My ideas",
     items: [
       {
-        title: "Purchased Ideas",
-        href: "/dashboard/purchesed-idea",
+        title: "My Bookings",
+        href: "/dashboard/my-booking",
         icon: "FileText",
       },
     ],

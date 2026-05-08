@@ -35,12 +35,13 @@ const formatDateTime = (value: ProfileData["createdAt"]) => {
   if (!value) return "—";
   const date = value instanceof Date ? value : new Date(value);
   if (Number.isNaN(date.getTime())) return "—";
-  return new Intl.DateTimeFormat(undefined, {
+  return new Intl.DateTimeFormat("en-GB", {
     year: "numeric",
     month: "short",
     day: "2-digit",
     hour: "2-digit",
     minute: "2-digit",
+    hour12: false,
   }).format(date);
 };
 
@@ -132,15 +133,15 @@ const MyProfile = ({ data }: { data: ProfileData }) => {
           {/* Organic blur orbs */}
           <div
             aria-hidden
-            className="pointer-events-none absolute -right-10 -top-10 size-40 rounded-full bg-white/15 blur-2xl"
+            className="pointer-ideas-none absolute -right-10 -top-10 size-40 rounded-full bg-white/15 blur-2xl"
           />
           <div
             aria-hidden
-            className="pointer-events-none absolute -bottom-6 left-1/3 size-32 rounded-full bg-teal-400/25 blur-2xl"
+            className="pointer-ideas-none absolute -bottom-6 left-1/3 size-32 rounded-full bg-teal-400/25 blur-2xl"
           />
           <div
             aria-hidden
-            className="pointer-events-none absolute -left-6 top-4 size-24 rounded-full bg-zinc-300/20 blur-xl"
+            className="pointer-ideas-none absolute -left-6 top-4 size-24 rounded-full bg-zinc-300/20 blur-xl"
           />
 
           {/* Dot-grid texture */}

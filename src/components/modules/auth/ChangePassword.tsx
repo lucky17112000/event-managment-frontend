@@ -47,13 +47,7 @@ const getStrength = (
     "text-sky-500",
     "text-zinc-500",
   ];
-  const bars = [
-    "",
-    "bg-red-400",
-    "bg-amber-400",
-    "bg-sky-400",
-    "bg-zinc-500",
-  ];
+  const bars = ["", "bg-red-400", "bg-amber-400", "bg-sky-400", "bg-zinc-500"];
   return {
     score,
     label: labels[score],
@@ -95,7 +89,7 @@ function SuccessScreen() {
       {/* Background blobs */}
       <div
         aria-hidden
-        className="pointer-events-none fixed inset-0 -z-10 overflow-hidden"
+        className="pointer-ideas-none fixed inset-0 -z-10 overflow-hidden"
       >
         <div className="absolute -left-40 -top-40 size-150 rounded-full bg-zinc-200/40 blur-3xl dark:bg-zinc-900/20" />
         <div className="absolute -bottom-40 -right-40 size-125 rounded-full bg-teal-200/30 blur-3xl dark:bg-teal-900/15" />
@@ -193,7 +187,7 @@ const ChangePassword = () => {
       {/* ── Page background ─────────────────────────────────────────────── */}
       <div
         aria-hidden
-        className="pointer-events-none fixed inset-0 -z-10 overflow-hidden"
+        className="pointer-ideas-none fixed inset-0 -z-10 overflow-hidden"
       >
         <div className="absolute -left-48 -top-48 size-175 rounded-full bg-zinc-200/35 blur-3xl dark:bg-zinc-900/15" />
         <div className="absolute -bottom-48 -right-48 size-150 rounded-full bg-teal-200/30 blur-3xl dark:bg-teal-900/15" />
@@ -216,15 +210,15 @@ const ChangePassword = () => {
           {/* Orbs */}
           <div
             aria-hidden
-            className="pointer-events-none absolute -right-8 -top-8 size-36 rounded-full bg-white/10 blur-2xl"
+            className="pointer-ideas-none absolute -right-8 -top-8 size-36 rounded-full bg-white/10 blur-2xl"
           />
           <div
             aria-hidden
-            className="pointer-events-none absolute -bottom-4 left-1/4 size-28 rounded-full bg-teal-400/20 blur-xl"
+            className="pointer-ideas-none absolute -bottom-4 left-1/4 size-28 rounded-full bg-teal-400/20 blur-xl"
           />
           <div
             aria-hidden
-            className="pointer-events-none absolute -left-4 top-2 size-20 rounded-full bg-zinc-300/15 blur-lg"
+            className="pointer-ideas-none absolute -left-4 top-2 size-20 rounded-full bg-zinc-300/15 blur-lg"
           />
 
           {/* Dot texture */}

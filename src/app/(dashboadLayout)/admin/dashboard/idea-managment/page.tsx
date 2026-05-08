@@ -1,8 +1,4 @@
-import AllIdeas from "@/components/shared/Idea";
+import ideaManagmentPage from "@/components/modules/Admin-mangment/IdeaManagment";
 import React from "react";
-
-const ideaManagmentPage = () => {
-  return <AllIdeas />;
-};
 
 export default ideaManagmentPage;

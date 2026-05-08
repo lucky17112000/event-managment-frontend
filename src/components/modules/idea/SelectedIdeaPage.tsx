@@ -1,10 +1,10 @@
 ﻿"use client";
 
-import { getIdea } from "@/services/idea.services";
+import { getidea } from "@/services/idea.services";
 import { useQuery } from "@tanstack/react-query";
 import { useEffect, useMemo, useState } from "react";
 import { useRouter } from "next/navigation";
-import type { IIdeaResponse } from "@/types/idea.type";
+import type { IideaResponse } from "@/types/idea.type";
 import { Badge } from "@/components/ui/badge";
 import { Button } from "@/components/ui/button";
 import {
@@ -29,7 +29,7 @@ import {
   PaginationNext,
   PaginationPrevious,
 } from "@/components/ui/pagination";
-import { IdeaCardShell } from "@/components/shared/IdeaCardShell";
+import { ideaCardShell as IdeaCardShell } from "@/components/shared/IdeaCardShell";
 
 type pageItem = number | "ellipsis";
 const getPaginationItems = (currentPage: number, totalPages: number) => {
@@ -53,7 +53,7 @@ const getPaginationItems = (currentPage: number, totalPages: number) => {
 };
 //pagination
 
-const DEFAULT_IDEA_IMAGE = "/window.svg";
+const DEFAULT_idea_IMAGE = "/window.svg";
 
 type ImageLike = string | { url?: unknown };
 
@@ -93,20 +93,20 @@ const safeFormatDate = (value: unknown) => {
 };
 
 const pickImage = (urls: string[], preferredIndex: number): string => {
-  return urls[preferredIndex] || urls[0] || DEFAULT_IDEA_IMAGE;
+  return urls[preferredIndex] || urls[0] || DEFAULT_idea_IMAGE;
 };
 
-const SelectedIdeaPage = ({ user }: { user: any }) => {
+const SelectedideaPage = ({ user }: { user: any }) => {
   const router = useRouter();
   const [drawerOpen, setDrawerOpen] = useState(false);
-  const [selectedIdea, setSelectedIdea] = useState<IIdeaResponse | null>(null);
+  const [selectedidea, setSelectedidea] = useState<IideaResponse | null>(null);
 
   const [page, setPage] = useState(1);
   const [limit] = useState(3);
 
   const { data } = useQuery({
     queryKey: ["idea", page, limit],
-    queryFn: () => getIdea({ page, limit }),
+    queryFn: () => getidea({ page, limit }),
   });
   //!SECTION pagination
   const meta = data?.meta;
@@ -141,7 +141,7 @@ const SelectedIdeaPage = ({ user }: { user: any }) => {
           ? user.user.id
           : "";
 
-  // const rejectedIdeas = useMemo(() => {
+  // const rejectedideas = useMemo(() => {
   //     return ideas.filter((idea) => {
   //       const matchesStatus = idea?.status === "REJECTED";
   //       if (!matchesStatus) return false;
@@ -151,12 +151,12 @@ const SelectedIdeaPage = ({ user }: { user: any }) => {
   //       return idea?.authorId === userId || idea?.author?.id === userId;
   //     });
   //   }, [ideas, userId]);
-  const allIdeas = useMemo(() => {
-    return Array.isArray(data?.data) ? data.data : ([] as IIdeaResponse[]);
+  const allideas = useMemo(() => {
+    return Array.isArray(data?.data) ? data.data : ([] as IideaResponse[]);
   }, [data]);
 
-  const approvedIdeas = useMemo(() => {
-    return allIdeas.filter((idea) => {
+  const approvedideas = useMemo(() => {
+    return allideas.filter((idea) => {
       const matchesStatus = idea?.status === "APPROVED";
       if (!matchesStatus) return false;
 
@@ -164,10 +164,10 @@ const SelectedIdeaPage = ({ user }: { user: any }) => {
       if (!userId) return true;
       return idea?.authorId === userId || idea?.author?.id === userId;
     });
-  }, [allIdeas, userId]);
+  }, [allideas, userId]);
 
   const selectedImages = useMemo(() => {
-    const urls = normalizeImageUrls(selectedIdea?.images);
+    const urls = normalizeImageUrls(selectedidea?.images);
     const coverImage = pickImage(urls, 0);
     const descriptionImage = pickImage(urls, 1);
     const solutionImage = pickImage(urls, 2);
@@ -184,7 +184,7 @@ const SelectedIdeaPage = ({ user }: { user: any }) => {
       solutionImage,
       extraImages,
     };
-  }, [selectedIdea]);
+  }, [selectedidea]);
 
   return (
     <div className="w-full">
@@ -192,17 +192,17 @@ const SelectedIdeaPage = ({ user }: { user: any }) => {
         <div className="flex items-end justify-between gap-3">
           <div>
             <h1 className="text-lg font-semibold tracking-tight">
-              Approved Ideas
+              Approved ideas
             </h1>
             <p className="text-sm text-muted-foreground">
               Showing only ideas with status APPROVED.
             </p>
           </div>
-          <Badge variant="secondary">{approvedIdeas.length}</Badge>
+          <Badge variant="secondary">{approvedideas.length}</Badge>
         </div>
 
         <div className="mt-5 grid gap-5 sm:grid-cols-2 lg:grid-cols-3">
-          {approvedIdeas.map((idea) => {
+          {approvedideas.map((idea) => {
             const imageUrls = normalizeImageUrls(idea?.images);
             const coverImage = pickImage(imageUrls, 0);
 
@@ -220,9 +220,7 @@ const SelectedIdeaPage = ({ user }: { user: any }) => {
                 createdAt={createdAt}
                 category={idea?.category?.name}
                 isPaid={idea?.isPaid}
-                price={
-                  typeof idea?.price === "number" ? idea.price : undefined
-                }
+                price={typeof idea?.price === "number" ? idea.price : undefined}
                 topRightBadge={
                   <span className="inline-flex items-center rounded-full bg-zinc-600 px-2 py-0.5 text-[10px] font-bold text-white">
                     Approved
@@ -243,7 +241,7 @@ const SelectedIdeaPage = ({ user }: { user: any }) => {
                         );
                         return;
                       }
-                      setSelectedIdea(idea);
+                      setSelectedidea(idea);
                       setDrawerOpen(true);
                     }}
                   >
@@ -259,7 +257,7 @@ const SelectedIdeaPage = ({ user }: { user: any }) => {
           open={drawerOpen}
           onOpenChange={(open) => {
             setDrawerOpen(open);
-            if (!open) setSelectedIdea(null);
+            if (!open) setSelectedidea(null);
           }}
         >
           <DrawerContent className="outline-none data-[vaul-drawer-direction=bottom]:h-[92vh] data-[vaul-drawer-direction=bottom]:max-h-[92vh]">
@@ -268,25 +266,25 @@ const SelectedIdeaPage = ({ user }: { user: any }) => {
                 <div className="flex items-start justify-between gap-3">
                   <div className="min-w-0">
                     <DrawerTitle className="line-clamp-2">
-                      {selectedIdea?.title || "Idea Details"}
+                      {selectedidea?.title || "idea Details"}
                     </DrawerTitle>
                     <DrawerDescription className="mt-1">
-                      {selectedIdea?.author?.name ||
-                        selectedIdea?.authorName ||
+                      {selectedidea?.author?.name ||
+                        selectedidea?.authorName ||
                         "Unknown"}
-                      {selectedIdea?.createdAt
-                        ? ` • ${safeFormatDate(selectedIdea.createdAt)}`
+                      {selectedidea?.createdAt
+                        ? ` • ${safeFormatDate(selectedidea.createdAt)}`
                         : ""}
                     </DrawerDescription>
                   </div>
 
                   <div className="flex shrink-0 items-center gap-2">
-                    {selectedIdea?.category?.name ? (
+                    {selectedidea?.category?.name ? (
                       <Badge variant="outline">
-                        {selectedIdea.category.name}
+                        {selectedidea.category.name}
                       </Badge>
                     ) : null}
-                    {selectedIdea?.isPaid ? (
+                    {selectedidea?.isPaid ? (
                       <Badge className="border-destructive/30 bg-destructive text-destructive-foreground">
                         PAID
                       </Badge>
@@ -304,12 +302,12 @@ const SelectedIdeaPage = ({ user }: { user: any }) => {
               <div className="px-4 pb-2">
                 <img
                   src={selectedImages.coverImage}
-                  alt="Idea cover"
+                  alt="idea cover"
                   className="h-56 w-full rounded-xl object-cover"
                   loading="lazy"
                   onError={(e) => {
                     (e.currentTarget as HTMLImageElement).src =
-                      DEFAULT_IDEA_IMAGE;
+                      DEFAULT_idea_IMAGE;
                   }}
                 />
               </div>
@@ -321,7 +319,7 @@ const SelectedIdeaPage = ({ user }: { user: any }) => {
                       Problem Statement
                     </p>
                     <p className="mt-1 whitespace-pre-line text-sm leading-relaxed text-foreground/90">
-                      {selectedIdea?.problemStatement || "—"}
+                      {selectedidea?.problemStatement || "—"}
                     </p>
                   </div>
 
@@ -335,13 +333,13 @@ const SelectedIdeaPage = ({ user }: { user: any }) => {
                       loading="lazy"
                       onError={(e) => {
                         (e.currentTarget as HTMLImageElement).src =
-                          DEFAULT_IDEA_IMAGE;
+                          DEFAULT_idea_IMAGE;
                       }}
                     />
                     <div>
                       <p className="text-sm font-semibold">Description</p>
                       <p className="mt-1 whitespace-pre-line text-sm leading-relaxed text-foreground/85">
-                        {selectedIdea?.description || "—"}
+                        {selectedidea?.description || "—"}
                       </p>
                     </div>
                   </div>
@@ -356,7 +354,7 @@ const SelectedIdeaPage = ({ user }: { user: any }) => {
                       loading="lazy"
                       onError={(e) => {
                         (e.currentTarget as HTMLImageElement).src =
-                          DEFAULT_IDEA_IMAGE;
+                          DEFAULT_idea_IMAGE;
                       }}
                     />
                     <div>
@@ -365,7 +363,7 @@ const SelectedIdeaPage = ({ user }: { user: any }) => {
                       </p>
                       <div className="mt-2 rounded-xl border bg-muted/30 p-3 sm:p-4">
                         <p className="whitespace-pre-wrap wrap-break-word text-base leading-7 text-foreground">
-                          {selectedIdea?.solution || "—"}
+                          {selectedidea?.solution || "—"}
                         </p>
                       </div>
                     </div>
@@ -381,12 +379,12 @@ const SelectedIdeaPage = ({ user }: { user: any }) => {
                             <img
                               key={url}
                               src={url}
-                              alt="Idea image"
+                              alt="idea image"
                               className="aspect-square w-full rounded-xl object-cover"
                               loading="lazy"
                               onError={(e) => {
                                 (e.currentTarget as HTMLImageElement).src =
-                                  DEFAULT_IDEA_IMAGE;
+                                  DEFAULT_idea_IMAGE;
                               }}
                             />
                           ))}
@@ -406,7 +404,7 @@ const SelectedIdeaPage = ({ user }: { user: any }) => {
           </DrawerContent>
         </Drawer>
 
-        {approvedIdeas.length === 0 ? (
+        {approvedideas.length === 0 ? (
           <div className="mt-10 rounded-2xl border bg-muted/30 p-6 text-sm text-muted-foreground">
             No APPROVED ideas found.
           </div>
@@ -428,7 +426,7 @@ const SelectedIdeaPage = ({ user }: { user: any }) => {
                 <PaginationPrevious
                   href="#"
                   aria-disabled={!canGoPrev}
-                  className={!canGoPrev ? "pointer-events-none opacity-50" : ""}
+                  className={!canGoPrev ? "pointer-ideas-none opacity-50" : ""}
                   onClick={(e) => {
                     e.preventDefault();
                     if (!canGoPrev) return;
@@ -469,7 +467,7 @@ const SelectedIdeaPage = ({ user }: { user: any }) => {
                 <PaginationNext
                   href="#"
                   aria-disabled={!canGoNext}
-                  className={!canGoNext ? "pointer-events-none opacity-50" : ""}
+                  className={!canGoNext ? "pointer-ideas-none opacity-50" : ""}
                   onClick={(e) => {
                     e.preventDefault();
                     if (!canGoNext) return;
@@ -485,4 +483,4 @@ const SelectedIdeaPage = ({ user }: { user: any }) => {
   );
 };
 
-export default SelectedIdeaPage;
+export default SelectedideaPage;

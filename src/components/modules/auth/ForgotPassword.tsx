@@ -93,7 +93,7 @@ const ForgotPasswordC = () => {
             action="#"
             noValidate
             onSubmit={(e) => {
-              e.preventDefault();
+              e.preventdefault()();
               e.stopPropagation();
               form.handleSubmit();
             }}

@@ -1,6 +1,7 @@
-﻿"use client";
+"use client";
 
 import { getidea } from "@/services/idea.services";
+import { getBookingDetailsByideaIdAction } from "@/services/admin.service";
 import { useMutation, useQuery, useQueryClient } from "@tanstack/react-query";
 import { Fragment, useEffect, useMemo, useRef, useState } from "react";
 import { useRouter } from "next/navigation";
@@ -9,28 +10,21 @@ import { Button } from "@/components/ui/button";
 import { cn } from "@/lib/utils";
 import {
   AlertTriangle,
+  BadgeCheck,
+  CalendarDays,
+  Clock3,
+  Loader2,
   Search,
   Sprout,
-  ThumbsDown,
-  ThumbsUp,
+  MapPin,
+  Ticket,
   X,
+  Calendar,
 } from "lucide-react";
-import { castVote } from "@/services/vote.service";
-import {
-  DropdownMenu,
-  DropdownMenuContent,
-  DropdownMenuItem,
-  DropdownMenuTrigger,
-} from "@/components/ui/dropdown-menu";
-import {
-  AlertDialog,
-  AlertDialogCancel,
-  AlertDialogContent,
-  AlertDialogDescription,
-  AlertDialogFooter,
-  AlertDialogHeader,
-  AlertDialogTitle,
-} from "@/components/ui/alert-dialog";
+import { createPurchaseAction } from "@/services/purchase.service";
+import AppTooltip from "@/components/shared/Tooltip";
+import { EcoCardSkeleton, EcoSpinner } from "@/components/shared/EcoLoading";
+import { ideaCardShell } from "@/components/shared/IdeaCardShell";
 import {
   Pagination,
   PaginationContent,
@@ -39,12 +33,15 @@ import {
   PaginationLink,
   PaginationNext,
   PaginationPrevious,
-} from "../ui/pagination";
-import { Input } from "../ui/input";
-import AppTooltip from "./Tooltip";
-import { createPurchaseAction } from "@/services/purchase.service";
-import { ideaCardShell } from "./IdeaCardShell";
-import { EcoCardSkeleton, EcoSpinner } from "./EcoLoading";
+} from "@/components/ui/pagination";
+import { Input } from "@/components/ui/input";
+import {
+  Dialog,
+  DialogContent,
+  DialogDescription,
+  DialogHeader,
+  DialogTitle,
+} from "@/components/ui/dialog";
 
 // ─── Pagination helper ────────────────────────────────────────────────────────
 type pageItem = number | "ellipsis";
@@ -64,7 +61,7 @@ const getPaginationItems = (currentPage: number, totalPages: number) => {
   return items;
 };
 
-const DEFAULT_IDEA_IMAGE = "/window.svg";
+const DEFAULT_idea_IMAGE = "/window.svg";
 
 type ImageLike = string | { url?: unknown };
 type VoteLike = string | { type?: unknown };
@@ -94,17 +91,7 @@ const getVoteUserIdFromRecord = (vote: unknown): string | null => {
   return typeof record.userId === "string" ? record.userId : null;
 };
 
-const isIdeaBookedByUser = (
-  idea: IideaResponse | null,
-  userId: string,
-): boolean => {
-  if (!userId || !idea?.bookings?.length) return false;
-  return idea.bookings.some(
-    (b) => b.userId === userId && b.status === "CONFIRMED",
-  );
-};
-
-const isIdeaPurchasedByUser = (idea: IideaResponse | null, userId: string) => {
+const isideaPurchasedByUser = (idea: IideaResponse | null, userId: string) => {
   if (!idea?.isPaid) return false;
   const purchases = (idea as unknown as { purchases?: unknown }).purchases;
   if (!Array.isArray(purchases) || purchases.length === 0) return false;
@@ -150,29 +137,92 @@ const safeFormatDate = (value: unknown) => {
 };
 
 const pickImage = (urls: string[], preferredIndex: number): string => {
-  return urls[preferredIndex] || urls[0] || DEFAULT_IDEA_IMAGE;
+  return urls[preferredIndex] || urls[0] || DEFAULT_idea_IMAGE;
+};
+
+type BookingDetailsRecord = {
+  id?: string;
+  bookingCode?: string;
+  userId?: string;
+  seatCount?: number;
+  status?: string;
+  createdAt?: string;
+  updatedAt?: string;
+};
+
+type BookingDetailsPayload = {
+  availableSeats?: number;
+  totalBookings?: number;
+  seatConfig?: {
+    totalSeats?: number;
+    bookedSeats?: number;
+    venue?: string;
+    startTime?: string;
+    endTime?: string;
+  };
+  bookings?: BookingDetailsRecord[];
+};
+
+const safeFormatDateTime = (value: unknown) => {
+  if (!value) return "";
+  const date =
+    value instanceof Date
+      ? value
+      : typeof value === "string" || typeof value === "number"
+        ? new Date(value)
+        : new Date(String(value));
+  if (Number.isNaN(date.getTime())) return "";
+  return new Intl.DateTimeFormat("en-GB", {
+    month: "short",
+    day: "2-digit",
+    hour: "numeric",
+    minute: "2-digit",
+    hour12: false,
+  }).format(date);
+};
+
+const getStatusStyles = (status?: string) => {
+  const normalized = String(status ?? "").toUpperCase();
+
+  if (normalized === "CONFIRMED") {
+    return "border-emerald-200 bg-emerald-50 text-emerald-700";
+  }
+
+  if (normalized === "PENDING") {
+    return "border-amber-200 bg-amber-50 text-amber-700";
+  }
+
+  if (normalized === "CANCELLED" || normalized === "CANCELED") {
+    return "border-rose-200 bg-rose-50 text-rose-700";
+  }
+
+  return "border-zinc-200 bg-zinc-50 text-zinc-600";
 };
 
 // ─── Main component ───────────────────────────────────────────────────────────
 
-const LOCAL_BOOKED_KEY = "eventHub_bookedIdeaIds";
+const LOCAL_BOOKED_KEY = "ideaHub_bookedideaIds";
 
-const AllIdeas = ({ user }: { user?: unknown }) => {
+const ideaManagmentPage = ({ user }: { user?: unknown }) => {
   // ── State ────────────────────────────────────────────────────────────────
-  const [voteErrors, setVoteErrors] = useState<Record<string, string>>({});
   // Persisted locally so "Already Booked" survives page navigation
-  const [localBookedIds, setLocalBookedIds] = useState<Set<string>>(new Set());
-
-  useEffect(() => {
-    try {
-      const raw = localStorage.getItem(LOCAL_BOOKED_KEY);
-      if (raw) setLocalBookedIds(new Set(JSON.parse(raw) as string[]));
-    } catch {}
-  }, []);
-  const [duplicateVoteDialog, setDuplicateVoteDialog] = useState<{
+  const [bookingDetailsDialog, setBookingDetailsDialog] = useState<{
     open: boolean;
+    loading: boolean;
+    error: string;
+    ideaId: string;
+    ideaTitle: string;
+    data: BookingDetailsPayload | null;
     message: string;
-  }>({ open: false, message: "" });
+  }>({
+    open: false,
+    loading: false,
+    error: "",
+    ideaId: "",
+    ideaTitle: "",
+    data: null,
+    message: "",
+  });
 
   // Search state — preserved as-is for future commands
   const searchInputRef = useRef<HTMLInputElement>(null);
@@ -263,75 +313,69 @@ const AllIdeas = ({ user }: { user?: unknown }) => {
     return { start, end, total: totalItems };
   }, [currentPage, limit, totalItems]);
 
-  const { mutateAsync, isPending: isVoting } = useMutation({
-    mutationFn: (payload: { ideaId: string; voteType: "UP" | "DOWN" }) =>
-      castVote(payload),
-    onSuccess: async () => {
-      await queryClient.invalidateQueries({ queryKey: ["idea"] });
-    },
-  });
-
-  const clearVoteError = (ideaId: string) => {
-    setVoteErrors((prev) => {
-      if (!prev[ideaId]) return prev;
-      const next = { ...prev };
-      delete next[ideaId];
-      return next;
-    });
-  };
-
-  const handleVote = async (idea: IideaResponse, voteType: "UP" | "DOWN") => {
-    const ideaId = idea.id;
-    if (
-      userId &&
-      Array.isArray((idea as unknown as { votes?: unknown }).votes)
-    ) {
-      const votes = (idea as unknown as { votes: unknown[] }).votes;
-      const existing = votes.find((vote) => {
-        const voteUserId = getVoteUserIdFromRecord(vote);
-        return voteUserId && voteUserId === userId;
-      });
-      const existingType = getVoteTypeFromRecord(existing);
-      if (existingType && existingType === voteType) {
-        setDuplicateVoteDialog({
-          open: true,
-          message: "You have already voted for this idea with the same type.",
-        });
-        return;
-      }
-    }
-    clearVoteError(ideaId);
-    try {
-      await mutateAsync({ ideaId, voteType });
-      clearVoteError(ideaId);
-    } catch (error) {
-      const message =
-        error instanceof Error
-          ? error.message
-          : "Failed to cast vote. Please try again.";
-      const normalized = message.toLowerCase();
-      const isDuplicateVote =
-        normalized.includes("already voted") &&
-        (normalized.includes("same type") || normalized.includes("same"));
-      if (isDuplicateVote) {
-        setDuplicateVoteDialog({ open: true, message });
-        return;
-      }
-      setVoteErrors((prev) => ({ ...prev, [ideaId]: message }));
-    }
-  };
-
   const ideas = useMemo(
     () => (Array.isArray(data?.data) ? data.data : ([] as IideaResponse[])),
     [data],
   );
   // console.log("Normalized ideas array:", ideas.map((idea) => idea.ideaId));
 
+  const loadBookingDetails = async (idea: IideaResponse) => {
+    setBookingDetailsDialog({
+      open: true,
+      loading: true,
+      error: "",
+      ideaId: idea.id,
+      ideaTitle: idea.title || "Untitled idea",
+      data: null,
+      message: "",
+    });
+
+    try {
+      const response = await getBookingDetailsByideaIdAction(idea.id);
+      console.log("Booking details by idea id:", {
+        ideaId: idea.id,
+        response,
+      });
+
+      if (!response?.success) {
+        setBookingDetailsDialog((prev) => ({
+          ...prev,
+          loading: false,
+          error:
+            response?.message ||
+            "Failed to fetch booking details. Please try again.",
+          data: null,
+          message: response?.message || "",
+        }));
+        return;
+      }
+
+      setBookingDetailsDialog((prev) => ({
+        ...prev,
+        loading: false,
+        error: "",
+        data: (response.data ?? null) as BookingDetailsPayload | null,
+        message: response?.message || "",
+      }));
+    } catch (error) {
+      const message =
+        error instanceof Error
+          ? error.message
+          : "Failed to fetch booking details. Please try again.";
+      setBookingDetailsDialog((prev) => ({
+        ...prev,
+        loading: false,
+        error: message,
+        data: null,
+      }));
+    }
+  };
+
   // Search-awareness flags — used by parent commands
   const isSearching = debouncedSearch.length > 0;
   const showSkeletonGrid = isLoading || (isFetching && isSearching);
 
-  const underReviewIdeas = useMemo(
+  const underReviewideas = useMemo(
     () => ideas.filter((idea) => idea?.status === "APPROVED"),
     [ideas],
   );
@@ -344,30 +388,30 @@ const AllIdeas = ({ user }: { user?: unknown }) => {
         {/* Decorative background blobs */}
         <div
           aria-hidden
-          className="pointer-events-none absolute -right-16 -top-16 size-48 rounded-full bg-zinc-300/20 blur-3xl dark:bg-zinc-500/10"
+          className="pointer-ideas-none absolute -right-16 -top-16 size-48 rounded-full bg-zinc-300/20 blur-3xl dark:bg-zinc-500/10"
         />
         <div
           aria-hidden
-          className="pointer-events-none absolute -bottom-16 -left-16 size-48 rounded-full bg-teal-300/20 blur-3xl dark:bg-teal-500/10"
+          className="pointer-ideas-none absolute -bottom-16 -left-16 size-48 rounded-full bg-teal-300/20 blur-3xl dark:bg-teal-500/10"
         />
         <div
           aria-hidden
-          className="pointer-events-none absolute left-1/2 top-0 h-px w-3/4 -translate-x-1/2 bg-linear-to-r from-transparent via-zinc-300/60 to-transparent dark:via-zinc-700/40"
+          className="pointer-ideas-none absolute left-1/2 top-0 h-px w-3/4 -translate-x-1/2 bg-linear-to-r from-transparent via-zinc-300/60 to-transparent dark:via-zinc-700/40"
         />
 
         <div className="relative flex flex-col items-center gap-7">
           {/* Brand chip */}
           <div className="inline-flex items-center gap-1.5 rounded-full border border-zinc-200/80 bg-zinc-50 px-3.5 py-1.5 shadow-sm dark:border-zinc-800/50 dark:bg-zinc-950/60">
-            <Sprout className="size-3.5 text-zinc-600 dark:text-zinc-400" />
+            <Calendar className="size-3.5 text-zinc-600 dark:text-zinc-400" />
             <span className="text-[11px] font-bold uppercase tracking-[0.16em] text-zinc-700 dark:text-zinc-400">
-              Event Managment System
+              idea Managment System
             </span>
           </div>
 
           {/* Heading */}
           <div className="space-y-2.5 text-center">
             <h1 className="bg-linear-to-br from-zinc-700 via-zinc-600 to-teal-600 bg-clip-text text-3xl font-extrabold tracking-tight text-transparent dark:from-zinc-300 dark:via-zinc-400 dark:to-teal-300 sm:text-4xl">
-              Discover Eco Ideas
+              Manage your ideas, effortlessly.
             </h1>
             <p className="mx-auto max-w-md text-sm leading-relaxed text-muted-foreground">
               Browse, vote, and get inspired by community-driven sustainability
@@ -384,7 +428,7 @@ const AllIdeas = ({ user }: { user?: unknown }) => {
 
               <div className="relative flex items-center">
                 {/* Left icon: spinner while fetching, search icon otherwise */}
-                <div className="pointer-events-none absolute left-4 z-10 transition-colors duration-200 text-muted-foreground group-focus-within:text-zinc-600 dark:group-focus-within:text-zinc-400">
+                <div className="pointer-ideas-none absolute left-4 z-10 transition-colors duration-200 text-muted-foreground group-focus-within:text-zinc-600 dark:group-focus-within:text-zinc-400">
                   {isFetching && isSearching ? (
                     <EcoSpinner size="xs" />
                   ) : (
@@ -451,38 +495,266 @@ const AllIdeas = ({ user }: { user?: unknown }) => {
         </div>
       </section>
 
-      {/* ══ DUPLICATE VOTE DIALOG ══════════════════════════════════════════ */}
-      <AlertDialog
-        open={duplicateVoteDialog.open}
+      {/* ══ BOOKING DETAILS DIALOG ═══════════════════════════════════════ */}
+      <Dialog
+        open={bookingDetailsDialog.open}
         onOpenChange={(open) =>
-          setDuplicateVoteDialog((prev) => ({ ...prev, open }))
+          setBookingDetailsDialog((prev) => ({
+            ...prev,
+            open,
+            ...(open ? {} : { data: null, error: "", loading: false }),
+          }))
         }
       >
-        <AlertDialogContent>
-          <AlertDialogHeader>
-            <AlertDialogTitle>Vote already submitted</AlertDialogTitle>
-            <AlertDialogDescription>
-              {duplicateVoteDialog.message ||
-                "You already voted for this idea with the same type."}
-            </AlertDialogDescription>
-          </AlertDialogHeader>
-          <AlertDialogFooter>
-            <AlertDialogCancel>OK</AlertDialogCancel>
-          </AlertDialogFooter>
-        </AlertDialogContent>
-      </AlertDialog>
+        <DialogContent className="max-w-[calc(100%-1rem)] overflow-hidden p-0 sm:max-w-5xl">
+          <div className="bg-linear-to-br from-zinc-950 via-zinc-900 to-zinc-800 text-white">
+            <DialogHeader className="px-6 pb-4 pt-6 sm:px-8">
+              <DialogTitle className="text-2xl font-black tracking-tight sm:text-3xl">
+                Booking details
+              </DialogTitle>
+              <DialogDescription className="text-sm text-white/55">
+                {bookingDetailsDialog.ideaTitle}
+              </DialogDescription>
+            </DialogHeader>
+          </div>
 
-      {/* ══ IDEAS GRID SECTION ════════════════════════════════════════════ */}
+          <div className="max-h-[78vh] overflow-y-auto px-6 py-6 sm:px-8">
+            {bookingDetailsDialog.loading ? (
+              <div className="flex min-h-64 items-center justify-center rounded-3xl border border-zinc-200 bg-white">
+                <div className="flex items-center gap-3 text-zinc-600">
+                  <Loader2 className="size-5 animate-spin text-zinc-500" />
+                  Loading booking details...
+                </div>
+              </div>
+            ) : bookingDetailsDialog.error ? (
+              <div className="rounded-3xl border border-rose-200 bg-rose-50 px-5 py-4 text-rose-700">
+                {bookingDetailsDialog.error}
+              </div>
+            ) : bookingDetailsDialog.data ? (
+              (() => {
+                const details =
+                  bookingDetailsDialog.data as BookingDetailsPayload;
+                const bookings = Array.isArray(details.bookings)
+                  ? details.bookings
+                  : [];
+                const seatConfig = details.seatConfig;
+
+                return (
+                  <div className="space-y-6">
+                    <div className="grid gap-3 sm:grid-cols-2 xl:grid-cols-4">
+                      <div className="rounded-3xl border border-zinc-200 bg-white p-4 shadow-sm">
+                        <p className="text-[11px] font-bold uppercase tracking-[0.2em] text-zinc-500">
+                          Total bookings
+                        </p>
+                        <p className="mt-2 text-3xl font-black text-zinc-900">
+                          {details.totalBookings ?? bookings.length}
+                        </p>
+                      </div>
+                      <div className="rounded-3xl border border-zinc-200 bg-white p-4 shadow-sm">
+                        <p className="text-[11px] font-bold uppercase tracking-[0.2em] text-zinc-500">
+                          Total seats
+                        </p>
+                        <p className="mt-2 text-3xl font-black text-zinc-900">
+                          {seatConfig?.totalSeats ?? "-"}
+                        </p>
+                      </div>
+                      <div className="rounded-3xl border border-zinc-200 bg-white p-4 shadow-sm">
+                        <p className="text-[11px] font-bold uppercase tracking-[0.2em] text-zinc-500">
+                          Booked seats
+                        </p>
+                        <p className="mt-2 text-3xl font-black text-zinc-900">
+                          {seatConfig?.bookedSeats ?? "-"}
+                        </p>
+                      </div>
+                      <div className="rounded-3xl border border-zinc-200 bg-white p-4 shadow-sm">
+                        <p className="text-[11px] font-bold uppercase tracking-[0.2em] text-zinc-500">
+                          Available seats
+                        </p>
+                        <p className="mt-2 text-3xl font-black text-zinc-900">
+                          {details.availableSeats ?? "-"}
+                        </p>
+                      </div>
+                    </div>
+
+                    <div className="grid gap-5 lg:grid-cols-[1.2fr_0.8fr]">
+                      <div className="overflow-hidden rounded-3xl border border-zinc-200 bg-white shadow-sm">
+                        <div className="border-b border-zinc-100 px-5 py-4">
+                          <p className="text-xs font-bold uppercase tracking-[0.2em] text-zinc-500">
+                            Seat config
+                          </p>
+                        </div>
+                        <div className="grid gap-4 p-5 sm:grid-cols-2">
+                          <div className="flex items-start gap-3 rounded-2xl bg-zinc-50 p-4">
+                            <MapPin className="mt-0.5 size-4 text-zinc-500" />
+                            <div>
+                              <p className="text-[11px] font-semibold uppercase tracking-widest text-zinc-400">
+                                Venue
+                              </p>
+                              <p className="mt-1 font-semibold text-zinc-800">
+                                {seatConfig?.venue || "Not available"}
+                              </p>
+                            </div>
+                          </div>
+                          <div className="flex items-start gap-3 rounded-2xl bg-zinc-50 p-4">
+                            <CalendarDays className="mt-0.5 size-4 text-zinc-500" />
+                            <div>
+                              <p className="text-[11px] font-semibold uppercase tracking-widest text-zinc-400">
+                                Start time
+                              </p>
+                              <p className="mt-1 font-semibold text-zinc-800">
+                                {safeFormatDateTime(seatConfig?.startTime) ||
+                                  "Not available"}
+                              </p>
+                            </div>
+                          </div>
+                          <div className="flex items-start gap-3 rounded-2xl bg-zinc-50 p-4">
+                            <Clock3 className="mt-0.5 size-4 text-zinc-500" />
+                            <div>
+                              <p className="text-[11px] font-semibold uppercase tracking-widest text-zinc-400">
+                                End time
+                              </p>
+                              <p className="mt-1 font-semibold text-zinc-800">
+                                {safeFormatDateTime(seatConfig?.endTime) ||
+                                  "Not available"}
+                              </p>
+                            </div>
+                          </div>
+                          <div className="flex items-start gap-3 rounded-2xl bg-zinc-50 p-4">
+                            <Ticket className="mt-0.5 size-4 text-zinc-500" />
+                            <div>
+                              <p className="text-[11px] font-semibold uppercase tracking-widest text-zinc-400">
+                                Booking ID
+                              </p>
+                              <p className="mt-1 font-semibold text-zinc-800">
+                                {bookingDetailsDialog.ideaId || "Not available"}
+                              </p>
+                            </div>
+                          </div>
+                        </div>
+                      </div>
+
+                      <div className="overflow-hidden rounded-3xl border border-zinc-200 bg-white shadow-sm">
+                        <div className="border-b border-zinc-100 px-5 py-4">
+                          <p className="text-xs font-bold uppercase tracking-[0.2em] text-zinc-500">
+                            Booking summary
+                          </p>
+                        </div>
+                        <div className="space-y-3 p-5">
+                          <div className="flex items-center justify-between rounded-2xl bg-zinc-50 px-4 py-3">
+                            <span className="text-sm text-zinc-500">idea</span>
+                            <span className="max-w-[60%] truncate text-sm font-semibold text-zinc-800">
+                              {bookingDetailsDialog.ideaTitle}
+                            </span>
+                          </div>
+                          <div className="flex items-center justify-between rounded-2xl bg-zinc-50 px-4 py-3">
+                            <span className="text-sm text-zinc-500">
+                              Status
+                            </span>
+                            <span className="inline-flex items-center gap-1.5 rounded-full border border-emerald-200 bg-emerald-50 px-3 py-1 text-xs font-bold uppercase tracking-widest text-emerald-700">
+                              <BadgeCheck className="size-3.5" />
+                              Loaded
+                            </span>
+                          </div>
+                          <div className="flex items-center justify-between rounded-2xl bg-zinc-50 px-4 py-3">
+                            <span className="text-sm text-zinc-500">
+                              Bookings
+                            </span>
+                            <span className="text-sm font-semibold text-zinc-800">
+                              {details.totalBookings ?? bookings.length}
+                            </span>
+                          </div>
+                        </div>
+                      </div>
+                    </div>
+
+                    <div>
+                      <div className="mb-4 flex items-center justify-between">
+                        <h3 className="text-lg font-bold text-zinc-900">
+                          Individual bookings
+                        </h3>
+                        <span className="rounded-full border border-zinc-200 bg-zinc-50 px-3 py-1 text-xs font-semibold text-zinc-500">
+                          {bookings.length} record
+                          {bookings.length === 1 ? "" : "s"}
+                        </span>
+                      </div>
+
+                      {bookings.length > 0 ? (
+                        <div className="grid gap-4 sm:grid-cols-2 xl:grid-cols-3">
+                          {bookings.map((booking) => (
+                            <div
+                              key={booking.id || booking.bookingCode}
+                              className="rounded-3xl border border-zinc-200 bg-white p-4 shadow-sm transition-transform duration-200 hover:-translate-y-0.5"
+                            >
+                              <div className="flex items-start justify-between gap-3">
+                                <div>
+                                  <p className="text-[11px] font-bold uppercase tracking-[0.2em] text-zinc-500">
+                                    Booking code
+                                  </p>
+                                  <p className="mt-1 font-semibold text-zinc-900">
+                                    {booking.bookingCode || booking.id || "—"}
+                                  </p>
+                                </div>
+                                <span
+                                  className={cn(
+                                    "inline-flex items-center rounded-full border px-3 py-1 text-xs font-semibold uppercase tracking-widest",
+                                    getStatusStyles(booking.status),
+                                  )}
+                                >
+                                  <BadgeCheck className="mr-1.5 size-3.5" />
+                                  {booking.status || "Unknown"}
+                                </span>
+                              </div>
+
+                              <div className="mt-4 grid gap-3 text-sm text-zinc-600">
+                                <div className="flex items-center justify-between rounded-2xl bg-zinc-50 px-3 py-2">
+                                  <span>Seat count</span>
+                                  <span className="font-semibold text-zinc-900">
+                                    {booking.seatCount ?? "-"}
+                                  </span>
+                                </div>
+                                <div className="flex items-center justify-between rounded-2xl bg-zinc-50 px-3 py-2">
+                                  <span>User</span>
+                                  <span className="max-w-36 truncate font-semibold text-zinc-900">
+                                    {booking.userId || "—"}
+                                  </span>
+                                </div>
+                                <div className="flex items-center justify-between rounded-2xl bg-zinc-50 px-3 py-2">
+                                  <span>Created</span>
+                                  <span className="font-semibold text-zinc-900">
+                                    {safeFormatDateTime(booking.createdAt) ||
+                                      "—"}
+                                  </span>
+                                </div>
+                              </div>
+                            </div>
+                          ))}
+                        </div>
+                      ) : (
+                        <div className="rounded-3xl border border-dashed border-zinc-200 bg-zinc-50 px-6 py-10 text-center text-sm text-zinc-500">
+                          No individual booking records were returned for this
+                          idea.
+                        </div>
+                      )}
+                    </div>
+                  </div>
+                );
+              })()
+            ) : null}
+          </div>
+        </DialogContent>
+      </Dialog>
+
+      {/* ══ ideaS GRID SECTION ════════════════════════════════════════════ */}
       <div className="mx-auto w-full max-w-6xl px-4 py-2">
         {/* Section header */}
         <div className="mb-6 flex flex-wrap items-center justify-between gap-3">
           <div className="flex items-center gap-2.5">
             <h2 className="text-lg font-bold tracking-tight text-foreground">
-              {isSearching ? "Search Results" : "All Approved Ideas"}
+              {isSearching ? "Search Results" : "All Approved ideas"}
             </h2>
             {!showSkeletonGrid && (
               <span className="inline-flex items-center rounded-full bg-zinc-50 px-2.5 py-0.5 text-xs font-semibold text-zinc-700 ring-1 ring-zinc-200/60 dark:bg-zinc-900/30 dark:text-zinc-400 dark:ring-zinc-800/50">
-                {underReviewIdeas.length}
+                {underReviewideas.length}
               </span>
             )}
           </div>
@@ -532,7 +804,7 @@ const AllIdeas = ({ user }: { user?: unknown }) => {
         )}
 
         {/* ── Empty state ───────────────────────────────────────────────── */}
-        {!showSkeletonGrid && !isError && underReviewIdeas.length === 0 && (
+        {!showSkeletonGrid && !isError && underReviewideas.length === 0 && (
           <div className="mt-10 flex flex-col items-center justify-center gap-5 rounded-3xl border border-dashed border-zinc-200/80 bg-linear-to-b from-zinc-50/60 to-white px-6 py-16 text-center dark:border-zinc-800/30 dark:from-zinc-950/20 dark:to-card">
             {/* Animated icon */}
             <div className="relative">
@@ -572,32 +844,16 @@ const AllIdeas = ({ user }: { user?: unknown }) => {
           </div>
         )}
 
-        {/* ── Ideas grid ────────────────────────────────────────────────── */}
-        {!showSkeletonGrid && !isError && underReviewIdeas.length > 0 && (
+        {/* ── ideas grid ────────────────────────────────────────────────── */}
+        {!showSkeletonGrid && !isError && underReviewideas.length > 0 && (
           <div className="grid gap-5 sm:grid-cols-2 lg:grid-cols-3">
-            {underReviewIdeas.map((idea) => {
+            {underReviewideas.map((idea) => {
               const imageUrls = normalizeImageUrls(idea?.images);
               const coverImage = pickImage(imageUrls, 0);
-              const voteErrorForCard = idea?.id ? voteErrors[idea.id] : "";
               const authorName =
                 idea?.author?.name || idea?.authorName || "Unknown";
               const createdAt = safeFormatDate(idea?.createdAt);
-              const votes = Array.isArray(idea?.votes)
-                ? (idea.votes as unknown as VoteLike[])
-                : [];
-              const totalVotes = votes.length;
-              const upVotes = votes.reduce(
-                (acc, vote) => acc + (getVoteType(vote) === "UP" ? 1 : 0),
-                0,
-              );
-              const downVotes = votes.reduce(
-                (acc, vote) => acc + (getVoteType(vote) === "DOWN" ? 1 : 0),
-                0,
-              );
-              const purchased = isIdeaPurchasedByUser(idea, userId);
-              const alreadyBooked =
-                isIdeaBookedByUser(idea, userId) ||
-                (!!idea?.id && localBookedIds.has(idea.id));
+              const purchased = isideaPurchasedByUser(idea, userId);
 
               return (
                 <Fragment key={idea?.id ?? idea?.title ?? createdAt}>
@@ -613,118 +869,60 @@ const AllIdeas = ({ user }: { user?: unknown }) => {
                       typeof idea?.price === "number" ? idea.price : undefined,
                     footer: (
                       <div className="flex flex-col gap-2">
-                        {/* Vote summary strip */}
-                        <div className="flex items-center gap-3 rounded-xl bg-muted/40 px-3 py-2 text-xs text-muted-foreground">
-                          <span className="flex items-center gap-1.5">
-                            <ThumbsUp className="size-3 text-zinc-500" />
-                            {upVotes}
-                          </span>
-                          <span className="flex items-center gap-1.5">
-                            <ThumbsDown className="size-3 text-red-400" />
-                            {downVotes}
-                          </span>
-                          <span className="ml-auto">Total: {totalVotes}</span>
-                        </div>
-
-                        {/* Action buttons */}
-                        <div className="grid grid-cols-2 gap-2">
-                          <Button
-                            size="sm"
-                            className={cn(
-                              "h-10 rounded-2xl text-sm font-semibold text-white",
-                              purchased
-                                ? "bg-neutral-600 hover:bg-neutral-700"
-                                : "bg-zinc-600 hover:bg-zinc-700",
-                            )}
-                            disabled={purchaseMutation.isPending}
-                            onClick={() => {
-                              if (!idea?.id) return;
-                              if (idea?.isPaid) {
-                                if (purchased) {
-                                  router.push("/dashboard/purchesed-idea");
-                                  return;
-                                }
-                                purchaseMutation.mutate({ ideaId: idea.id });
+                        <Button
+                          size="sm"
+                          className={cn(
+                            "h-10 rounded-2xl text-sm font-semibold text-white",
+                            purchased
+                              ? "bg-neutral-600 hover:bg-neutral-700"
+                              : "bg-zinc-600 hover:bg-zinc-700",
+                          )}
+                          disabled={purchaseMutation.isPending}
+                          onClick={() => {
+                            if (!idea?.id) return;
+                            if (idea?.isPaid) {
+                              if (purchased) {
+                                router.push("/dashboard/purchesed-idea");
                                 return;
                               }
-                              queryClient.setQueryData(
-                                ["idea-detail", idea.id],
-                                {
-                                  success: true,
-                                  message: "ok",
-                                  data: idea,
-                                },
-                              );
-                              router.push(`/idea/${idea.id}`);
-                            }}
-                          >
-                            {idea?.isPaid
-                              ? purchased
-                                ? "Purchased"
-                                : "Unlock"
-                              : "See more"}
-                          </Button>
+                              purchaseMutation.mutate({ ideaId: idea.id });
+                              return;
+                            }
+                            queryClient.setQueryData(["idea-detail", idea.id], {
+                              success: true,
+                              message: "ok",
+                              data: idea,
+                            });
+                            router.push(`/idea/${idea.id}`);
+                          }}
+                        >
+                          {idea?.isPaid
+                            ? purchased
+                              ? "Purchased"
+                              : "Unlock"
+                            : "See more"}
+                        </Button>
 
-                          <DropdownMenu>
-                            <DropdownMenuTrigger asChild>
-                              <Button
-                                type="button"
-                                size="sm"
-                                variant="outline"
-                                className="h-10 w-full rounded-2xl text-sm font-medium"
-                                disabled={isVoting || !idea?.id}
-                              >
-                                Vote
-                              </Button>
-                            </DropdownMenuTrigger>
-                            <DropdownMenuContent align="end" className="w-36">
-                              <DropdownMenuItem
-                                disabled={isVoting || !idea?.id}
-                                onClick={() => {
-                                  if (!idea?.id) return;
-                                  handleVote(idea, "UP");
-                                }}
-                              >
-                                <ThumbsUp className="mr-2 size-3.5 text-zinc-500" />
-                                Upvote
-                              </DropdownMenuItem>
-                              <DropdownMenuItem
-                                disabled={isVoting || !idea?.id}
-                                onClick={() => {
-                                  if (!idea?.id) return;
-                                  handleVote(idea, "DOWN");
-                                }}
-                              >
-                                <ThumbsDown className="mr-2 size-3.5 text-red-400" />
-                                Downvote
-                              </DropdownMenuItem>
-                            </DropdownMenuContent>
-                          </DropdownMenu>
-                        </div>
-
-                        {voteErrorForCard ? (
-                          <p className="text-xs text-destructive">
-                            {voteErrorForCard}
-                          </p>
-                        ) : null}
-                        {idea?.seatConfig ? (
-                          alreadyBooked ? (
-                            <div className="flex w-full items-center justify-center gap-1.5 rounded-2xl border border-zinc-200 bg-zinc-50 px-3 py-2 text-sm font-semibold text-zinc-500">
-                              ✓ Already Booked
-                            </div>
+                        <Button
+                          onClick={() => void loadBookingDetails(idea)}
+                          variant="outline"
+                          size="sm"
+                          className="w-full rounded-2xl border-zinc-200 bg-white text-zinc-700 hover:bg-zinc-50"
+                          disabled={
+                            bookingDetailsDialog.loading &&
+                            bookingDetailsDialog.ideaId === idea.id
+                          }
+                        >
+                          {bookingDetailsDialog.loading &&
+                          bookingDetailsDialog.ideaId === idea.id ? (
+                            <span className="inline-flex items-center gap-2">
+                              <Loader2 className="size-3.5 animate-spin" />
+                              Loading...
+                            </span>
                           ) : (
-                            <Button
-                              className="w-full rounded-2xl bg-zinc-800 text-sm font-semibold text-white hover:bg-zinc-900"
-                              onClick={() => router.push(`/book/${idea.id}`)}
-                            >
-                              Book Event
-                            </Button>
-                          )
-                        ) : (
-                          <div className="flex w-full items-center justify-center gap-1.5 rounded-2xl border border-dashed border-zinc-200 px-3 py-2 text-xs text-zinc-400">
-                            🎟 Free to join — no booking required
-                          </div>
-                        )}
+                            "Get All Bookings"
+                          )}
+                        </Button>
                       </div>
                     ),
                   })}
@@ -755,7 +953,7 @@ const AllIdeas = ({ user }: { user?: unknown }) => {
                       aria-disabled={!canGoPrev}
                       className={cn(
                         "rounded-xl",
-                        !canGoPrev && "pointer-events-none opacity-40",
+                        !canGoPrev && "pointer-ideas-none opacity-40",
                       )}
                       onClick={(e) => {
                         e.preventDefault();
@@ -802,7 +1000,7 @@ const AllIdeas = ({ user }: { user?: unknown }) => {
                       aria-disabled={!canGoNext}
                       className={cn(
                         "rounded-xl",
-                        !canGoNext && "pointer-events-none opacity-40",
+                        !canGoNext && "pointer-ideas-none opacity-40",
                       )}
                       onClick={(e) => {
                         e.preventDefault();
@@ -821,4 +1019,4 @@ const AllIdeas = ({ user }: { user?: unknown }) => {
   );
 };
 
-export default AllIdeas;
+export default ideaManagmentPage;

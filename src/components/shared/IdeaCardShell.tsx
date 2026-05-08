@@ -5,7 +5,7 @@ import type { ReactNode } from "react";
 
 const DEFAULT_IMAGE = "/window.svg";
 
-export type IdeaCardShellProps = {
+export type ideaCardShellProps = {
   coverImage: string;
   defaultImage?: string;
   title: string;
@@ -21,7 +21,7 @@ export type IdeaCardShellProps = {
   className?: string;
 };
 
-export function IdeaCardShell({
+export function ideaCardShell({
   coverImage,
   defaultImage = DEFAULT_IMAGE,
   title,
@@ -35,7 +35,7 @@ export function IdeaCardShell({
   children,
   footer,
   className,
-}: IdeaCardShellProps) {
+}: ideaCardShellProps) {
   const initials = (authorName ?? "?").charAt(0).toUpperCase();
 
   return (
@@ -52,7 +52,7 @@ export function IdeaCardShell({
       <div className="relative h-48 shrink-0 overflow-hidden sm:h-52">
         <img
           src={coverImage}
-          alt={title || "Idea image"}
+          alt={title || "idea image"}
           className="h-full w-full object-cover transition-transform duration-700 ease-out group-hover:scale-110"
           loading="lazy"
           onError={(e) => {
@@ -86,7 +86,6 @@ export function IdeaCardShell({
 
       {/* ── Card body — title + content BELOW image ───────────────── */}
       <div className="flex flex-1 flex-col gap-3 p-4">
-
         {/* Title + problem statement */}
         <div className="space-y-1.5">
           <h3 className="line-clamp-2 text-[15px] font-bold leading-snug text-foreground sm:text-base">
@@ -104,9 +103,13 @@ export function IdeaCardShell({
           <span className="inline-flex size-6 shrink-0 items-center justify-center rounded-full bg-zinc-100 text-[10px] font-bold uppercase text-zinc-700 dark:bg-zinc-900/50 dark:text-zinc-400">
             {initials}
           </span>
-          <span className="truncate font-medium text-foreground/80">{authorName}</span>
+          <span className="truncate font-medium text-foreground/80">
+            {authorName}
+          </span>
           {createdAt ? (
-            <span className="ml-auto shrink-0 text-muted-foreground">{createdAt}</span>
+            <span className="ml-auto shrink-0 text-muted-foreground">
+              {createdAt}
+            </span>
           ) : null}
         </div>
 

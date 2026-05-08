@@ -1,6 +1,6 @@
 import { z } from "zod";
 
-export const createIdeaPayloadZodSchema = z.object({
+export const createideaPayloadZodSchema = z.object({
   title: z
     .string()
     .min(1, { message: "Title is required" })
@@ -28,13 +28,13 @@ export const createIdeaPayloadZodSchema = z.object({
   images: z.array(z.string().url({ message: "Invalid image URL" })).optional(),
 });
 
-export const createIdeaFormZodSchema = z.object({
-  title: createIdeaPayloadZodSchema.shape.title,
-  problemStatement: createIdeaPayloadZodSchema.shape.problemStatement,
-  solution: createIdeaPayloadZodSchema.shape.solution,
-  description: createIdeaPayloadZodSchema.shape.description,
-  categoryId: createIdeaPayloadZodSchema.shape.categoryId,
-  authorId: createIdeaPayloadZodSchema.shape.authorId,
+export const createideaFormZodSchema = z.object({
+  title: createideaPayloadZodSchema.shape.title,
+  problemStatement: createideaPayloadZodSchema.shape.problemStatement,
+  solution: createideaPayloadZodSchema.shape.solution,
+  description: createideaPayloadZodSchema.shape.description,
+  categoryId: createideaPayloadZodSchema.shape.categoryId,
+  authorId: createideaPayloadZodSchema.shape.authorId,
 
   // Input comes as string from the form; empty string => undefined.
   price: z
@@ -60,19 +60,21 @@ export const createIdeaFormZodSchema = z.object({
 
   // Flat seat-config fields — assembled into seatConfig object before submission
   seatConfigTotalSeats: z.string().optional(),
-  seatConfigStartTime:  z.string().optional(),
-  seatConfigEndTime:    z.string().optional(),
-  seatConfigVenue:      z.string().optional(),
+  seatConfigStartTime: z.string().optional(),
+  seatConfigEndTime: z.string().optional(),
+  seatConfigVenue: z.string().optional(),
 
   // Assembled seat-config object (populated in onSubmit)
-  seatConfig: z.object({
-    totalSeats: z.string(),
-    startTime:  z.string(),
-    endTime:    z.string(),
-    venue:      z.string().optional(),
-  }).optional(),
+  seatConfig: z
+    .object({
+      totalSeats: z.string(),
+      startTime: z.string(),
+      endTime: z.string(),
+      venue: z.string().optional(),
+    })
+    .optional(),
 });
 
-export type ICreateIdeaPayload = z.infer<typeof createIdeaPayloadZodSchema>;
-export type ICreateIdeaFormInput = z.input<typeof createIdeaFormZodSchema>;
-export type ICreateIdeaFormValues = z.output<typeof createIdeaFormZodSchema>;
+export type ICreateideaPayload = z.infer<typeof createideaPayloadZodSchema>;
+export type ICreateideaFormInput = z.input<typeof createideaFormZodSchema>;
+export type ICreateideaFormValues = z.output<typeof createideaFormZodSchema>;

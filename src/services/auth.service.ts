@@ -25,7 +25,7 @@ const getBaseApiUrl = (): string => {
   return baseApiUrl;
 };
 
-// export const getIdea = async () => {
+// export const getidea = async () => {
 //   const idea = await httpClient.get("/idea");
 //   return idea;
 // };

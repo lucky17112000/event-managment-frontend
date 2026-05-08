@@ -34,6 +34,7 @@ JWT tokens are stored in HTTP-only cookies. Server-side verification uses `jsonw
 User roles: `USER`, `ADMIN`, `SUPER_ADMIN`, `GUEST`.
 
 Protected route patterns:
+
 - `/dashboard/**` — USER
 - `/admin/dashboard/**` — ADMIN or SUPER_ADMIN
 - `/my-profile`, `/change-password` — any authenticated user
@@ -41,6 +42,7 @@ Protected route patterns:
 ### Layout & Routing
 
 App Router with two root layouts:
+
 - `commonLayout` — public pages + auth pages
 - `dashboardLayout` — user dashboard + admin panel (route groups under `(user)` and `(admin)`)
 
@@ -64,16 +66,16 @@ Tailwind CSS v4 via PostCSS (`@tailwindcss/postcss`). Colors use OKLch color spa
 
 ## Environment Variables
 
-| Variable | Purpose |
-|---|---|
+| Variable                   | Purpose                                                |
+| -------------------------- | ------------------------------------------------------ |
 | `NEXT_PUBLIC_API_BASE_URL` | Backend API base (e.g. `http://localhost:5000/api/v1`) |
-| `NEXT_PUBLIC_BACKEND_URL` | Backend origin (e.g. `http://localhost:5000`) |
-| `JWT_ACCESS_SECRET` | Server-side JWT verification (never exposed to client) |
-| `NEXT_PUBLIC_APP_URL` | Frontend origin (e.g. `http://localhost:3000`) |
+| `NEXT_PUBLIC_BACKEND_URL`  | Backend origin (e.g. `http://localhost:5000`)          |
+| `JWT_ACCESS_SECRET`        | Server-side JWT verification (never exposed to client) |
+| `NEXT_PUBLIC_APP_URL`      | Frontend origin (e.g. `http://localhost:3000`)         |
 
 ## Key Gotchas
 
 - **Dynamic rendering is intentional.** Pages using `cookies()` are not statically generated — this is expected and required for auth.
 - **Bun runtime only.** The `--bun` flag uses Bun's JS runtime instead of Node; remove it only if switching runtimes deliberately.
-- **React Query server/client split.** `QueryProvider` creates separate `QueryClient` instances for server vs. browser to prevent cross-request state pollution.
+- **React Query server/client split.** `QueryProvider` creates separate `QueryClient` instances for server vs. browser to pridea cross-request state pollution.
 - **API response shape** is always `{ success, message, data, meta? }` — unwrap `data` before using in components.

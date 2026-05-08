@@ -1,7 +1,7 @@
 import IdeaList from "@/components/modules/idea/IdeaList";
 import { getUserInfo } from "@/services/auth.service";
-import { getIdea } from "@/services/idea.services";
-// import { getIdea } from "@/services/auth.service";
+import { getidea } from "@/services/idea.services";
+// import { getidea } from "@/services/auth.service";
 import { QueryClient } from "@tanstack/react-query";
 import React from "react";
 
@@ -14,7 +14,7 @@ const UnderReviewPage = async () => {
   try {
     await queryClient.prefetchQuery({
       queryKey: ["idea", page, limit],
-      queryFn: () => getIdea({ page, limit }),
+      queryFn: () => getidea({ page, limit }),
     });
   } catch (error) {
     console.error("Under review ideas prefetch skipped:", error);

@@ -25,7 +25,7 @@ const PaymentPage = ({ searchParams }: PaymentPageProps) => {
         </CardHeader>
         <CardContent className="space-y-2">
           {ideaId ? (
-            <p className="text-sm text-muted-foreground">Idea ID: {ideaId}</p>
+            <p className="text-sm text-muted-foreground">idea ID: {ideaId}</p>
           ) : (
             <p className="text-sm text-muted-foreground">No idea selected.</p>
           )}

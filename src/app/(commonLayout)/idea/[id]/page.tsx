@@ -1,12 +1,12 @@
 ﻿"use client";
 
-import { IdeaDetailView } from "@/components/shared/IdeaDetailView";
+import { ideaDetailView } from "@/components/shared/IdeaDetailView";
 import { Skeleton } from "@/components/ui/skeleton";
-import { getIdea, getIdeaById } from "@/services/idea.services";
+import { getidea, getideaById } from "@/services/idea.services";
 import { createPurchaseAction } from "@/services/purchase.service";
 import { castVote } from "@/services/vote.service";
 import type { ApiResponse } from "@/types/api.types";
-import type { IIdeaResponse } from "@/types/idea.type";
+import type { IideaResponse } from "@/types/idea.type";
 import { useMutation, useQuery, useQueryClient } from "@tanstack/react-query";
 import { ArrowLeftIcon, LeafIcon } from "lucide-react";
 import Link from "next/link";
@@ -34,7 +34,7 @@ const getVoteTypeFromRecord = (vote: unknown): "UP" | "DOWN" | null => {
 };
 
 const isIdeaPurchasedByUser = (
-  idea: IIdeaResponse | null,
+  idea: IideaResponse | null,
   userId: string,
 ): boolean => {
   if (!idea?.isPaid) return false;
@@ -53,9 +53,9 @@ const isIdeaPurchasedByUser = (
 const fetchIdeaById = async (
   id: string,
   queryClient: ReturnType<typeof useQueryClient>,
-): Promise<ApiResponse<IIdeaResponse>> => {
+): Promise<ApiResponse<IideaResponse>> => {
   // 1. Check all cached idea list queries first
-  const cached = queryClient.getQueriesData<ApiResponse<IIdeaResponse[]>>({
+  const cached = queryClient.getQueriesData<ApiResponse<IideaResponse[]>>({
     queryKey: ["idea"],
   });
   for (const [, response] of cached) {
@@ -65,10 +65,10 @@ const fetchIdeaById = async (
 
   // 2. Try dedicated GET /idea/:id endpoint
   try {
-    return await getIdeaById(id);
+    return await getideaById(id);
   } catch {
     // 3. Fallback: fetch list and search by id
-    const list = await getIdea({ page: 1, limit: 50, status: "APPROVED" });
+    const list = await getidea({ page: 1, limit: 50, status: "APPROVED" });
     const found = list?.data?.find((i) => i.id === id);
     if (found) return { success: true, message: "ok", data: found };
     throw new Error("Idea not found.");
@@ -227,16 +227,16 @@ const IdeaDetailPage = () => {
         </div>
       )}
 
-      <IdeaDetailView
-        idea={idea}
-        isPurchased={isPurchased}
-        onVote={handleVote}
-        onPurchase={handlePurchase}
-        isVoting={isVoting}
-        isPurchasePending={isPurchasePending}
-        voteError={voteError}
-        backHref="/idea"
-      />
+      {ideaDetailView({
+        idea,
+        isPurchased,
+        onVote: handleVote,
+        onPurchase: handlePurchase,
+        isVoting,
+        isPurchasePending,
+        voteError,
+        backHref: "/idea",
+      })}
     </>
   );
 };

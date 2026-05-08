@@ -17,7 +17,7 @@ Most platforms let you post things. EcoSpark lets you **build a case for your id
 
 ---
 
-## The Life of an Idea
+## The Life of an idea
 
 Every idea on EcoSpark takes this journey:
 
@@ -39,11 +39,11 @@ Your dashboard shows exactly where each of your ideas sits in that pipeline.
 
 ## Who Uses EcoSpark?
 
-| You are... | What you can do |
-|---|---|
-| **A visitor** | Browse public ideas, read details, see vote counts |
-| **A registered user** | Submit ideas, vote, purchase premium ideas, manage your dashboard |
-| **An admin** | Review all submitted ideas, approve or reject with written feedback, manage payments and users |
+| You are...            | What you can do                                                                                |
+| --------------------- | ---------------------------------------------------------------------------------------------- |
+| **A visitor**         | Browse public ideas, read details, see vote counts                                             |
+| **A registered user** | Submit ideas, vote, purchase premium ideas, manage your dashboard                              |
+| **An admin**          | Review all submitted ideas, approve or reject with written feedback, manage payments and users |
 
 Role separation is enforced server-side — the frontend reads your JWT, the backend verifies it.
 
@@ -65,6 +65,7 @@ The browser never talks directly to the backend. Every request goes through **Ne
 ```
 
 This means:
+
 - `JWT_ACCESS_SECRET` is **never** in the browser bundle
 - Cookie-based sessions work across server and client components
 - The backend URL can change without touching frontend components
@@ -73,19 +74,19 @@ This means:
 
 ## Tech Stack
 
-| Layer | Technology |
-|---|---|
-| RENDERING | [Next.js](https://nextjs.org) 16 App Router (SSR + RSC) |
-| LANGUAGE | [TypeScript](https://www.typescriptlang.org) 5 |
-| UI LAYER | [React](https://react.dev) 19 + [Tailwind CSS](https://tailwindcss.com) v4 |
-| COMPONENTS | [shadcn/ui](https://ui.shadcn.com) + [Base UI](https://base-ui.com) |
-| FORMS | [TanStack Form](https://tanstack.com/form/latest) + [Zod](https://zod.dev) |
-| SERVER STATE | [TanStack Query](https://tanstack.com/query/latest) (with SSR prefetch) |
-| TABLE | [TanStack Table](https://tanstack.com/table/latest) |
-| HTTP | [Axios](https://axios-http.com) (custom httpClient) |
-| AUTH | [jsonwebtoken](https://github.com/auth0/node-jsonwebtoken) + cookie sessions |
-| NOTIFICATIONS | [Sonner](https://sonner.emilkowal.ski) |
-| BUILD | [Bun](https://bun.sh) |
+| Layer         | Technology                                                                   |
+| ------------- | ---------------------------------------------------------------------------- |
+| RENDERING     | [Next.js](https://nextjs.org) 16 App Router (SSR + RSC)                      |
+| LANGUAGE      | [TypeScript](https://www.typescriptlang.org) 5                               |
+| UI LAYER      | [React](https://react.dev) 19 + [Tailwind CSS](https://tailwindcss.com) v4   |
+| COMPONENTS    | [shadcn/ui](https://ui.shadcn.com) + [Base UI](https://base-ui.com)          |
+| FORMS         | [TanStack Form](https://tanstack.com/form/latest) + [Zod](https://zod.dev)   |
+| SERVER STATE  | [TanStack Query](https://tanstack.com/query/latest) (with SSR prefetch)      |
+| TABLE         | [TanStack Table](https://tanstack.com/table/latest)                          |
+| HTTP          | [Axios](https://axios-http.com) (custom httpClient)                          |
+| AUTH          | [jsonwebtoken](https://github.com/auth0/node-jsonwebtoken) + cookie sessions |
+| NOTIFICATIONS | [Sonner](https://sonner.emilkowal.ski)                                       |
+| BUILD         | [Bun](https://bun.sh)                                                        |
 
 ---
 
@@ -178,12 +179,12 @@ src/
 
 ## Environment Variables
 
-| Variable | Required | Purpose |
-|---|---|---|
-| `NEXT_PUBLIC_API_BASE_URL` | Yes | Points to the backend API |
-| `JWT_ACCESS_SECRET` | Yes | Verifies JWTs server-side |
-| `NEXT_PUBLIC_APP_URL` | No | App origin (defaults to localhost:3000) |
-| `NEXT_PUBLIC_BACKEND_URL` | No | Full backend origin |
+| Variable                   | Required | Purpose                                 |
+| -------------------------- | -------- | --------------------------------------- |
+| `NEXT_PUBLIC_API_BASE_URL` | Yes      | Points to the backend API               |
+| `JWT_ACCESS_SECRET`        | Yes      | Verifies JWTs server-side               |
+| `NEXT_PUBLIC_APP_URL`      | No       | App origin (defaults to localhost:3000) |
+| `NEXT_PUBLIC_BACKEND_URL`  | No       | Full backend origin                     |
 
 ---
 
@@ -220,6 +221,6 @@ Pages that call `cookies()` render dynamically by design — do not force static
 
 Built by **Alamin Mustafa Rahim** · EcoSpark Full-Stack Mission
 
-*Backend lives at `ecospark-backend.vercel.app` — this repo is the frontend only.*
+_Backend lives at `ecospark-backend.vercel.app` — this repo is the frontend only._
 
 </div>

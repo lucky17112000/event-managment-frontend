@@ -1,7 +1,7 @@
 "use server";
 import LandingNavbar from "@/components/shared/LandingNavbar";
 import LandingPage from "@/components/shared/LandingPage";
-import { getLimitedIdea } from "@/services/idea.services";
+import { getLimitedidea } from "@/services/idea.services";
 import { QueryClient } from "@tanstack/react-query";
 
 export default async function Home() {
@@ -9,10 +9,10 @@ export default async function Home() {
   try {
     await queryClient.prefetchQuery({
       queryKey: ["ideaLimit"],
-      queryFn: () => getLimitedIdea(),
+      queryFn: () => getLimitedidea(),
     });
   } catch (error) {
-    console.error("Idea prefetch skipped:", error);
+    console.error("idea prefetch skipped:", error);
   }
   return (
     <div className="min-h-screen gap-6">

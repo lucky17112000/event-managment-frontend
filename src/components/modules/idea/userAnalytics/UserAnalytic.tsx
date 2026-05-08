@@ -7,12 +7,7 @@ import { UserInsights } from "@/components/modules/idea/userAnalytics/UserInsigh
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
 import { getAdminIndividualUserStatsAction } from "@/services/admin.service";
 import { useQuery } from "@tanstack/react-query";
-import {
-  CheckCircle,
-  FileText,
-  Star,
-  ThumbsUp,
-} from "lucide-react";
+import { CheckCircle, FileText, Star, ThumbsUp } from "lucide-react";
 
 const UserAnalytic = () => {
   const { data, isLoading, isError } = useQuery({
@@ -22,20 +17,20 @@ const UserAnalytic = () => {
 
   const stats = data?.data;
 
-  const totalIdeas = stats?.totalIdeas ?? 0;
-  const approvedIdeas = stats?.approvedIdeas ?? 0;
+  const totalideas = stats?.totalideas ?? 0;
+  const approvedideas = stats?.approvedideas ?? 0;
   const totalVotes = stats?.totalVotes ?? 0;
   const totalUpVotes = stats?.totalUpVotes ?? 0;
   const totalDownVotes = stats?.totalDownVotes ?? 0;
-  const rejectedIdeas = totalIdeas - approvedIdeas;
+  const rejectedideas = totalideas - approvedideas;
   const approvalRate =
-    totalIdeas > 0 ? Math.round((approvedIdeas / totalIdeas) * 100) : 0;
+    totalideas > 0 ? Math.round((approvedideas / totalideas) * 100) : 0;
 
   /* ── KPI card config ─────────────────────────────────────────────────── */
   const kpiCards = [
     {
-      title: "Total Ideas",
-      value: totalIdeas,
+      title: "Total ideas",
+      value: totalideas,
       icon: FileText,
       trend: "All submitted ideas",
       trendUp: true,
@@ -44,10 +39,10 @@ const UserAnalytic = () => {
       delay: "animate-delay-100",
     },
     {
-      title: "Approved Ideas",
-      value: approvedIdeas,
+      title: "Approved ideas",
+      value: approvedideas,
       icon: CheckCircle,
-      trend: `${rejectedIdeas} pending / rejected`,
+      trend: `${rejectedideas} pending / rejected`,
       trendUp: true,
       iconBg: "bg-zinc-50 dark:bg-zinc-950/40",
       iconColor: "text-zinc-600 dark:text-zinc-400",
@@ -83,8 +78,8 @@ const UserAnalytic = () => {
 
   /* ── Donut chart data ─────────────────────────────────────────────────── */
   const donutData = [
-    { label: "Approved", value: approvedIdeas, color: "#10b981" },
-    { label: "Rejected", value: rejectedIdeas, color: "#f43f5e" },
+    { label: "Approved", value: approvedideas, color: "#10b981" },
+    { label: "Rejected", value: rejectedideas, color: "#f43f5e" },
   ];
 
   /* ── Approval rate progress ───────────────────────────────────────────── */
@@ -96,7 +91,9 @@ const UserAnalytic = () => {
       <div className="flex h-64 items-center justify-center">
         <div className="flex flex-col items-center gap-3">
           <div className="h-8 w-8 animate-spin rounded-full border-4 border-muted border-t-primary" />
-          <p className="text-sm text-muted-foreground">Loading your analytics…</p>
+          <p className="text-sm text-muted-foreground">
+            Loading your analytics…
+          </p>
         </div>
       </div>
     );
@@ -147,7 +144,9 @@ const UserAnalytic = () => {
         <div className="animate-eco-fade-up animate-delay-400">
           <Card>
             <CardHeader className="border-b">
-              <CardTitle className="text-base">Approval Rate Progress</CardTitle>
+              <CardTitle className="text-base">
+                Approval Rate Progress
+              </CardTitle>
             </CardHeader>
             <CardContent className="pt-6">
               <div className="flex flex-col gap-5 sm:flex-row sm:items-center sm:gap-10">
@@ -160,7 +159,7 @@ const UserAnalytic = () => {
                     </span>
                   </p>
                   <p className="mt-1 text-sm text-muted-foreground">
-                    {approvedIdeas} of {totalIdeas} ideas approved
+                    {approvedideas} of {totalideas} ideas approved
                   </p>
                 </div>
 
@@ -179,13 +178,13 @@ const UserAnalytic = () => {
                   <div className="grid grid-cols-2 gap-3">
                     <div className="rounded-xl bg-zinc-50 p-3 text-center dark:bg-zinc-950/30">
                       <p className="text-xl font-bold tabular-nums text-zinc-600">
-                        {approvedIdeas}
+                        {approvedideas}
                       </p>
                       <p className="text-xs text-muted-foreground">Approved</p>
                     </div>
                     <div className="rounded-xl bg-rose-50 p-3 text-center dark:bg-rose-950/30">
                       <p className="text-xl font-bold tabular-nums text-rose-500">
-                        {rejectedIdeas}
+                        {rejectedideas}
                       </p>
                       <p className="text-xs text-muted-foreground">
                         Rejected / Pending
@@ -206,7 +205,7 @@ const UserAnalytic = () => {
         </h2>
         <div className="grid grid-cols-1 gap-4 lg:grid-cols-2">
           <DonutChart
-            title="Idea Status Distribution"
+            title="idea Status Distribution"
             data={donutData}
             animationDelay="animate-delay-500"
           />
@@ -221,8 +220,8 @@ const UserAnalytic = () => {
       {/* ── Smart insights ──────────────────────────────────────────────── */}
       <section>
         <UserInsights
-          totalIdeas={totalIdeas}
-          approvedIdeas={approvedIdeas}
+          totalideas={totalideas}
+          approvedideas={approvedideas}
           totalVotes={totalVotes}
           upVotes={totalUpVotes}
           animationDelay="animate-delay-700"

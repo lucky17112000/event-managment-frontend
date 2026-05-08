@@ -168,7 +168,7 @@
     will-change: transform;
   }
 
-  /* ── Idea infinite slider (right → left) ── */
+  /* ── idea infinite slider (right → left) ── */
   @keyframes eco-idea-slide {
     from {
       transform: translateX(0);
@@ -293,15 +293,27 @@
 
   /* ── Bar chart shimmer progress line ─────────────────────────────────── */
   @keyframes eco-shimmer {
-    0%   { opacity: 0; transform: translateX(-100%); }
-    40%  { opacity: 1; }
-    100% { opacity: 0; transform: translateX(100%); }
+    0% {
+      opacity: 0;
+      transform: translateX(-100%);
+    }
+    40% {
+      opacity: 1;
+    }
+    100% {
+      opacity: 0;
+      transform: translateX(100%);
+    }
   }
 
   /* ── Skeleton shimmer sweep ───────────────────────────────────────────── */
   @keyframes eco-shimmer-slide {
-    from { transform: translateX(-100%); }
-    to   { transform: translateX(200%); }
+    from {
+      transform: translateX(-100%);
+    }
+    to {
+      transform: translateX(200%);
+    }
   }
 
   .eco-skeleton {
@@ -335,20 +347,40 @@
 
   /* ── Spinner ring ─────────────────────────────────────────────────────── */
   @keyframes eco-spinner-rotate {
-    to { transform: rotate(360deg); }
+    to {
+      transform: rotate(360deg);
+    }
   }
 
   @keyframes eco-pulse-ring {
-    0%   { transform: scale(0.9); opacity: 0.6; }
-    50%  { transform: scale(1.1); opacity: 0.2; }
-    100% { transform: scale(0.9); opacity: 0.6; }
+    0% {
+      transform: scale(0.9);
+      opacity: 0.6;
+    }
+    50% {
+      transform: scale(1.1);
+      opacity: 0.2;
+    }
+    100% {
+      transform: scale(0.9);
+      opacity: 0.6;
+    }
   }
 
   /* ── Top-bar loader ───────────────────────────────────────────────────── */
   @keyframes eco-topbar-fill {
-    from { width: 0%; opacity: 1; }
-    80%  { width: 90%; opacity: 1; }
-    to   { width: 100%; opacity: 0; }
+    from {
+      width: 0%;
+      opacity: 1;
+    }
+    80% {
+      width: 90%;
+      opacity: 1;
+    }
+    to {
+      width: 100%;
+      opacity: 0;
+    }
   }
 
   .eco-topbar {
@@ -369,41 +401,88 @@
 
   /* ── Music slide: expanding sound rings ─────────────────────────────── */
   @keyframes eco-ring-expand {
-    0%   { opacity: 0.55; transform: scale(0.7);  }
-    75%  { opacity: 0.08; }
-    100% { opacity: 0;    transform: scale(1.35); }
+    0% {
+      opacity: 0.55;
+      transform: scale(0.7);
+    }
+    75% {
+      opacity: 0.08;
+    }
+    100% {
+      opacity: 0;
+      transform: scale(1.35);
+    }
   }
-  .animate-eco-ring-1 { animation: eco-ring-expand 5s ease-out infinite 0s;    }
-  .animate-eco-ring-2 { animation: eco-ring-expand 5s ease-out infinite 1.25s; }
-  .animate-eco-ring-3 { animation: eco-ring-expand 5s ease-out infinite 2.5s;  }
-  .animate-eco-ring-4 { animation: eco-ring-expand 5s ease-out infinite 3.75s; }
+  .animate-eco-ring-1 {
+    animation: eco-ring-expand 5s ease-out infinite 0s;
+  }
+  .animate-eco-ring-2 {
+    animation: eco-ring-expand 5s ease-out infinite 1.25s;
+  }
+  .animate-eco-ring-3 {
+    animation: eco-ring-expand 5s ease-out infinite 2.5s;
+  }
+  .animate-eco-ring-4 {
+    animation: eco-ring-expand 5s ease-out infinite 3.75s;
+  }
 
   /* ── Equalizer bars ──────────────────────────────────────────────────── */
   @keyframes eco-eq-bar {
-    from { transform: scaleY(0.2); }
-    to   { transform: scaleY(1);   }
+    from {
+      transform: scaleY(0.2);
+    }
+    to {
+      transform: scaleY(1);
+    }
   }
 
   /* ── Tech slide: network node pulse ─────────────────────────────────── */
   @keyframes eco-node-pulse {
-    0%, 100% { transform: translate(-50%, -50%) scale(1);   opacity: 0.7;  }
-    50%       { transform: translate(-50%, -50%) scale(3);   opacity: 0.12; }
+    0%,
+    100% {
+      transform: translate(-50%, -50%) scale(1);
+      opacity: 0.7;
+    }
+    50% {
+      transform: translate(-50%, -50%) scale(3);
+      opacity: 0.12;
+    }
   }
 
   /* ── Tech slide: horizontal scan line ───────────────────────────────── */
   @keyframes eco-scan-line {
-    0%   { left: -4px;  opacity: 0;   }
-    6%   { opacity: 1;                }
-    94%  { opacity: 0.7;              }
-    100% { left: 100%;  opacity: 0;   }
+    0% {
+      left: -4px;
+      opacity: 0;
+    }
+    6% {
+      opacity: 1;
+    }
+    94% {
+      opacity: 0.7;
+    }
+    100% {
+      left: 100%;
+      opacity: 0;
+    }
   }
 
   /* ── Community slide: rising particles ──────────────────────────────── */
   @keyframes eco-float-particle {
-    0%   { transform: translateY(0)     scale(1);   opacity: 0;    }
-    12%  { opacity: 0.55; }
-    88%  { opacity: 0.15; }
-    100% { transform: translateY(-75vh) scale(0.3); opacity: 0;    }
+    0% {
+      transform: translateY(0) scale(1);
+      opacity: 0;
+    }
+    12% {
+      opacity: 0.55;
+    }
+    88% {
+      opacity: 0.15;
+    }
+    100% {
+      transform: translateY(-75vh) scale(0.3);
+      opacity: 0;
+    }
   }
 
   /* ── Hero text entrance per slide ────────────────────────────────────── */
@@ -440,8 +519,13 @@
 
   /* ── Video section pulse glow ─────────────────────────────────────────── */
   @keyframes eco-glow-pulse {
-    0%, 100% { opacity: 0.2; }
-    50%       { opacity: 0.45; }
+    0%,
+    100% {
+      opacity: 0.2;
+    }
+    50% {
+      opacity: 0.45;
+    }
   }
 
   .animate-eco-glow-pulse {

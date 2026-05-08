@@ -139,7 +139,7 @@ export default function MissionPage() {
     <div className="min-h-screen bg-background animate-eco-fade-up animate-delay-100">
       {/* ── 1. Hero ── */}
       <section className="relative overflow-hidden animate-eco-fade-up animate-delay-100">
-        <div className="pointer-events-none absolute inset-0 select-none animate-eco-fade-up animate-delay-100">
+        <div className="pointer-ideas-none absolute inset-0 select-none animate-eco-fade-up animate-delay-100">
           <div className="absolute -top-40 -right-32 size-96 rounded-full bg-zinc-100/60 blur-3xl dark:bg-zinc-900/20 animate-eco-fade-up animate-delay-100" />
           <div className="absolute bottom-0 -left-24 size-80 rounded-full bg-teal-50/80 blur-2xl dark:bg-teal-900/10 animate-eco-fade-up animate-delay-100" />
         </div>
@@ -178,7 +178,7 @@ export default function MissionPage() {
                 href="/idea"
                 className={buttonVariants({ variant: "outline", size: "lg" })}
               >
-                Explore Ideas
+                Explore ideas
               </Link>
             </div>
           </div>
@@ -376,7 +376,7 @@ export default function MissionPage() {
       {/* ── 6. CTA ── */}
       <section className="border-t">
         <div className="relative overflow-hidden bg-linear-to-br from-zinc-600 to-zinc-700 py-20 sm:py-28">
-          <div className="pointer-events-none absolute inset-0">
+          <div className="pointer-ideas-none absolute inset-0">
             <div className="absolute -top-24 -right-24 size-80 rounded-full bg-white/10 blur-3xl" />
             <div className="absolute -bottom-24 -left-24 size-80 rounded-full bg-white/10 blur-3xl" />
           </div>

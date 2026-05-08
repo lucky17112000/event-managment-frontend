@@ -70,8 +70,7 @@ const getPaginationItems = (
 ): PageItem[] => {
   const safeTotal = Math.max(1, totalPages);
   const safeCurrent = Math.min(Math.max(1, currentPage), safeTotal);
-  if (safeTotal <= 7)
-    return Array.from({ length: safeTotal }, (_, i) => i + 1);
+  if (safeTotal <= 7) return Array.from({ length: safeTotal }, (_, i) => i + 1);
   const items: PageItem[] = [1];
   const left = Math.max(2, safeCurrent - 1);
   const right = Math.min(safeTotal - 1, safeCurrent + 1);
@@ -131,12 +130,18 @@ const StatCard = ({
 }) => {
   const palette = {
     zinc: "bg-zinc-50 text-zinc-600 dark:bg-zinc-950/40 dark:text-zinc-400",
-    amber:   "bg-amber-50 text-amber-600 dark:bg-amber-950/40 dark:text-amber-400",
-    red:     "bg-red-50 text-red-600 dark:bg-red-950/40 dark:text-red-400",
+    amber:
+      "bg-amber-50 text-amber-600 dark:bg-amber-950/40 dark:text-amber-400",
+    red: "bg-red-50 text-red-600 dark:bg-red-950/40 dark:text-red-400",
   };
   return (
     <div className="flex items-center gap-3 rounded-2xl border bg-card p-4 shadow-sm transition-all duration-200 hover:shadow-md">
-      <div className={cn("flex h-10 w-10 shrink-0 items-center justify-center rounded-xl", palette[color])}>
+      <div
+        className={cn(
+          "flex h-10 w-10 shrink-0 items-center justify-center rounded-xl",
+          palette[color],
+        )}
+      >
         <Icon className="h-5 w-5" />
       </div>
       <div>
@@ -163,7 +168,11 @@ const StatusBadge = ({ status }: { status?: string }) => {
         Blocked
       </Badge>
     );
-  return <Badge variant="secondary" className="capitalize">{status || "unknown"}</Badge>;
+  return (
+    <Badge variant="secondary" className="capitalize">
+      {status || "unknown"}
+    </Badge>
+  );
 };
 
 const RoleBadge = ({ role }: { role?: string }) => {
@@ -181,10 +190,21 @@ const RoleBadge = ({ role }: { role?: string }) => {
   );
 };
 
-const UserAvatar = ({ name, size = "md" }: { name?: string; size?: "sm" | "md" }) => {
+const UserAvatar = ({
+  name,
+  size = "md",
+}: {
+  name?: string;
+  size?: "sm" | "md";
+}) => {
   const sizeClass = size === "sm" ? "h-7 w-7 text-[10px]" : "h-9 w-9 text-xs";
   return (
-    <div className={cn("flex shrink-0 items-center justify-center rounded-full bg-zinc-100 font-bold text-zinc-700 dark:bg-zinc-900/50 dark:text-zinc-400", sizeClass)}>
+    <div
+      className={cn(
+        "flex shrink-0 items-center justify-center rounded-full bg-zinc-100 font-bold text-zinc-700 dark:bg-zinc-900/50 dark:text-zinc-400",
+        sizeClass,
+      )}
+    >
       {getInitials(name)}
     </div>
   );
@@ -368,7 +388,7 @@ const UserManagment = () => {
                     <TableHead className="text-center">
                       <span className="flex items-center justify-center gap-1">
                         <LightbulbIcon className="h-3.5 w-3.5" />
-                        Ideas
+                        ideas
                       </span>
                     </TableHead>
                     <TableHead className="text-center">
@@ -449,7 +469,7 @@ const UserManagment = () => {
                           </div>
                         </TableCell>
 
-                        {/* Ideas */}
+                        {/* ideas */}
                         <TableCell className="text-center text-sm tabular-nums text-muted-foreground">
                           {user._count?.ideas ?? 0}
                         </TableCell>
@@ -668,9 +688,9 @@ const UserManagment = () => {
                 <PaginationPrevious
                   href="#"
                   aria-disabled={!canGoPrev}
-                  className={!canGoPrev ? "pointer-events-none opacity-40" : ""}
+                  className={!canGoPrev ? "pointer-ideas-none opacity-40" : ""}
                   onClick={(e) => {
-                    e.preventDefault();
+                    e.preventdefault()();
                     if (!canGoPrev) return;
                     setPage((p) => Math.max(1, p - 1));
                   }}
@@ -688,7 +708,7 @@ const UserManagment = () => {
                       href="#"
                       isActive={item === currentPage}
                       onClick={(e) => {
-                        e.preventDefault();
+                        e.preventdefault()();
                         if (item !== currentPage) setPage(item);
                       }}
                     >
@@ -702,9 +722,9 @@ const UserManagment = () => {
                 <PaginationNext
                   href="#"
                   aria-disabled={!canGoNext}
-                  className={!canGoNext ? "pointer-events-none opacity-40" : ""}
+                  className={!canGoNext ? "pointer-ideas-none opacity-40" : ""}
                   onClick={(e) => {
-                    e.preventDefault();
+                    e.preventdefault()();
                     if (!canGoNext) return;
                     setPage((p) => Math.min(totalPages, p + 1));
                   }}

@@ -3,13 +3,13 @@
 
 {
     // "success": true,
-    // "message": "Idea retrived successfully",
+    // "message": "idea retrived successfully",
     "data": [
         model Purchase {
     id     String @id @default(uuid())
     // amount Float
     ideaId String
-    idea   Idea   @relation(fields: [ideaId], references: [id], onDelete: Cascade)
+    idea   idea   @relation(fields: [ideaId], references: [id], onDelete: Cascade)
     userId String
     user   User   @relation(fields: [userId], references: [id], onDelete: Cascade)
 
@@ -27,7 +27,7 @@
 
 import { VOTE_TYPE } from "./auth.type";
 
-export interface IIdeaResponse {
+export interface IideaResponse {
   id: string;
   title: string;
   problemStatement: string;

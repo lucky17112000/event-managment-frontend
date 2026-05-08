@@ -56,13 +56,14 @@ export function BarChart({ title, data, animationDelay = "" }: BarChartProps) {
                 >
                   {/* Floating tooltip */}
                   <div
-                    className="pointer-events-none absolute z-10 -translate-x-1/2 left-1/2 whitespace-nowrap rounded-lg px-3 py-2 text-xs font-semibold text-white shadow-lg transition-all duration-200"
+                    className="pointer-ideas-none absolute z-10 -translate-x-1/2 left-1/2 whitespace-nowrap rounded-lg px-3 py-2 text-xs font-semibold text-white shadow-lg transition-all duration-200"
                     style={{
                       background: d.color,
                       bottom: `${mounted ? (targetPct / 100) * BAR_HEIGHT + 10 : 10}px`,
                       opacity: isHovered ? 1 : 0,
                       transform: `translateX(-50%) ${isHovered ? "translateY(0) scale(1)" : "translateY(6px) scale(0.92)"}`,
-                      transition: "opacity 0.18s ease, transform 0.18s ease, bottom 0s",
+                      transition:
+                        "opacity 0.18s ease, transform 0.18s ease, bottom 0s",
                     }}
                   >
                     {d.label}: {d.value}
@@ -84,7 +85,9 @@ export function BarChart({ title, data, animationDelay = "" }: BarChartProps) {
                       <div
                         className="w-full rounded-t-lg"
                         style={{
-                          height: mounted ? `${(targetPct / 100) * BAR_HEIGHT}px` : "0px",
+                          height: mounted
+                            ? `${(targetPct / 100) * BAR_HEIGHT}px`
+                            : "0px",
                           background: `linear-gradient(to top, ${d.color}, ${d.lightColor})`,
                           transition: `height 0.85s cubic-bezier(0.16,1,0.3,1)`,
                           transitionDelay: `${i * 100}ms`,

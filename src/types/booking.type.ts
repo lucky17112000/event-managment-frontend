@@ -34,6 +34,7 @@ export interface IBookingResponse {
   updatedAt: string;
   idea: {
     title: string;
+    images?: string[];
   };
   seatConfig: {
     venue: string;

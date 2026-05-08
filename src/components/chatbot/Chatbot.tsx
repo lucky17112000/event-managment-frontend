@@ -38,7 +38,7 @@ const getReply = (msg: string): string => {
     return "You can reach us at support@ecospark.com or visit our Contact page. We aim to respond within 1–2 business days! 📧";
 
   if (/(submit|create|share|post|idea|upload|how to submit)/.test(t))
-    return "To submit an idea:\n1. Register a free account\n2. Go to your Dashboard\n3. Click 'Create Idea'\n4. Fill in details & submit for review 🚀";
+    return "To submit an idea:\n1. Register a free account\n2. Go to your Dashboard\n3. Click 'Create idea'\n4. Fill in details & submit for review 🚀";
 
   if (/(vote|voting|upvote|support idea|like)/.test(t))
     return "You can vote on any idea by opening it and clicking the Vote button. The most voted ideas get reviewed by our admin team for potential funding! 🗳️";
@@ -136,8 +136,8 @@ export default function Chatbot() {
         className={cn(
           "fixed bottom-24 right-6 z-50 flex w-80 origin-bottom-right flex-col overflow-hidden rounded-2xl border bg-background shadow-2xl transition-all duration-300 sm:w-96",
           open
-            ? "scale-100 opacity-100 pointer-events-auto"
-            : "scale-90 opacity-0 pointer-events-none translate-y-2",
+            ? "scale-100 opacity-100 pointer-ideas-auto"
+            : "scale-90 opacity-0 pointer-ideas-none translate-y-2",
         )}
         style={{ maxHeight: "min(560px, calc(100dvh - 120px))" }}
       >

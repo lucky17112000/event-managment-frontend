@@ -1,10 +1,10 @@
 "use client";
 
-// import { deleteIdea, getIdea } from "@/services/idea.services";
+// import { deleteidea, getidea } from "@/services/idea.services";
 import { useMutation, useQuery, useQueryClient } from "@tanstack/react-query";
 import React, { useEffect, useMemo, useState } from "react";
 import { useRouter } from "next/navigation";
-import type { IIdeaResponse } from "@/types/idea.type";
+import type { IideaResponse } from "@/types/idea.type";
 import {
   Card,
   CardAction,
@@ -34,7 +34,7 @@ import {
 } from "@/components/ui/collapsible";
 import { cn } from "@/lib/utils";
 import { Loader2, X } from "lucide-react";
-import { getIdea, softDeleteIdeaByAdminAction } from "@/services/idea.services";
+import { getidea, softDeleteideaByAdminAction } from "@/services/idea.services";
 import {
   Pagination,
   PaginationContent,
@@ -67,9 +67,9 @@ const getPaginationItems = (currentPage: number, totalPages: number) => {
 };
 //!SECTIONpagination
 
-const DEFAULT_IDEA_IMAGE = "/window.svg";
+const DEFAULT_idea_IMAGE = "/window.svg";
 
-const SOFT_DELETED_STORAGE_KEY = "ecospark:softDeletedIdeaIds";
+const SOFT_DELETED_STORAGE_KEY = "ecospark:softDeletedideaIds";
 const SOFT_DELETE_TTL_MS = 60 * 60 * 1000; // 1 hour
 
 type SoftDeletedMap = Record<string, number>; // id -> deletedAt (ms)
@@ -143,7 +143,7 @@ const safeFormatDate = (value: unknown) => {
 };
 
 const pickImage = (urls: string[], preferredIndex: number): string => {
-  return urls[preferredIndex] || urls[0] || DEFAULT_IDEA_IMAGE;
+  return urls[preferredIndex] || urls[0] || DEFAULT_idea_IMAGE;
 };
 
 type UserLike = {
@@ -221,28 +221,28 @@ const parseFeedback = (feedback: FeedbackLike) => {
   return [{ message: trimmed, reason: "" }];
 };
 
-const RejectedIdeaByAdmin = () => {
+const RejectedideaByAdmin = () => {
   const router = useRouter();
   const queryClient = useQueryClient();
   const [drawerOpen, setDrawerOpen] = useState(false);
-  const [selectedIdea, setSelectedIdea] = useState<IIdeaResponse | null>(null);
+  const [selectedidea, setSelectedidea] = useState<IideaResponse | null>(null);
   const [feedbackOpen, setFeedbackOpen] = useState(false);
-  const [openFeedbackIdeaId, setOpenFeedbackIdeaId] = useState<string | null>(
+  const [openFeedbackideaId, setOpenFeedbackideaId] = useState<string | null>(
     null,
   );
   const [page, setPage] = useState(1);
   const [limit] = useState(3);
   const [deletingId, setDeletingId] = useState<string | null>(null);
-  const [deletedIdeaIds, setDeletedIdeaIds] = useState<SoftDeletedMap>({});
+  const [deletedideaIds, setDeletedideaIds] = useState<SoftDeletedMap>({});
 
   useEffect(() => {
     const initial = loadSoftDeletedMap();
-    setDeletedIdeaIds(initial);
+    setDeletedideaIds(initial);
     saveSoftDeletedMap(initial);
 
     const interval = window.setInterval(() => {
       const refreshed = loadSoftDeletedMap();
-      setDeletedIdeaIds(refreshed);
+      setDeletedideaIds(refreshed);
       saveSoftDeletedMap(refreshed);
     }, 60_000);
 
@@ -250,7 +250,7 @@ const RejectedIdeaByAdmin = () => {
   }, []);
   const { data } = useQuery({
     queryKey: ["idea", page, limit],
-    queryFn: () => getIdea({ page, limit }),
+    queryFn: () => getidea({ page, limit }),
   });
   //!SECTION pagination
   const meta = data?.meta;
@@ -277,14 +277,14 @@ const RejectedIdeaByAdmin = () => {
   //!SECTION pagination
 
   // console.log("Fetched ideas data:", data?.data);
-  // const { data: deleteIdeaData } = useQuery({
-  //   queryKey: ["deleteIdea"],
-  //   queryFn: deleteIdea,
+  // const { data: deleteideaData } = useQuery({
+  //   queryKey: ["deleteidea"],
+  //   queryFn: deleteidea,
   // });
 
   const { mutateAsync: softDeleteMutate, isPending: isDeleting } = useMutation({
     mutationFn: (payload: { id: string }) =>
-      softDeleteIdeaByAdminAction(payload),
+      softDeleteideaByAdminAction(payload),
     onSuccess: async () => {
       await queryClient.invalidateQueries({ queryKey: ["idea"] });
     },
@@ -293,12 +293,12 @@ const RejectedIdeaByAdmin = () => {
   const handleSoftDelete = async (id: string) => {
     if (!id?.trim()) return;
     if (isDeleting) return;
-    const existingTs = deletedIdeaIds[id];
+    const existingTs = deletedideaIds[id];
     if (existingTs && Date.now() - existingTs < SOFT_DELETE_TTL_MS) return;
     try {
       setDeletingId(id);
       await softDeleteMutate({ id });
-      setDeletedIdeaIds((prev) => {
+      setDeletedideaIds((prev) => {
         const next = { ...prev, [id]: Date.now() };
         saveSoftDeletedMap(next);
         return next;
@@ -310,34 +310,34 @@ const RejectedIdeaByAdmin = () => {
     }
   };
 
-  // const { mutateAsync: deleteIdeaMutate } = useMutation({
-  //   mutationFn: (id: string) => deleteIdea(id),
+  // const { mutateAsync: deleteideaMutate } = useMutation({
+  //   mutationFn: (id: string) => deleteidea(id),
   // });
   // const handleDelete = async (id: string) => {
   //   console.log("author id:", id);
   //   console.log("User ID for deletion:", userId);
 
   //   try {
-  //     await deleteIdeaMutate(id);
+  //     await deleteideaMutate(id);
   //   } catch (error) {
   //     console.error("Error deleting idea:", error);
   //   }
   // };
 
   const ideas = useMemo(() => {
-    return Array.isArray(data?.data) ? data.data : ([] as IIdeaResponse[]);
+    return Array.isArray(data?.data) ? data.data : ([] as IideaResponse[]);
   }, [data]);
 
-  const rejectedIdeas = useMemo(() => {
+  const rejectedideas = useMemo(() => {
     return ideas.filter((idea) => idea?.status === "REJECTED");
   }, [ideas]);
 
   const selectedFeedback = useMemo(() => {
-    return parseFeedback(selectedIdea?.feedback as FeedbackLike);
-  }, [selectedIdea?.feedback]);
+    return parseFeedback(selectedidea?.feedback as FeedbackLike);
+  }, [selectedidea?.feedback]);
 
   const selectedImages = useMemo(() => {
-    const urls = normalizeImageUrls(selectedIdea?.images);
+    const urls = normalizeImageUrls(selectedidea?.images);
     const coverImage = pickImage(urls, 0);
     const descriptionImage = pickImage(urls, 1);
     const solutionImage = pickImage(urls, 2);
@@ -354,7 +354,7 @@ const RejectedIdeaByAdmin = () => {
       solutionImage,
       extraImages,
     };
-  }, [selectedIdea]);
+  }, [selectedidea]);
 
   return (
     <div className="w-full">
@@ -362,22 +362,22 @@ const RejectedIdeaByAdmin = () => {
         <div className="flex items-end justify-between gap-3">
           <div>
             <h1 className="text-lg font-semibold tracking-tight">
-              Rejected Ideas
+              Rejected ideas
             </h1>
             <p className="text-sm text-muted-foreground">
               Showing only ideas with status REJECTED.
             </p>
           </div>
-          <Badge variant="secondary">{rejectedIdeas.length}</Badge>
+          <Badge variant="secondary">{rejectedideas.length}</Badge>
         </div>
 
         <div className="mt-5 grid gap-4 sm:grid-cols-2 lg:grid-cols-3">
-          {rejectedIdeas.map((idea) => {
+          {rejectedideas.map((idea) => {
             const imageUrls = normalizeImageUrls(idea?.images);
             const coverImage = pickImage(imageUrls, 0);
             const ideaId = String(idea?.id ?? "");
             const isThisDeleting = isDeleting && deletingId === ideaId;
-            const deletedAt = ideaId ? deletedIdeaIds[ideaId] : undefined;
+            const deletedAt = ideaId ? deletedideaIds[ideaId] : undefined;
             const isAlreadyDeleted = Boolean(
               deletedAt && Date.now() - deletedAt < SOFT_DELETE_TTL_MS,
             );
@@ -397,12 +397,12 @@ const RejectedIdeaByAdmin = () => {
                 <div className="relative">
                   <img
                     src={coverImage}
-                    alt={idea?.title || "Idea image"}
+                    alt={idea?.title || "idea image"}
                     className="h-48 w-full object-cover transition-transform duration-300 ease-out group-hover/card:scale-105"
                     loading="lazy"
                     onError={(e) => {
                       (e.currentTarget as HTMLImageElement).src =
-                        DEFAULT_IDEA_IMAGE;
+                        DEFAULT_idea_IMAGE;
                     }}
                   />
 
@@ -452,13 +452,13 @@ const RejectedIdeaByAdmin = () => {
                       idea?.feedback as unknown as FeedbackLike,
                     );
                     const hasFeedback = feedbackItems.length > 0;
-                    const isOpen = openFeedbackIdeaId === idea?.id;
+                    const isOpen = openFeedbackideaId === idea?.id;
 
                     return (
                       <Collapsible
                         open={isOpen}
                         onOpenChange={(open) =>
-                          setOpenFeedbackIdeaId(open ? idea?.id : null)
+                          setOpenFeedbackideaId(open ? idea?.id : null)
                         }
                       >
                         <div className="flex items-center justify-between gap-3">
@@ -541,7 +541,7 @@ const RejectedIdeaByAdmin = () => {
                             );
                             return;
                           }
-                          setSelectedIdea(idea);
+                          setSelectedidea(idea);
                           setFeedbackOpen(false);
                           setDrawerOpen(true);
                         }}
@@ -552,7 +552,7 @@ const RejectedIdeaByAdmin = () => {
                         variant="default"
                         size="sm"
                         onClick={() => {
-                          setSelectedIdea(idea);
+                          setSelectedidea(idea);
                           setFeedbackOpen(false);
                           setDrawerOpen(true);
                         }}
@@ -603,7 +603,7 @@ const RejectedIdeaByAdmin = () => {
           open={drawerOpen}
           onOpenChange={(open) => {
             setDrawerOpen(open);
-            if (!open) setSelectedIdea(null);
+            if (!open) setSelectedidea(null);
             if (!open) setFeedbackOpen(false);
           }}
         >
@@ -613,25 +613,25 @@ const RejectedIdeaByAdmin = () => {
                 <div className="flex items-start justify-between gap-3">
                   <div className="min-w-0">
                     <DrawerTitle className="line-clamp-2">
-                      {selectedIdea?.title || "Idea Details"}
+                      {selectedidea?.title || "idea Details"}
                     </DrawerTitle>
                     <DrawerDescription className="mt-1">
-                      {selectedIdea?.author?.name ||
-                        selectedIdea?.authorName ||
+                      {selectedidea?.author?.name ||
+                        selectedidea?.authorName ||
                         "Unknown"}
-                      {selectedIdea?.createdAt
-                        ? ` • ${safeFormatDate(selectedIdea.createdAt)}`
+                      {selectedidea?.createdAt
+                        ? ` • ${safeFormatDate(selectedidea.createdAt)}`
                         : ""}
                     </DrawerDescription>
                   </div>
 
                   <div className="flex shrink-0 items-center gap-2">
-                    {selectedIdea?.category?.name ? (
+                    {selectedidea?.category?.name ? (
                       <Badge variant="outline">
-                        {selectedIdea.category.name}
+                        {selectedidea.category.name}
                       </Badge>
                     ) : null}
-                    {selectedIdea?.isPaid ? (
+                    {selectedidea?.isPaid ? (
                       <Badge className="border-destructive/30 bg-destructive text-destructive-foreground">
                         PAID
                       </Badge>
@@ -649,12 +649,12 @@ const RejectedIdeaByAdmin = () => {
               <div className="px-4 pb-2">
                 <img
                   src={selectedImages.coverImage}
-                  alt="Idea cover"
+                  alt="idea cover"
                   className="h-56 w-full rounded-xl object-cover"
                   loading="lazy"
                   onError={(e) => {
                     (e.currentTarget as HTMLImageElement).src =
-                      DEFAULT_IDEA_IMAGE;
+                      DEFAULT_idea_IMAGE;
                   }}
                 />
               </div>
@@ -666,7 +666,7 @@ const RejectedIdeaByAdmin = () => {
                       Problem Statement
                     </p>
                     <p className="mt-1 whitespace-pre-line text-sm leading-relaxed text-foreground/90">
-                      {selectedIdea?.problemStatement || "—"}
+                      {selectedidea?.problemStatement || "—"}
                     </p>
                   </div>
 
@@ -720,13 +720,13 @@ const RejectedIdeaByAdmin = () => {
                       loading="lazy"
                       onError={(e) => {
                         (e.currentTarget as HTMLImageElement).src =
-                          DEFAULT_IDEA_IMAGE;
+                          DEFAULT_idea_IMAGE;
                       }}
                     />
                     <div>
                       <p className="text-sm font-semibold">Description</p>
                       <p className="mt-1 whitespace-pre-line text-sm leading-relaxed text-foreground/85">
-                        {selectedIdea?.description || "—"}
+                        {selectedidea?.description || "—"}
                       </p>
                     </div>
                   </div>
@@ -741,7 +741,7 @@ const RejectedIdeaByAdmin = () => {
                       loading="lazy"
                       onError={(e) => {
                         (e.currentTarget as HTMLImageElement).src =
-                          DEFAULT_IDEA_IMAGE;
+                          DEFAULT_idea_IMAGE;
                       }}
                     />
                     <div>
@@ -750,7 +750,7 @@ const RejectedIdeaByAdmin = () => {
                       </p>
                       <div className="mt-2 rounded-xl border bg-muted/30 p-3 sm:p-4">
                         <p className="whitespace-pre-wrap wrap-break-word text-base leading-7 text-foreground">
-                          {selectedIdea?.solution || "—"}
+                          {selectedidea?.solution || "—"}
                         </p>
                       </div>
                     </div>
@@ -766,12 +766,12 @@ const RejectedIdeaByAdmin = () => {
                             <img
                               key={url}
                               src={url}
-                              alt="Idea image"
+                              alt="idea image"
                               className="aspect-square w-full rounded-xl object-cover"
                               loading="lazy"
                               onError={(e) => {
                                 (e.currentTarget as HTMLImageElement).src =
-                                  DEFAULT_IDEA_IMAGE;
+                                  DEFAULT_idea_IMAGE;
                               }}
                             />
                           ))}
@@ -791,7 +791,7 @@ const RejectedIdeaByAdmin = () => {
           </DrawerContent>
         </Drawer>
 
-        {rejectedIdeas.length === 0 ? (
+        {rejectedideas.length === 0 ? (
           <div className="mt-10 rounded-xl border bg-muted/30 p-6 text-sm text-muted-foreground">
             No REJECTED ideas found.
           </div>
@@ -812,7 +812,7 @@ const RejectedIdeaByAdmin = () => {
                 <PaginationPrevious
                   href="#"
                   aria-disabled={!canGoPrev}
-                  className={!canGoPrev ? "pointer-events-none opacity-50" : ""}
+                  className={!canGoPrev ? "pointer-ideas-none opacity-50" : ""}
                   onClick={(e) => {
                     e.preventDefault();
                     if (!canGoPrev) return;
@@ -853,7 +853,7 @@ const RejectedIdeaByAdmin = () => {
                 <PaginationNext
                   href="#"
                   aria-disabled={!canGoNext}
-                  className={!canGoNext ? "pointer-events-none opacity-50" : ""}
+                  className={!canGoNext ? "pointer-ideas-none opacity-50" : ""}
                   onClick={(e) => {
                     e.preventDefault();
                     if (!canGoNext) return;
@@ -869,4 +869,4 @@ const RejectedIdeaByAdmin = () => {
   );
 };
 
-export default RejectedIdeaByAdmin;
+export default RejectedideaByAdmin;

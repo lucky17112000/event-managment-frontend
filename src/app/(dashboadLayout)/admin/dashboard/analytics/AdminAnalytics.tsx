@@ -20,11 +20,11 @@ const AdminAnalytics = () => {
 
   const totalUsers = stats?.totalUsers ?? 0;
   const totalAdmins = stats?.totalAdmins ?? 0;
-  const totalEnergy = stats?.totalEnergyIdeas ?? 0;
-  const totalPlastic = stats?.totalPlasticIdeas ?? 0;
-  const totalTree = stats?.totalTreeIdeas ?? 0;
-  const totalOthers = stats?.totalOthersIdeas ?? 0;
-  const totalIdeas = totalEnergy + totalPlastic + totalTree + totalOthers;
+  const totalEnergy = stats?.totalEnergyideas ?? 0;
+  const totalPlastic = stats?.totalPlasticideas ?? 0;
+  const totalTree = stats?.totalTreeideas ?? 0;
+  const totalOthers = stats?.totalOthersideas ?? 0;
+  const totalideas = totalEnergy + totalPlastic + totalTree + totalOthers;
 
   /* ── KPI card config ─────────────────────────────────────────────────── */
   const kpiCards = [
@@ -49,8 +49,8 @@ const AdminAnalytics = () => {
       delay: "animate-delay-200",
     },
     {
-      title: "Total Ideas",
-      value: totalIdeas,
+      title: "Total ideas",
+      value: totalideas,
       icon: Lightbulb,
       trend: "+34 this month",
       trendUp: true,
@@ -68,10 +68,30 @@ const AdminAnalytics = () => {
 
   /* ── Bar chart data ───────────────────────────────────────────────────── */
   const barData = [
-    { label: "Energy", value: totalEnergy, color: "#d97706", lightColor: "#fbbf24" },
-    { label: "Plastic", value: totalPlastic, color: "#2563eb", lightColor: "#60a5fa" },
-    { label: "Tree", value: totalTree, color: "#059669", lightColor: "#34d399" },
-    { label: "Others", value: totalOthers, color: "#7c3aed", lightColor: "#a78bfa" },
+    {
+      label: "Energy",
+      value: totalEnergy,
+      color: "#d97706",
+      lightColor: "#fbbf24",
+    },
+    {
+      label: "Plastic",
+      value: totalPlastic,
+      color: "#2563eb",
+      lightColor: "#60a5fa",
+    },
+    {
+      label: "Tree",
+      value: totalTree,
+      color: "#059669",
+      lightColor: "#34d399",
+    },
+    {
+      label: "Others",
+      value: totalOthers,
+      color: "#7c3aed",
+      lightColor: "#a78bfa",
+    },
   ];
 
   /* ── Quick insights data ─────────────────────────────────────────────── */
@@ -84,10 +104,30 @@ const AdminAnalytics = () => {
 
   /* ── Quick stats data ─────────────────────────────────────────────────── */
   const quickStatsItems = [
-    { label: "Energy Ideas", value: totalEnergy, total: totalIdeas, color: "#f59e0b" },
-    { label: "Plastic Ideas", value: totalPlastic, total: totalIdeas, color: "#3b82f6" },
-    { label: "Tree Ideas", value: totalTree, total: totalIdeas, color: "#10b981" },
-    { label: "Others Ideas", value: totalOthers, total: totalIdeas, color: "#8b5cf6" },
+    {
+      label: "Energy ideas",
+      value: totalEnergy,
+      total: totalideas,
+      color: "#f59e0b",
+    },
+    {
+      label: "Plastic ideas",
+      value: totalPlastic,
+      total: totalideas,
+      color: "#3b82f6",
+    },
+    {
+      label: "Tree ideas",
+      value: totalTree,
+      total: totalideas,
+      color: "#10b981",
+    },
+    {
+      label: "Others ideas",
+      value: totalOthers,
+      total: totalideas,
+      color: "#8b5cf6",
+    },
   ];
 
   /* ── Loading skeleton ─────────────────────────────────────────────────── */
@@ -116,7 +156,9 @@ const AdminAnalytics = () => {
     <div className="space-y-8 p-4 sm:p-6 lg:p-8">
       {/* ── Page header ─────────────────────────────────────────────────── */}
       <div className="animate-eco-fade-down">
-        <h1 className="text-2xl font-bold tracking-tight">Analytics Overview</h1>
+        <h1 className="text-2xl font-bold tracking-tight">
+          Analytics Overview
+        </h1>
         <p className="mt-1 text-sm text-muted-foreground">
           Platform statistics and activity at a glance.
         </p>
@@ -153,7 +195,7 @@ const AdminAnalytics = () => {
             animationDelay="animate-delay-400"
           />
           <BarChart
-            title="Ideas Overview"
+            title="ideas Overview"
             data={barData}
             animationDelay="animate-delay-500"
           />
@@ -175,7 +217,7 @@ const AdminAnalytics = () => {
         </h2>
         <div className="grid grid-cols-1 gap-4 lg:grid-cols-2">
           <QuickStats
-            title="Idea Breakdown"
+            title="idea Breakdown"
             items={quickStatsItems}
             animationDelay="animate-delay-600"
           />

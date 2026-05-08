@@ -4,7 +4,7 @@ import { Badge } from "@/components/ui/badge";
 import { Button } from "@/components/ui/button";
 import { Separator } from "@/components/ui/separator";
 import { cn } from "@/lib/utils";
-import type { IIdeaResponse } from "@/types/idea.type";
+import type { IideaResponse } from "@/types/idea.type";
 import {
   ArrowLeftIcon,
   CalendarIcon,
@@ -94,7 +94,12 @@ const SectionBlock = ({
         className,
       )}
     >
-      <div className={cn("mb-4 flex items-center gap-2.5 border-l-4 pl-3", colors[accentColor])}>
+      <div
+        className={cn(
+          "mb-4 flex items-center gap-2.5 border-l-4 pl-3",
+          colors[accentColor],
+        )}
+      >
         <Icon className="h-4 w-4 shrink-0" />
         <h2 className="text-sm font-bold uppercase tracking-widest">{title}</h2>
       </div>
@@ -103,7 +108,7 @@ const SectionBlock = ({
   );
 };
 
-const IdeaImage = ({
+const ideaImage = ({
   src,
   alt,
   className,
@@ -132,8 +137,8 @@ const IdeaImage = ({
 
 // ─── Props ────────────────────────────────────────────────────────────────────
 
-export interface IdeaDetailViewProps {
-  idea: IIdeaResponse;
+export interface ideaDetailViewProps {
+  idea: IideaResponse;
   isPurchased?: boolean;
   onVote?: (type: "UP" | "DOWN") => Promise<void>;
   onPurchase?: () => void;
@@ -145,7 +150,7 @@ export interface IdeaDetailViewProps {
 
 // ─── Main Component ───────────────────────────────────────────────────────────
 
-export function IdeaDetailView({
+export function ideaDetailView({
   idea,
   isPurchased = false,
   onVote,
@@ -154,7 +159,7 @@ export function IdeaDetailView({
   isVoting = false,
   voteError,
   backHref = "/idea",
-}: IdeaDetailViewProps) {
+}: ideaDetailViewProps) {
   const imageUrls = normalizeImageUrls(idea.images);
   const coverImage = imageUrls[0] || DEFAULT_IMAGE;
   const descriptionImage = imageUrls[1] || "";
@@ -174,7 +179,7 @@ export function IdeaDetailView({
   return (
     <article className="w-full">
       {/* ── Hero ──────────────────────────────────────────────────────── */}
-      <div className="relative h-72 overflow-hidden sm:h-96 lg:h-[28rem]">
+      <div className="relative h-72 overflow-hidden sm:h-96 lg:h-112">
         {/* Ken Burns cover image */}
         <img
           src={coverImage}
@@ -199,7 +204,7 @@ export function IdeaDetailView({
           )}
         >
           <ArrowLeftIcon className="h-3.5 w-3.5" />
-          Back to Ideas
+          Back to ideas
         </Link>
 
         {/* Title area — bottom of hero */}
@@ -287,7 +292,7 @@ export function IdeaDetailView({
             className="animate-delay-200"
           >
             {descriptionImage && (
-              <IdeaImage
+              <ideaImage
                 src={descriptionImage}
                 alt="Description visual"
                 className="mb-4 h-56 sm:h-72"
@@ -306,7 +311,7 @@ export function IdeaDetailView({
             className="animate-delay-300"
           >
             {solutionImage && (
-              <IdeaImage
+              <ideaImage
                 src={solutionImage}
                 alt="Solution visual"
                 className="mb-4 h-56 sm:h-72"
@@ -327,7 +332,7 @@ export function IdeaDetailView({
             >
               <div className="grid grid-cols-2 gap-3 sm:grid-cols-3">
                 {extraImages.map((url, idx) => (
-                  <IdeaImage
+                  <ideaImage
                     key={url}
                     src={url}
                     alt={`Gallery image ${idx + 1}`}

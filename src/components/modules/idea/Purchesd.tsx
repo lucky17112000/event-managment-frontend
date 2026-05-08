@@ -2,7 +2,7 @@
 import { getUserPurchases } from "@/services/purchase.service";
 import { useQuery } from "@tanstack/react-query";
 import React, { useMemo, useState } from "react";
-import type { IIdeaResponse } from "@/types/idea.type";
+import type { IideaResponse } from "@/types/idea.type";
 import {
   Card,
   CardAction,
@@ -29,7 +29,7 @@ import { Skeleton } from "@/components/ui/skeleton";
 import { cn } from "@/lib/utils";
 import { X } from "lucide-react";
 
-const DEFAULT_IDEA_IMAGE = "/window.svg";
+const DEFAULT_idea_IMAGE = "/window.svg";
 
 type ImageLike = string | { url?: unknown };
 
@@ -76,15 +76,15 @@ const safeFormatDate = (value: unknown) => {
 };
 
 const pickImage = (urls: string[], preferredIndex: number): string => {
-  return urls[preferredIndex] || urls[0] || DEFAULT_IDEA_IMAGE;
+  return urls[preferredIndex] || urls[0] || DEFAULT_idea_IMAGE;
 };
 
 const Purchesd = () => {
   const [drawerOpen, setDrawerOpen] = useState(false);
-  const [selectedIdea, setSelectedIdea] = useState<IIdeaResponse | null>(null);
+  const [selectedidea, setSelectedidea] = useState<IideaResponse | null>(null);
 
   const { data, isLoading, isError } = useQuery({
-    queryKey: ["purchasedIdeas"],
+    queryKey: ["purchasedideas"],
     queryFn: () => getUserPurchases(),
   });
 
@@ -95,10 +95,10 @@ const Purchesd = () => {
       : ([] as PurchaseRecordLike[]);
   }, [data]);
 
-  const purchasedIdeas = useMemo(() => {
+  const purchasedideas = useMemo(() => {
     return purchases
       .map((purchase) => {
-        const idea = (purchase?.idea as IIdeaResponse | undefined) ?? undefined;
+        const idea = (purchase?.idea as IideaResponse | undefined) ?? undefined;
         if (!idea || typeof idea !== "object") return null;
         return {
           purchase,
@@ -107,12 +107,12 @@ const Purchesd = () => {
       })
       .filter(Boolean) as {
       purchase: PurchaseRecordLike;
-      idea: IIdeaResponse;
+      idea: IideaResponse;
     }[];
   }, [purchases]);
 
   const selectedImages = useMemo(() => {
-    const urls = normalizeImageUrls(selectedIdea?.images);
+    const urls = normalizeImageUrls(selectedidea?.images);
     const coverImage = pickImage(urls, 0);
     const descriptionImage = pickImage(urls, 1);
     const solutionImage = pickImage(urls, 2);
@@ -128,7 +128,7 @@ const Purchesd = () => {
       solutionImage,
       extraImages,
     };
-  }, [selectedIdea]);
+  }, [selectedidea]);
 
   return (
     <div className="w-full">
@@ -136,13 +136,13 @@ const Purchesd = () => {
         <div className="flex items-end justify-between gap-3">
           <div>
             <h1 className="text-lg font-semibold tracking-tight">
-              Purchased Ideas
+              Purchased ideas
             </h1>
             <p className="text-sm text-muted-foreground">
               Your purchased ideas will appear here.
             </p>
           </div>
-          <Badge variant="secondary">{purchasedIdeas.length}</Badge>
+          <Badge variant="secondary">{purchasedideas.length}</Badge>
         </div>
 
         {isLoading ? (
@@ -168,13 +168,13 @@ const Purchesd = () => {
           <div className="mt-6 rounded-xl border bg-muted/30 p-6 text-sm text-muted-foreground">
             Failed to load purchased ideas.
           </div>
-        ) : purchasedIdeas.length === 0 ? (
+        ) : purchasedideas.length === 0 ? (
           <div className="mt-6 rounded-xl border bg-muted/30 p-6 text-sm text-muted-foreground">
             No purchased ideas found.
           </div>
         ) : (
           <div className="mt-5 grid gap-4 sm:grid-cols-2 lg:grid-cols-3">
-            {purchasedIdeas.map(({ purchase, idea }) => {
+            {purchasedideas.map(({ purchase, idea }) => {
               const imageUrls = normalizeImageUrls(idea?.images);
               const coverImage = pickImage(imageUrls, 0);
 
@@ -200,12 +200,12 @@ const Purchesd = () => {
                   <div className="relative">
                     <img
                       src={coverImage}
-                      alt={idea?.title || "Idea image"}
+                      alt={idea?.title || "idea image"}
                       className="h-48 w-full object-cover"
                       loading="lazy"
                       onError={(e) => {
                         (e.currentTarget as HTMLImageElement).src =
-                          DEFAULT_IDEA_IMAGE;
+                          DEFAULT_idea_IMAGE;
                       }}
                     />
 
@@ -222,7 +222,7 @@ const Purchesd = () => {
 
                       {idea?.isPaid ? (
                         <Badge className="border-destructive/30 bg-destructive text-destructive-foreground">
-                          PAID IDEA
+                          PAID idea
                         </Badge>
                       ) : (
                         <Badge variant="secondary">FREE</Badge>
@@ -274,7 +274,7 @@ const Purchesd = () => {
                       variant="outline"
                       size="sm"
                       onClick={() => {
-                        setSelectedIdea(idea);
+                        setSelectedidea(idea);
                         setDrawerOpen(true);
                       }}
                     >
@@ -291,7 +291,7 @@ const Purchesd = () => {
           open={drawerOpen}
           onOpenChange={(open) => {
             setDrawerOpen(open);
-            if (!open) setSelectedIdea(null);
+            if (!open) setSelectedidea(null);
           }}
         >
           <DrawerContent className="outline-none data-[vaul-drawer-direction=bottom]:h-[92vh] data-[vaul-drawer-direction=bottom]:max-h-[92vh]">
@@ -300,25 +300,25 @@ const Purchesd = () => {
                 <div className="flex items-start justify-between gap-3">
                   <div className="min-w-0">
                     <DrawerTitle className="line-clamp-2">
-                      {selectedIdea?.title || "Idea Details"}
+                      {selectedidea?.title || "idea Details"}
                     </DrawerTitle>
                     <DrawerDescription className="mt-1">
-                      {selectedIdea?.author?.name ||
-                        selectedIdea?.authorName ||
+                      {selectedidea?.author?.name ||
+                        selectedidea?.authorName ||
                         "Unknown"}
-                      {selectedIdea?.createdAt
-                        ? ` • ${safeFormatDate(selectedIdea.createdAt)}`
+                      {selectedidea?.createdAt
+                        ? ` • ${safeFormatDate(selectedidea.createdAt)}`
                         : ""}
                     </DrawerDescription>
                   </div>
 
                   <div className="flex shrink-0 items-center gap-2">
-                    {selectedIdea?.category?.name ? (
+                    {selectedidea?.category?.name ? (
                       <Badge variant="outline">
-                        {selectedIdea.category.name}
+                        {selectedidea.category.name}
                       </Badge>
                     ) : null}
-                    {selectedIdea?.isPaid ? (
+                    {selectedidea?.isPaid ? (
                       <Badge className="border-destructive/30 bg-destructive text-destructive-foreground">
                         PAID
                       </Badge>
@@ -336,12 +336,12 @@ const Purchesd = () => {
               <div className="px-4 pb-2">
                 <img
                   src={selectedImages.coverImage}
-                  alt="Idea cover"
+                  alt="idea cover"
                   className="h-56 w-full rounded-xl object-cover"
                   loading="lazy"
                   onError={(e) => {
                     (e.currentTarget as HTMLImageElement).src =
-                      DEFAULT_IDEA_IMAGE;
+                      DEFAULT_idea_IMAGE;
                   }}
                 />
               </div>
@@ -353,7 +353,7 @@ const Purchesd = () => {
                       Problem Statement
                     </p>
                     <p className="mt-1 whitespace-pre-line text-sm leading-relaxed text-foreground/90">
-                      {selectedIdea?.problemStatement || "—"}
+                      {selectedidea?.problemStatement || "—"}
                     </p>
                   </div>
 
@@ -367,13 +367,13 @@ const Purchesd = () => {
                       loading="lazy"
                       onError={(e) => {
                         (e.currentTarget as HTMLImageElement).src =
-                          DEFAULT_IDEA_IMAGE;
+                          DEFAULT_idea_IMAGE;
                       }}
                     />
                     <div>
                       <p className="text-sm font-semibold">Description</p>
                       <p className="mt-1 whitespace-pre-line text-sm leading-relaxed text-foreground/85">
-                        {selectedIdea?.description || "—"}
+                        {selectedidea?.description || "—"}
                       </p>
                     </div>
                   </div>
@@ -388,7 +388,7 @@ const Purchesd = () => {
                       loading="lazy"
                       onError={(e) => {
                         (e.currentTarget as HTMLImageElement).src =
-                          DEFAULT_IDEA_IMAGE;
+                          DEFAULT_idea_IMAGE;
                       }}
                     />
                     <div>
@@ -397,7 +397,7 @@ const Purchesd = () => {
                       </p>
                       <div className="mt-2 rounded-xl border bg-muted/30 p-3 sm:p-4">
                         <p className="whitespace-pre-wrap wrap-break-word text-base leading-7 text-foreground">
-                          {selectedIdea?.solution || "—"}
+                          {selectedidea?.solution || "—"}
                         </p>
                       </div>
                     </div>
@@ -413,12 +413,12 @@ const Purchesd = () => {
                             <img
                               key={url}
                               src={url}
-                              alt="Idea image"
+                              alt="idea image"
                               className="aspect-square w-full rounded-xl object-cover"
                               loading="lazy"
                               onError={(e) => {
                                 (e.currentTarget as HTMLImageElement).src =
-                                  DEFAULT_IDEA_IMAGE;
+                                  DEFAULT_idea_IMAGE;
                               }}
                             />
                           ))}

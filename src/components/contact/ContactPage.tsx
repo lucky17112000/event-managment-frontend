@@ -92,15 +92,15 @@ export default function ContactPage() {
   });
   const [submitted, setSubmitted] = useState(false);
 
-  const handleSubmit = (e: React.SyntheticEvent<HTMLFormElement>) => {
-    e.preventDefault();
+  const handleSubmit = (e: React.Syntheticidea<HTMLFormElement>) => {
+    e.preventdefault()();
     console.log("Form submitted:", formData);
     setSubmitted(true);
     setTimeout(() => setSubmitted(false), 3000);
   };
 
   const handleChange = (
-    e: React.ChangeEvent<HTMLInputElement | HTMLTextAreaElement>,
+    e: React.Changeidea<HTMLInputElement | HTMLTextAreaElement>,
   ) => {
     setFormData((prev) => ({ ...prev, [e.target.name]: e.target.value }));
   };
@@ -112,7 +112,7 @@ export default function ContactPage() {
     <div className="min-h-screen bg-background">
       {/* ── Hero ── */}
       <section className="relative overflow-hidden border-b ">
-        <div className="pointer-events-none absolute inset-0 select-none">
+        <div className="pointer-ideas-none absolute inset-0 select-none">
           <div className="absolute -top-40 -right-32 size-96 rounded-full bg-zinc-100/60 blur-3xl dark:bg-zinc-900/20" />
           <div className="absolute bottom-0 -left-24 size-72 rounded-full bg-teal-50/80 blur-2xl dark:bg-teal-900/10" />
         </div>
@@ -348,7 +348,7 @@ export default function ContactPage() {
       {/* ── CTA ── */}
       <section className="border-t">
         <div className="relative overflow-hidden bg-linear-to-br from-zinc-600 to-zinc-700 py-16 sm:py-20">
-          <div className="pointer-events-none absolute inset-0">
+          <div className="pointer-ideas-none absolute inset-0">
             <div className="absolute -top-20 -right-20 size-72 rounded-full bg-white/10 blur-3xl" />
             <div className="absolute -bottom-20 -left-20 size-72 rounded-full bg-white/10 blur-3xl" />
           </div>
@@ -378,7 +378,7 @@ export default function ContactPage() {
                   "border-white/40 text-white hover:bg-white/10 hover:text-white",
                 )}
               >
-                Browse Ideas
+                Browse ideas
               </Link>
             </div>
           </div>

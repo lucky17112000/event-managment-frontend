@@ -1,7 +1,7 @@
 "use server";
 import { httpClient } from "@/lib/axios/httpClient";
 import { ApiResponse } from "@/types/api.types";
-import type { IIdeaResponse } from "@/types/idea.type";
+import type { IideaResponse } from "@/types/idea.type";
 
 export type purhasePaylod = {
   ideaId: string;
@@ -32,7 +32,7 @@ export type UserPurchaseRecord = {
   paymentStatus?: "PAID" | "UNPAID";
   createdAt?: string | Date;
   updatedAt?: string | Date;
-  idea?: IIdeaResponse;
+  idea?: IideaResponse;
 };
 
 export const getUserPurchases = async (): Promise<

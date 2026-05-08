@@ -1,7 +1,7 @@
 "use client";
 
 import { createBookingAction } from "@/services/booking.service";
-import { getIdeaById } from "@/services/idea.services";
+import { getideaById } from "@/services/idea.services";
 import { ICreateBookingPayload } from "@/zod/booking.validation";
 import { useForm } from "@tanstack/react-form";
 import { useMutation, useQuery } from "@tanstack/react-query";
@@ -48,10 +48,10 @@ const BookingPage = () => {
   const [serverError, setServerError] = useState<string | null>(null);
   const [booked, setBooked] = useState(false);
 
-  // Fetch event details
+  // Fetch idea details
   const { data: ideaRes, isLoading: ideaLoading } = useQuery({
     queryKey: ["idea-detail", ideaId],
-    queryFn: () => getIdeaById(ideaId),
+    queryFn: () => getideaById(ideaId),
     enabled: !!ideaId,
   });
   console.log("Fetched idea details:", ideaRes);
@@ -62,7 +62,7 @@ const BookingPage = () => {
     mutationFn: (payload: ICreateBookingPayload) =>
       createBookingAction(payload),
   });
-  console.log("Idea ID for booking:", ideaId);
+  console.log("idea ID for booking:", ideaId);
 
   const form = useForm({
     defaultValues: { ideaId, seatCount: 1 },
@@ -77,8 +77,10 @@ const BookingPage = () => {
         if (result?.success) {
           // Persist booked ideaId so the ideas list shows "Already Booked"
           try {
-            const KEY = "eventHub_bookedIdeaIds";
-            const existing: string[] = JSON.parse(localStorage.getItem(KEY) ?? "[]");
+            const KEY = "ideaHub_bookedideaIds";
+            const existing: string[] = JSON.parse(
+              localStorage.getItem(KEY) ?? "[]",
+            );
             if (!existing.includes(ideaId)) {
               localStorage.setItem(KEY, JSON.stringify([...existing, ideaId]));
             }
@@ -90,7 +92,9 @@ const BookingPage = () => {
         setServerError(result?.message || "Booking failed. Please try again.");
       } catch (error) {
         setServerError(
-          error instanceof Error ? error.message : "Booking failed. Please try again.",
+          error instanceof Error
+            ? error.message
+            : "Booking failed. Please try again.",
         );
       }
     },
@@ -121,7 +125,7 @@ const BookingPage = () => {
               href="/idea"
               className="inline-flex items-center justify-center rounded-xl border border-zinc-200 px-6 py-3 text-sm font-medium text-zinc-700 transition hover:bg-zinc-50"
             >
-              Browse Events
+              Browse ideas
             </Link>
           </div>
         </div>
@@ -139,14 +143,14 @@ const BookingPage = () => {
             className="inline-flex items-center gap-1.5 text-sm font-medium text-zinc-500 transition hover:text-black"
           >
             <ChevronLeftIcon className="size-4" />
-            Back to events
+            Back to ideas
           </Link>
         </div>
       </div>
 
       <div className="mx-auto max-w-4xl px-4 py-10 sm:px-6">
         <div className="grid gap-8 lg:grid-cols-[1fr_380px]">
-          {/* ── LEFT: event info ── */}
+          {/* ── LEFT: idea info ── */}
           <div className="space-y-6">
             {/* Header */}
             <div>
@@ -158,7 +162,7 @@ const BookingPage = () => {
                 {ideaLoading ? (
                   <span className="inline-block h-9 w-64 animate-pulse rounded-lg bg-zinc-100" />
                 ) : (
-                  (idea?.title ?? "Event Booking")
+                  (idea?.title ?? "idea Booking")
                 )}
               </h1>
               {idea?.category?.name && (
@@ -168,10 +172,10 @@ const BookingPage = () => {
               )}
             </div>
 
-            {/* Event meta card */}
+            {/* idea meta card */}
             <div className="rounded-2xl border border-zinc-200 bg-zinc-50 p-5">
               <h3 className="mb-4 text-xs font-bold uppercase tracking-widest text-zinc-400">
-                Event Details
+                idea Details
               </h3>
               {ideaLoading ? (
                 <div className="space-y-3">
@@ -242,7 +246,7 @@ const BookingPage = () => {
                 </div>
               ) : (
                 <p className="text-sm text-zinc-400">
-                  No seat configuration found for this event.
+                  No seat configuration found for this idea.
                 </p>
               )}
             </div>
@@ -426,7 +430,7 @@ const BookingPage = () => {
                   </form.Subscribe>
 
                   <p className="text-center text-xs text-zinc-400">
-                    Free cancellation up to 24 hours before the event.
+                    Free cancellation up to 24 hours before the idea.
                   </p>
                 </form>
               </div>

@@ -139,22 +139,22 @@ const LoginForm = () => {
       {/* ── Left Hero Panel (lg+) ──────────────────────────────────── */}
       <div className="hidden lg:flex lg:w-[52%] xl:w-[55%] sticky top-0 h-screen flex-col justify-between p-10 xl:p-14 bg-linear-to-br from-zinc-900 via-zinc-800 to-zinc-600 overflow-hidden">
         {/* Ambient glow blobs */}
-        <div className="absolute -top-24 -right-24 w-96 h-96 rounded-full bg-zinc-500/20 blur-3xl pointer-events-none" />
-        <div className="absolute -bottom-24 -left-24 w-80 h-80 rounded-full bg-zinc-400/15 blur-3xl pointer-events-none" />
-        <div className="absolute top-1/3 right-1/3 w-64 h-64 rounded-full bg-white/5 blur-2xl pointer-events-none" />
+        <div className="absolute -top-24 -right-24 w-96 h-96 rounded-full bg-zinc-500/20 blur-3xl pointer-ideas-none" />
+        <div className="absolute -bottom-24 -left-24 w-80 h-80 rounded-full bg-zinc-400/15 blur-3xl pointer-ideas-none" />
+        <div className="absolute top-1/3 right-1/3 w-64 h-64 rounded-full bg-white/5 blur-2xl pointer-ideas-none" />
 
         {/* Floating decorative icons */}
-        <Leaf className="absolute top-28 right-16 w-9 h-9 text-zinc-400/30 animate-eco-float pointer-events-none" />
+        <Leaf className="absolute top-28 right-16 w-9 h-9 text-zinc-400/30 animate-eco-float pointer-ideas-none" />
         <Leaf
-          className="absolute bottom-40 left-14 w-5 h-5 text-zinc-300/25 animate-eco-float pointer-events-none"
+          className="absolute bottom-40 left-14 w-5 h-5 text-zinc-300/25 animate-eco-float pointer-ideas-none"
           style={{ animationDelay: "2s" }}
         />
         <Zap
-          className="absolute top-1/2 right-12 w-5 h-5 text-yellow-400/35 animate-eco-float pointer-events-none"
+          className="absolute top-1/2 right-12 w-5 h-5 text-yellow-400/35 animate-eco-float pointer-ideas-none"
           style={{ animationDelay: "1s" }}
         />
         <Leaf
-          className="absolute top-[65%] left-[38%] w-3 h-3 text-zinc-200/20 animate-eco-float pointer-events-none"
+          className="absolute top-[65%] left-[38%] w-3 h-3 text-zinc-200/20 animate-eco-float pointer-ideas-none"
           style={{ animationDelay: "3s" }}
         />
 
@@ -204,7 +204,7 @@ const LoginForm = () => {
                 {
                   icon: Lightbulb,
                   value: "1,200+",
-                  label: "Sustainable Ideas",
+                  label: "Sustainable ideas",
                 },
                 { icon: Zap, value: "1.2M", label: "Energy Saved (kWh)" },
               ] as const
@@ -233,7 +233,7 @@ const LoginForm = () => {
               Secure Platform
             </span>
             <span>·</span>
-            <span>Verified Ideas</span>
+            <span>Verified ideas</span>
             <span>·</span>
             <span>Active Community</span>
           </div>

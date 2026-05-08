@@ -5,11 +5,11 @@ import React from "react";
 
 export const dynamic = "force-dynamic";
 
-const PurchesdIdeaPage = async () => {
+const PurchesdideaPage = async () => {
   const queryClient = new QueryClient();
   try {
     await queryClient.prefetchQuery({
-      queryKey: ["purchasedIdeas"],
+      queryKey: ["purchasedideas"],
       queryFn: () => getUserPurchases(),
     });
   } catch (error) {
@@ -18,4 +18,4 @@ const PurchesdIdeaPage = async () => {
   return <Purchesd />;
 };
 
-export default PurchesdIdeaPage;
+export default PurchesdideaPage;

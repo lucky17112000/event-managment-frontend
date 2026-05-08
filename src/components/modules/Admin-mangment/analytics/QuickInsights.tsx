@@ -1,9 +1,4 @@
-import {
-  Card,
-  CardContent,
-  CardHeader,
-  CardTitle,
-} from "@/components/ui/card";
+import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
 import { cn } from "@/lib/utils";
 import { AlertCircle, Trophy } from "lucide-react";
 
@@ -93,10 +88,15 @@ function InsightTile({
         <Icon className={cn("h-5 w-5", iconColor)} />
       </div>
       <div className="flex flex-col gap-0.5">
-        <span className={cn("text-xs font-semibold uppercase tracking-wide", badgeColor)}>
+        <span
+          className={cn(
+            "text-xs font-semibold uppercase tracking-wide",
+            badgeColor,
+          )}
+        >
           {badge}
         </span>
-        <span className="text-base font-bold">{label} Ideas</span>
+        <span className="text-base font-bold">{label} ideas</span>
         <span
           className="mt-0.5 text-2xl font-extrabold tabular-nums"
           style={{ color: accentColor }}

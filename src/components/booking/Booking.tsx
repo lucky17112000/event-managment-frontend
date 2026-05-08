@@ -68,7 +68,7 @@ const Booking = () => {
                   createBookingZodSchema.shape.seatCount.safeParse(value);
                 return result.success
                   ? undefined
-                  : result.error.issues[0]?.message ?? "Invalid seat count";
+                  : (result.error.issues[0]?.message ?? "Invalid seat count");
               },
             }}
           >

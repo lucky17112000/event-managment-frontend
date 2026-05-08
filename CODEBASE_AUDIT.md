@@ -48,28 +48,28 @@ zod/                           → Form validation schemas
 
 ### Layout System
 
-| Layout | Path | Purpose |
-|--------|------|---------|
-| Root Layout | `app/layout.tsx` | Providers, fonts, Chatbot, Toaster |
-| Common Layout | `app/(commonLayout)/layout.tsx` | Public pages with LandingNavbar |
-| Dashboard Layout | `app/(dashboadLayout)/layout.tsx` | Sidebar + Navbar + Content |
-| Protected Layout | `app/(dashboadLayout)/(commonProtectedLayout)/layout.tsx` | Passthrough (empty) |
+| Layout           | Path                                                      | Purpose                            |
+| ---------------- | --------------------------------------------------------- | ---------------------------------- |
+| Root Layout      | `app/layout.tsx`                                          | Providers, fonts, Chatbot, Toaster |
+| Common Layout    | `app/(commonLayout)/layout.tsx`                           | Public pages with LandingNavbar    |
+| Dashboard Layout | `app/(dashboadLayout)/layout.tsx`                         | Sidebar + Navbar + Content         |
+| Protected Layout | `app/(dashboadLayout)/(commonProtectedLayout)/layout.tsx` | Passthrough (empty)                |
 
 ---
 
 ### Styling Approach
 
-| Item | Status |
-|------|--------|
-| CSS Framework | Tailwind CSS v4 |
-| Color Space | OKLch (modern) |
-| Inline styles (`style={}`) | None found |
-| CSS Modules | Not used |
-| SCSS | Not used |
-| Semantic tokens | Used (`bg-card`, `text-muted-foreground`) |
-| Dark mode | Supported via `next-themes` |
-| Custom animations | `eco-float`, `eco-marquee` in globals.css |
-| Reduced motion | Respected (`prefers-reduced-motion`) |
+| Item                       | Status                                    |
+| -------------------------- | ----------------------------------------- |
+| CSS Framework              | Tailwind CSS v4                           |
+| Color Space                | OKLch (modern)                            |
+| Inline styles (`style={}`) | None found                                |
+| CSS Modules                | Not used                                  |
+| SCSS                       | Not used                                  |
+| Semantic tokens            | Used (`bg-card`, `text-muted-foreground`) |
+| Dark mode                  | Supported via `next-themes`               |
+| Custom animations          | `eco-float`, `eco-marquee` in globals.css |
+| Reduced motion             | Respected (`prefers-reduced-motion`)      |
 
 ---
 
@@ -77,15 +77,15 @@ zod/                           → Form validation schemas
 
 ### Page-by-Page Assessment
 
-| Page | Design Level | Notes |
-|------|-------------|-------|
-| Landing Page | ✅ Production | 12 sections, gradient text, animations, responsive |
-| About Page | ✅ Production | 7 sections, timeline, team cards, CTA |
-| Login / Register | ✅ Clean | Card-based, max-w-420px, TanStack Form + Zod |
-| Dashboard Layout | ✅ Solid | Sidebar + navbar, overflow handled properly |
-| Contact Page | ⚠️ Incomplete | Almost empty wrapper |
-| Dashboard Inner Pages | ❌ Stub | Mostly placeholder content |
-| Admin Pages | ❌ Minimal | Basic link structure only |
+| Page                  | Design Level  | Notes                                              |
+| --------------------- | ------------- | -------------------------------------------------- |
+| Landing Page          | ✅ Production | 12 sections, gradient text, animations, responsive |
+| About Page            | ✅ Production | 7 sections, timeline, team cards, CTA              |
+| Login / Register      | ✅ Clean      | Card-based, max-w-420px, TanStack Form + Zod       |
+| Dashboard Layout      | ✅ Solid      | Sidebar + navbar, overflow handled properly        |
+| Contact Page          | ⚠️ Incomplete | Almost empty wrapper                               |
+| Dashboard Inner Pages | ❌ Stub       | Mostly placeholder content                         |
+| Admin Pages           | ❌ Minimal    | Basic link structure only                          |
 
 ---
 
@@ -104,18 +104,18 @@ Font Family     → Geist Sans (professional ✅)
 
 ### Color System
 
-| Purpose | Token / Class |
-|---------|--------------|
-| Primary action | `emerald-600` |
-| Primary hover | `emerald-700` |
-| Light backgrounds | `emerald-50`, `emerald-100` |
-| Dark mode accents | `emerald-400`, `emerald-950/50` |
-| Gradient accent | `teal-500`, `green-500` |
-| Card backgrounds | `bg-card` (semantic) |
-| Muted backgrounds | `bg-muted` (semantic) |
-| Secondary text | `text-muted-foreground` (semantic) |
-| Error states | `text-destructive` (semantic) |
-| Neutral text/borders | `neutral-200`, `neutral-500` |
+| Purpose              | Token / Class                      |
+| -------------------- | ---------------------------------- |
+| Primary action       | `emerald-600`                      |
+| Primary hover        | `emerald-700`                      |
+| Light backgrounds    | `emerald-50`, `emerald-100`        |
+| Dark mode accents    | `emerald-400`, `emerald-950/50`    |
+| Gradient accent      | `teal-500`, `green-500`            |
+| Card backgrounds     | `bg-card` (semantic)               |
+| Muted backgrounds    | `bg-muted` (semantic)              |
+| Secondary text       | `text-muted-foreground` (semantic) |
+| Error states         | `text-destructive` (semantic)      |
+| Neutral text/borders | `neutral-200`, `neutral-500`       |
 
 ---
 
@@ -134,11 +134,11 @@ Flex gap          → gap-2, gap-3, gap-4, gap-6
 
 ### Responsiveness
 
-| Breakpoint | Usage |
-|-----------|-------|
-| `sm:` 640px | Typography scaling, horizontal layouts |
-| `md:` 768px | Dashboard sidebar visible, nav switching |
-| `lg:` 1024px | 2-column grids, hero layout |
+| Breakpoint   | Usage                                    |
+| ------------ | ---------------------------------------- |
+| `sm:` 640px  | Typography scaling, horizontal layouts   |
+| `md:` 768px  | Dashboard sidebar visible, nav switching |
+| `lg:` 1024px | 2-column grids, hero layout              |
 
 Mobile-first approach is consistently applied.
 
@@ -146,14 +146,14 @@ Mobile-first approach is consistently applied.
 
 ### Accessibility
 
-| Feature | Status |
-|---------|--------|
-| `aria-invalid` on form fields | ✅ Present |
-| `aria-describedby` for errors | ✅ Present |
-| `aria-hidden` on decorative icons | ✅ Present |
-| `aria-label` on icon-only buttons | ✅ Present |
-| Keyboard navigation | ✅ Via Base UI |
-| Focus ring styles | ✅ `focus-visible:ring-2` |
+| Feature                           | Status                    |
+| --------------------------------- | ------------------------- |
+| `aria-invalid` on form fields     | ✅ Present                |
+| `aria-describedby` for errors     | ✅ Present                |
+| `aria-hidden` on decorative icons | ✅ Present                |
+| `aria-label` on icon-only buttons | ✅ Present                |
+| Keyboard navigation               | ✅ Via Base UI            |
+| Focus ring styles                 | ✅ `focus-visible:ring-2` |
 
 ---
 
@@ -162,27 +162,33 @@ Mobile-first approach is consistently applied.
 ### 🔴 Critical
 
 **P1 — Naming Typo in Folder Structure**
+
 ```
 (dashboadLayout)  →  should be  (dashboardLayout)
 ```
+
 Present in 3+ folder paths. Not a runtime error but confusing for team.
 
 ---
 
 **P2 — Duplicate ThemeProvider**
+
 ```tsx
 // app/layout.tsx          → ThemeProvider exists ✅
 // (commonLayout)/layout.tsx → ThemeProvider exists AGAIN ❌
 ```
+
 This can cause unexpected theme behavior or hydration warnings.
 
 ---
 
 **P3 — Dashboard Inner Pages Are Empty**
+
 ```tsx
 // /dashboard/page.tsx → 7 lines, no real content
 // /admin/dashboard   → basic stub with links only
 ```
+
 A logged-in user sees nothing meaningful. This is the biggest UX gap.
 
 ---
@@ -195,6 +201,7 @@ A logged-in user sees nothing meaningful. This is the biggest UX gap.
 ---
 
 **P5 — Inconsistent File Naming**
+
 ```
 DashboardNavbar.tsx        → PascalCase  ✅
 dashboardSidebar.tsx       → camelCase   ❌
@@ -204,6 +211,7 @@ DashBoardNavbarContent.tsx → Mixed case  ❌
 ---
 
 **P6 — Unstyled Native HTML Elements**
+
 ```tsx
 // File input — no custom styling
 <input type="file" />
@@ -220,12 +228,13 @@ The newsletter section in `LandingPage.tsx` uses a bare `<input>` instead of the
 ---
 
 **P8 — Hardcoded Colors in Alert Boxes**
+
 ```tsx
-// In CreateIdea.tsx (and similar)
-className="border border-neutral-200 bg-neutral-50"  // ❌ hardcoded
+// In Createidea.tsx (and similar)
+className = "border border-neutral-200 bg-neutral-50"; // ❌ hardcoded
 
 // Should use semantic tokens:
-className="border bg-muted"  // ✅ theme-aware
+className = "border bg-muted"; // ✅ theme-aware
 ```
 
 ---
@@ -233,16 +242,19 @@ className="border bg-muted"  // ✅ theme-aware
 ### 🟢 Minor
 
 **P9 — Unused Import in LandingPage.tsx**
+
 ```tsx
-import { QueryClient } from "@tanstack/react-query";  // not used in client component
+import { QueryClient } from "@tanstack/react-query"; // not used in client component
 ```
 
 **P10 — CommonProtectedLayout Is a Passthrough**
+
 ```tsx
 export default function Layout({ children }) {
-  return <>{children}</>;  // does nothing
+  return <>{children}</>; // does nothing
 }
 ```
+
 Either add purpose or remove it.
 
 **P11 — Contact Page Has No Content**
@@ -264,31 +276,31 @@ Beginner    →  Intermediate  →   Advanced    →  Production-Ready
 
 ### What Earns Production-Ready Status
 
-| Criterion | Status |
-|-----------|--------|
-| Modern tech stack (Next.js 16, React 19, TanStack) | ✅ |
-| Route group layout architecture | ✅ |
-| Type-safe forms with Zod validation | ✅ |
-| Token-based auth with proactive refresh | ✅ |
-| Semantic color system | ✅ |
-| Dark mode support | ✅ |
-| Responsive mobile-first design | ✅ |
-| No inline styles | ✅ |
-| Accessibility (ARIA attributes) | ✅ |
-| Reduced motion preference | ✅ |
-| HTTP client with interceptors | ✅ |
-| Server-side prefetching (TanStack Hydration) | ✅ |
+| Criterion                                          | Status |
+| -------------------------------------------------- | ------ |
+| Modern tech stack (Next.js 16, React 19, TanStack) | ✅     |
+| Route group layout architecture                    | ✅     |
+| Type-safe forms with Zod validation                | ✅     |
+| Token-based auth with proactive refresh            | ✅     |
+| Semantic color system                              | ✅     |
+| Dark mode support                                  | ✅     |
+| Responsive mobile-first design                     | ✅     |
+| No inline styles                                   | ✅     |
+| Accessibility (ARIA attributes)                    | ✅     |
+| Reduced motion preference                          | ✅     |
+| HTTP client with interceptors                      | ✅     |
+| Server-side prefetching (TanStack Hydration)       | ✅     |
 
-### What Prevents Full Production-Ready
+### What Prideas Full Production-Ready
 
-| Gap | Priority |
-|-----|---------|
-| Dashboard pages are empty/stub | High |
-| Contact page missing | Medium |
-| Auth form code duplication | Medium |
-| Duplicate ThemeProvider | Medium |
-| File naming inconsistency | Low |
-| Unstyled file inputs | Low |
+| Gap                            | Priority |
+| ------------------------------ | -------- |
+| Dashboard pages are empty/stub | High     |
+| Contact page missing           | Medium   |
+| Auth form code duplication     | Medium   |
+| Duplicate ThemeProvider        | Medium   |
+| File naming inconsistency      | Low      |
+| Unstyled file inputs           | Low      |
 
 ---
 
@@ -326,8 +338,8 @@ Completing those pages and fixing the medium-priority issues listed above will b
 
 ---
 
-*Report generated by Claude Code — AI Senior Frontend Engineer*
-*EcoSpark Frontend Audit | May 2025*
+_Report generated by Claude Code — AI Senior Frontend Engineer_
+_EcoSpark Frontend Audit | May 2025_
 
 ---
 
@@ -345,6 +357,7 @@ dark:hover:border-emerald-800
 ```
 
 Icon containers inside cards:
+
 ```
 inline-flex size-11 items-center justify-center rounded-xl
 bg-emerald-100 text-emerald-600
@@ -371,7 +384,7 @@ dark:bg-emerald-900/40 dark:text-emerald-400
 <section className="border-t">
   <div className="relative overflow-hidden bg-linear-to-br from-emerald-600 to-emerald-700 py-20 sm:py-28">
     {/* orbs */}
-    <div className="pointer-events-none absolute inset-0">
+    <div className="pointer-ideas-none absolute inset-0">
       <div className="absolute -top-24 -right-24 size-80 rounded-full bg-white/10 blur-3xl" />
       <div className="absolute -bottom-24 -left-24 size-80 rounded-full bg-white/10 blur-3xl" />
     </div>
@@ -383,7 +396,7 @@ dark:bg-emerald-900/40 dark:text-emerald-400
 ### Hero Background Orbs Pattern
 
 ```tsx
-<div className="pointer-events-none absolute inset-0 select-none">
+<div className="pointer-ideas-none absolute inset-0 select-none">
   <div className="absolute -top-40 -right-32 size-96 rounded-full bg-emerald-100/60 blur-3xl dark:bg-emerald-900/20" />
   <div className="absolute bottom-0 -left-24 size-80 rounded-full bg-teal-50/80 blur-2xl dark:bg-teal-900/10" />
 </div>
@@ -391,43 +404,43 @@ dark:bg-emerald-900/40 dark:text-emerald-400
 
 ### Animation Classes
 
-| Class | Effect | Where |
-|-------|--------|--------|
-| `animate-eco-float` | Gentle vertical float 6s | Hero cards |
-| `eco-marquee` + `eco-marquee-track` | Infinite scroll LTR 18s | Trending topics |
-| `eco-idea-slider` + `eco-idea-slider-track` | Infinite scroll RTL 35s | Live ideas slider |
+| Class                                       | Effect                   | Where             |
+| ------------------------------------------- | ------------------------ | ----------------- |
+| `animate-eco-float`                         | Gentle vertical float 6s | Hero cards        |
+| `eco-marquee` + `eco-marquee-track`         | Infinite scroll LTR 18s  | Trending topics   |
+| `eco-idea-slider` + `eco-idea-slider-track` | Infinite scroll RTL 35s  | Live ideas slider |
 
-### Live Ideas Slider — `IdeaInfiniteSlider`
+### Live ideas Slider — `ideaInfiniteSlider`
 
-- **Location:** `src/components/shared/IdeaInfiniteSlider.tsx`
-- **Data source:** `getLimitedIdea()` via `useQuery` in LandingPage
+- **Location:** `src/components/shared/ideaInfiniteSlider.tsx`
+- **Data source:** `getLimitedidea()` via `useQuery` in LandingPage
 - **Animation:** `eco-idea-slide` keyframe (right → left), pauses on hover
 - **Card size:** `w-68` fixed width, image 40px height, category badge + title + description + author/votes footer
 - **Placement in LandingPage:** Section 7 — between Categories and Community Highlights
 
 ### Page Status
 
-| Page | Design Level | Design System |
-|------|-------------|---------------|
-| Landing Page | ✅ Production | Emerald, 13 sections, live slider |
-| About Page | ✅ Production | Emerald, 7 sections |
-| Mission Page | ✅ Updated | Emerald (was green-xxx, now consistent) |
-| Contact Page | ✅ Updated | Emerald (was green-xxx, now consistent) |
-| Login / Register | ✅ Clean | Emerald |
-| Dashboard Layout | ✅ Solid | — |
+| Page             | Design Level  | Design System                           |
+| ---------------- | ------------- | --------------------------------------- |
+| Landing Page     | ✅ Production | Emerald, 13 sections, live slider       |
+| About Page       | ✅ Production | Emerald, 7 sections                     |
+| Mission Page     | ✅ Updated    | Emerald (was green-xxx, now consistent) |
+| Contact Page     | ✅ Updated    | Emerald (was green-xxx, now consistent) |
+| Login / Register | ✅ Clean      | Emerald                                 |
+| Dashboard Layout | ✅ Solid      | —                                       |
 
 ### Improvements Applied (May 2025)
 
-| # | Change | File |
-|---|--------|------|
-| 1 | Added `eco-idea-slide` keyframe animation | `globals.css` |
-| 2 | Created `IdeaInfiniteSlider` reusable component | `shared/IdeaInfiniteSlider.tsx` |
-| 3 | Wired live backend data into slider on landing page | `shared/LandingPage.tsx` |
-| 4 | Removed `console.log` debugging statements | `shared/LandingPage.tsx` |
-| 5 | Removed unused commented `QueryClient` import | `shared/LandingPage.tsx` |
-| 6 | Rebuilt ContactPage with emerald design system + hero section + CTA | `contact/ContactPage.tsx` |
-| 7 | Rebuilt MissionPage with emerald design system, consistent card patterns | `mission/MissonPage.tsx` |
+| #   | Change                                                                   | File                            |
+| --- | ------------------------------------------------------------------------ | ------------------------------- |
+| 1   | Added `eco-idea-slide` keyframe animation                                | `globals.css`                   |
+| 2   | Created `ideaInfiniteSlider` reusable component                          | `shared/ideaInfiniteSlider.tsx` |
+| 3   | Wired live backend data into slider on landing page                      | `shared/LandingPage.tsx`        |
+| 4   | Removed `console.log` debugging statements                               | `shared/LandingPage.tsx`        |
+| 5   | Removed unused commented `QueryClient` import                            | `shared/LandingPage.tsx`        |
+| 6   | Rebuilt ContactPage with emerald design system + hero section + CTA      | `contact/ContactPage.tsx`       |
+| 7   | Rebuilt MissionPage with emerald design system, consistent card patterns | `mission/MissonPage.tsx`        |
 
 ---
 
-*Design model last updated: May 2025*
+_Design model last updated: May 2025_

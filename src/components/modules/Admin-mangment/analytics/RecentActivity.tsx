@@ -1,10 +1,12 @@
-﻿import {
-  Card,
-  CardContent,
-  CardHeader,
-  CardTitle,
-} from "@/components/ui/card";
-import { CheckCircle, Lightbulb, Star, TreePine, UserPlus, Zap } from "lucide-react";
+﻿import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
+import {
+  CheckCircle,
+  Lightbulb,
+  Star,
+  TreePine,
+  UserPlus,
+  Zap,
+} from "lucide-react";
 
 const ACTIVITIES = [
   {
@@ -23,7 +25,7 @@ const ACTIVITIES = [
   },
   {
     icon: Star,
-    label: "Idea marked as featured",
+    label: "idea marked as featured",
     time: "1 hr ago",
     color: "text-violet-500",
     bg: "bg-violet-50 dark:bg-violet-950/30",

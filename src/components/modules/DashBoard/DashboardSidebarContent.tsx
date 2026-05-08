@@ -8,12 +8,7 @@ import { cn } from "@/lib/utils";
 import { logoutAction } from "@/services/auth.service";
 import { NavSection } from "@/types/dashboard.type";
 import { UserInfo } from "@/types/user.types";
-import {
-  ChevronLeft,
-  ChevronRight,
-  LogOut,
-  Sprout,
-} from "lucide-react";
+import { ChevronLeft, ChevronRight, LogOut, Sprout } from "lucide-react";
 import Link from "next/link";
 import { usePathname, useRouter } from "next/navigation";
 import { type ComponentType, useState } from "react";
@@ -170,11 +165,11 @@ const DashboardSidebarContent = ({
         {/* Decorative orbs */}
         <div
           aria-hidden
-          className="pointer-events-none absolute -right-4 -top-4 size-16 rounded-full bg-white/10 blur-xl"
+          className="pointer-ideas-none absolute -right-4 -top-4 size-16 rounded-full bg-white/10 blur-xl"
         />
         <div
           aria-hidden
-          className="pointer-events-none absolute -bottom-3 left-1/3 size-12 rounded-full bg-teal-400/20 blur-lg"
+          className="pointer-ideas-none absolute -bottom-3 left-1/3 size-12 rounded-full bg-teal-400/20 blur-lg"
         />
         {/* Dot texture */}
         <div
@@ -320,12 +315,7 @@ const DashboardSidebarContent = ({
       </div>
 
       {/* ── Logout ───────────────────────────────────────────────────── */}
-      <div
-        className={cn(
-          "border-t py-1.5",
-          isCollapsed ? "px-2" : "px-1",
-        )}
-      >
+      <div className={cn("border-t py-1.5", isCollapsed ? "px-2" : "px-1")}>
         {isCollapsed ? (
           <CollapsedLogoutButton redirectTo="/login" />
         ) : (

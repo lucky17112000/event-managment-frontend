@@ -11,16 +11,16 @@ interface Insight {
 }
 
 function buildInsights(
-  totalIdeas: number,
-  approvedIdeas: number,
+  totalideas: number,
+  approvedideas: number,
   totalVotes: number,
   upVotes: number,
 ): Insight[] {
   const insights: Insight[] = [];
-  const approvalRate = totalIdeas > 0 ? (approvedIdeas / totalIdeas) * 100 : 0;
+  const approvalRate = totalideas > 0 ? (approvedideas / totalideas) * 100 : 0;
   const upVotePct = totalVotes > 0 ? (upVotes / totalVotes) * 100 : 0;
 
-  if (totalIdeas === 0) {
+  if (totalideas === 0) {
     insights.push({
       icon: Lightbulb,
       text: "Start submitting ideas to see your analytics here!",
@@ -76,8 +76,8 @@ function buildInsights(
     });
   }
 
-  const rejected = totalIdeas - approvedIdeas;
-  if (rejected > 0 && approvedIdeas > 0) {
+  const rejected = totalideas - approvedideas;
+  if (rejected > 0 && approvedideas > 0) {
     insights.push({
       icon: Info,
       text: `${rejected} idea${rejected > 1 ? "s" : ""} pending or rejected — review for improvements.`,
@@ -90,23 +90,23 @@ function buildInsights(
 }
 
 interface UserInsightsProps {
-  totalIdeas: number;
-  approvedIdeas: number;
+  totalideas: number;
+  approvedideas: number;
   totalVotes: number;
   upVotes: number;
   animationDelay?: string;
 }
 
 export function UserInsights({
-  totalIdeas,
-  approvedIdeas,
+  totalideas,
+  approvedideas,
   totalVotes,
   upVotes,
   animationDelay = "",
 }: UserInsightsProps) {
   const insights = buildInsights(
-    totalIdeas,
-    approvedIdeas,
+    totalideas,
+    approvedideas,
     totalVotes,
     upVotes,
   );

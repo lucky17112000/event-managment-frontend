@@ -1,7 +1,7 @@
-import AllIdeas from "@/components/shared/Idea";
-import { getIdea } from "@/services/idea.services";
+import Allideas from "@/components/shared/Idea";
+import { getidea } from "@/services/idea.services";
 import { getUserInfo } from "@/services/auth.service";
-// import { getIdea } from "@/services/auth.service";
+// import { getidea } from "@/services/auth.service";
 import { QueryClient } from "@tanstack/react-query";
 import React from "react";
 
@@ -14,10 +14,10 @@ const ideaPage = async () => {
   try {
     await queryClient.prefetchQuery({
       queryKey: ["idea", page, limit],
-      queryFn: () => getIdea({ page, limit, status: "APPROVED" }),
+      queryFn: () => getidea({ page, limit, status: "APPROVED" }),
     });
   } catch (error) {
-    console.error("Idea prefetch skipped:", error);
+    console.error("idea prefetch skipped:", error);
   }
 
   const user = await getUserInfo().catch(() => ({
@@ -28,15 +28,15 @@ const ideaPage = async () => {
   }));
   // const quryClient2 = new QueryClient();
   // // await quryClient2.prefetchQuery({
-  // //   queryKey: ["deleteIdea"],
-  // //   queryFn: deleteIdea,
+  // //   queryKey: ["deleteidea"],
+  // //   queryFn: deleteidea,
   // // });
 
   return (
     // <HydrationBoundary state={dehydrate(queryClient)}>
-    //   <IdeaList />
+    //   <ideaList />
     // </HydrationBoundary>
-    <AllIdeas user={user} />
+    <Allideas user={user} />
   );
 };
 

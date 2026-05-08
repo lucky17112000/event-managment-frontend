@@ -7,7 +7,6 @@ import { Card, CardContent } from "@/components/ui/card";
 import { LeafIcon, ChevronDownIcon, ChevronUpIcon } from "lucide-react";
 import { cn } from "@/lib/utils";
 
-
 const PREVIEW_LENGTH = 140;
 
 function BlogCard({ blog, index }: { blog: GetBlogResponse; index: number }) {
@@ -132,7 +131,7 @@ const BlogsShow = () => {
     <div className="min-h-screen bg-background">
       {/* Header */}
       <section className="relative border-b bg-muted/10 py-16 sm:py-20">
-        <div className="pointer-events-none absolute inset-0 overflow-hidden">
+        <div className="pointer-ideas-none absolute inset-0 overflow-hidden">
           <div className="absolute -top-20 -right-20 size-80 rounded-full bg-zinc-100/50 blur-3xl dark:bg-zinc-900/20 animate-pulse" />
           <div className="absolute bottom-0 -left-10 size-60 rounded-full bg-teal-50/70 blur-2xl dark:bg-teal-900/10 animate-pulse animation-delay-300" />
         </div>
@@ -148,8 +147,8 @@ const BlogsShow = () => {
             </span>
           </h1>
           <p className="mt-4 max-w-xl mx-auto text-muted-foreground animate-eco-fade-up animate-delay-200">
-            Insights, stories, and ideas from the EcoSpark community on
-            building a more sustainable future.
+            Insights, stories, and ideas from the EcoSpark community on building
+            a more sustainable future.
           </p>
         </div>
       </section>
@@ -177,7 +176,9 @@ const BlogsShow = () => {
           {!isLoading && !isError && blogs.length === 0 && (
             <div className="flex flex-col items-center justify-center py-20 text-center gap-4">
               <LeafIcon className="size-12 text-zinc-200 dark:text-zinc-800" />
-              <p className="text-muted-foreground">No blog posts yet. Check back soon!</p>
+              <p className="text-muted-foreground">
+                No blog posts yet. Check back soon!
+              </p>
             </div>
           )}
 

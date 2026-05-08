@@ -73,10 +73,7 @@ export function EcoSpinner({ size = "md", className }: EcoSpinnerProps) {
       />
       {/* Inner dot */}
       <div
-        className={cn(
-          "rounded-full bg-[oklch(0.72_0.2_145)]",
-          DOT_SIZES[size],
-        )}
+        className={cn("rounded-full bg-[oklch(0.72_0.2_145)]", DOT_SIZES[size])}
       />
     </div>
   );
@@ -94,15 +91,17 @@ interface EcoPageLoaderProps {
   message?: string;
 }
 
-export function EcoPageLoader({ message = "Loading EcoSpark…" }: EcoPageLoaderProps) {
+export function EcoPageLoader({
+  message = "Loading EcoSpark…",
+}: EcoPageLoaderProps) {
   return (
-    <div className="fixed inset-0 z-[9999] flex flex-col items-center justify-center bg-background/75 backdrop-blur-md">
+    <div className="fixed inset-0 z-9999 flex flex-col items-center justify-center bg-background/75 backdrop-blur-md">
       <div className="flex flex-col items-center gap-8">
         {/* Concentric pulse rings */}
         <div className="relative flex size-24 items-center justify-center">
-          <span className="absolute inset-0 animate-ping rounded-full bg-[oklch(0.72_0.2_145/0.12)] [animation-duration:1.6s]" />
-          <span className="absolute inset-3 animate-ping rounded-full bg-[oklch(0.65_0.18_170/0.1)] [animation-duration:1.6s] [animation-delay:200ms]" />
-          <span className="absolute inset-6 animate-ping rounded-full bg-[oklch(0.6_0.18_190/0.08)] [animation-duration:1.6s] [animation-delay:400ms]" />
+          <span className="absolute inset-0 animate-ping rounded-full bg-[oklch(0.72_0.2_145/0.12)] duration-1600" />
+          <span className="absolute inset-3 animate-ping rounded-full bg-[oklch(0.65_0.18_170/0.1)] duration-1600 delay-200" />
+          <span className="absolute inset-6 animate-ping rounded-full bg-[oklch(0.6_0.18_190/0.08)] duration-1600 delay-400" />
           <EcoSpinner size="xl" />
         </div>
 
@@ -125,9 +124,17 @@ interface EcoInlineLoaderProps {
   className?: string;
 }
 
-export function EcoInlineLoader({ label = "Loading…", className }: EcoInlineLoaderProps) {
+export function EcoInlineLoader({
+  label = "Loading…",
+  className,
+}: EcoInlineLoaderProps) {
   return (
-    <span className={cn("inline-flex items-center gap-2 text-sm text-muted-foreground", className)}>
+    <span
+      className={cn(
+        "inline-flex items-center gap-2 text-sm text-muted-foreground",
+        className,
+      )}
+    >
       <EcoSpinner size="xs" />
       {label}
     </span>
@@ -138,7 +145,12 @@ export function EcoInlineLoader({ label = "Loading…", className }: EcoInlineLo
 
 export function EcoStatCardSkeleton({ className }: { className?: string }) {
   return (
-    <div className={cn("rounded-2xl border bg-card p-5 space-y-3 overflow-hidden", className)}>
+    <div
+      className={cn(
+        "rounded-2xl border bg-card p-5 space-y-3 overflow-hidden",
+        className,
+      )}
+    >
       <div className="flex items-center justify-between">
         <EcoSkeleton className="h-4 w-24" />
         <EcoSkeleton className="size-10 rounded-xl" />
@@ -165,9 +177,18 @@ const STATS_GRID: Record<number, string> = {
   4: "grid-cols-2 lg:grid-cols-4",
 };
 
-export function EcoStatsRowSkeleton({ count = 4, className }: EcoStatsRowSkeletonProps) {
+export function EcoStatsRowSkeleton({
+  count = 4,
+  className,
+}: EcoStatsRowSkeletonProps) {
   return (
-    <div className={cn("grid gap-4", STATS_GRID[count] ?? "grid-cols-2 lg:grid-cols-4", className)}>
+    <div
+      className={cn(
+        "grid gap-4",
+        STATS_GRID[count] ?? "grid-cols-2 lg:grid-cols-4",
+        className,
+      )}
+    >
       {Array.from({ length: count }).map((_, i) => (
         <EcoStatCardSkeleton key={i} />
       ))}
@@ -175,11 +196,13 @@ export function EcoStatsRowSkeleton({ count = 4, className }: EcoStatsRowSkeleto
   );
 }
 
-// ─── Idea / content card skeleton ─────────────────────────────────────────────
+// ─── idea / content card skeleton ─────────────────────────────────────────────
 
 export function EcoCardSkeleton({ className }: { className?: string }) {
   return (
-    <div className={cn("rounded-2xl border bg-card overflow-hidden", className)}>
+    <div
+      className={cn("rounded-2xl border bg-card overflow-hidden", className)}
+    >
       {/* Thumbnail */}
       <EcoSkeleton className="aspect-video w-full rounded-none" />
 
@@ -270,14 +293,22 @@ export function EcoTableSkeleton({
   const cols = Math.min(columns, COL_WIDTHS.length);
 
   return (
-    <div className={cn("w-full overflow-hidden rounded-xl border bg-card", className)}>
+    <div
+      className={cn(
+        "w-full overflow-hidden rounded-xl border bg-card",
+        className,
+      )}
+    >
       {/* Header */}
       {showHeader && (
         <div className="flex items-center gap-4 border-b bg-muted/40 px-4 py-3.5">
           {Array.from({ length: cols }).map((_, i) => (
             <EcoSkeleton
               key={i}
-              className={cn("h-4 shrink-0", i === cols - 1 ? "ml-auto w-16" : COL_WIDTHS[i])}
+              className={cn(
+                "h-4 shrink-0",
+                i === cols - 1 ? "ml-auto w-16" : COL_WIDTHS[i],
+              )}
             />
           ))}
         </div>
@@ -371,7 +402,10 @@ export function EcoDashboardSkeleton({ className }: { className?: string }) {
                 <EcoSkeleton className="h-3.5 w-10" />
               </div>
               <div className="h-2 w-full rounded-full bg-muted overflow-hidden">
-                <EcoSkeleton className="h-full rounded-full" style={{ width: `${val}%` }} />
+                <EcoSkeleton
+                  className="h-full rounded-full"
+                  style={{ width: `${val}%` }}
+                />
               </div>
             </div>
           ))}
@@ -388,7 +422,9 @@ export function EcoDashboardSkeleton({ className }: { className?: string }) {
 
 export function EcoBlogCardSkeleton({ className }: { className?: string }) {
   return (
-    <div className={cn("rounded-2xl border bg-card overflow-hidden", className)}>
+    <div
+      className={cn("rounded-2xl border bg-card overflow-hidden", className)}
+    >
       <EcoSkeleton className="aspect-video w-full rounded-none" />
       <div className="space-y-3 p-5">
         {/* Tags */}
@@ -445,7 +481,7 @@ export function EcoProfileSkeleton({ className }: { className?: string }) {
     <div className={cn("space-y-6", className)}>
       {/* Cover + avatar */}
       <div className="relative">
-        <EcoSkeleton className="h-40 w-full rounded-2xl sm:h-52 rounded-none" />
+        <EcoSkeleton className="h-40 w-full rounded-2xl sm:h-52" />
         <div className="absolute -bottom-10 left-6">
           <EcoSkeleton className="size-20 rounded-full ring-4 ring-background sm:size-24" />
         </div>
@@ -487,7 +523,10 @@ interface EcoFormSkeletonProps {
   className?: string;
 }
 
-export function EcoFormSkeleton({ fields = 4, className }: EcoFormSkeletonProps) {
+export function EcoFormSkeleton({
+  fields = 4,
+  className,
+}: EcoFormSkeletonProps) {
   return (
     <div className={cn("space-y-5", className)}>
       {Array.from({ length: fields }).map((_, i) => (
@@ -557,9 +596,9 @@ export function EcoFullPageSkeleton({ className }: { className?: string }) {
   );
 }
 
-// ─── Idea detail skeleton ─────────────────────────────────────────────────────
+// ─── idea detail skeleton ─────────────────────────────────────────────────────
 
-export function EcoIdeaDetailSkeleton({ className }: { className?: string }) {
+export function EcoideaDetailSkeleton({ className }: { className?: string }) {
   return (
     <div className={cn("space-y-6 p-5 lg:p-8 max-w-4xl mx-auto", className)}>
       {/* Breadcrumb */}

@@ -34,7 +34,7 @@ export type LandingNavbarProps = {
 
 const DEFAULT_LINKS: LandingNavLink[] = [
   { label: "Home", href: "/" },
-  { label: "Events", href: "/idea" },
+  { label: "ideas", href: "/idea" },
   { label: "Dashboard", href: "/dashboard" },
   { label: "Blog", href: "/blog" },
   { label: "About", href: "/about" },
@@ -52,15 +52,17 @@ const isLinkActive = (href: string, pathname: string): boolean => {
   return pathname === base || pathname.startsWith(`${base}/`);
 };
 
-function NavLink({ href, label, isActive }: LandingNavLink & { isActive: boolean }) {
+function NavLink({
+  href,
+  label,
+  isActive,
+}: LandingNavLink & { isActive: boolean }) {
   return (
     <Link
       href={href}
       className={cn(
         "relative px-4 py-2 text-sm font-medium transition-colors duration-200",
-        isActive
-          ? "text-zinc-400"
-          : "text-white/80 hover:text-white",
+        isActive ? "text-zinc-400" : "text-white/80 hover:text-white",
       )}
     >
       {label}
@@ -72,7 +74,7 @@ function NavLink({ href, label, isActive }: LandingNavLink & { isActive: boolean
 }
 
 const LandingNavbar = ({
-  brandName = "EventHub",
+  brandName = "ideaHub",
   brandHref = "/",
   links = DEFAULT_LINKS,
   loginHref = "/login",
@@ -102,7 +104,10 @@ const LandingNavbar = ({
     >
       <div className="mx-auto flex w-full max-w-7xl items-center justify-between gap-4 px-4 py-4 sm:px-6">
         {/* Brand */}
-        <Link href={brandHref} className="group flex shrink-0 items-center gap-2.5">
+        <Link
+          href={brandHref}
+          className="group flex shrink-0 items-center gap-2.5"
+        >
           <span className="inline-flex size-9 items-center justify-center rounded-lg bg-zinc-500 text-white shadow-sm transition-transform duration-200 group-hover:scale-105 group-hover:bg-zinc-600">
             <CalendarDaysIcon className="size-5" aria-hidden="true" />
           </span>
@@ -126,13 +131,18 @@ const LandingNavbar = ({
             <DropdownMenuTrigger
               className={cn(
                 "flex select-none items-center gap-1 px-4 py-2 text-sm font-medium outline-none transition-colors duration-200",
-                exploreActive ? "text-zinc-400" : "text-white/80 hover:text-white",
+                exploreActive
+                  ? "text-zinc-400"
+                  : "text-white/80 hover:text-white",
               )}
             >
               Explore
               <ChevronDownIcon className="size-3.5 opacity-70 transition-transform duration-200 [[data-state=open]>&]:rotate-180" />
             </DropdownMenuTrigger>
-            <DropdownMenuContent align="center" className="w-48 border-zinc-800 bg-zinc-900">
+            <DropdownMenuContent
+              align="center"
+              className="w-48 border-zinc-800 bg-zinc-900"
+            >
               {EXPLORE_LINKS.map((item) => (
                 <DropdownMenuItem
                   key={item.href}
@@ -178,7 +188,10 @@ const LandingNavbar = ({
                 <MenuIcon className="size-5" />
               </Button>
             </SheetTrigger>
-            <SheetContent side="right" className="w-72 border-zinc-800 bg-black">
+            <SheetContent
+              side="right"
+              className="w-72 border-zinc-800 bg-black"
+            >
               <SheetHeader className="pb-3">
                 <SheetTitle className="flex items-center gap-2 text-base text-white">
                   <span className="inline-flex size-7 items-center justify-center rounded-md bg-zinc-500 text-white">
@@ -220,7 +233,9 @@ const LandingNavbar = ({
                       href={item.href}
                       className={cn(
                         "rounded-lg px-3 py-2.5 pl-5 text-sm font-medium transition-colors",
-                        active ? "text-zinc-400" : "text-white/60 hover:text-white",
+                        active
+                          ? "text-zinc-400"
+                          : "text-white/60 hover:text-white",
                       )}
                     >
                       {item.label}

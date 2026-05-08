@@ -1,12 +1,12 @@
 import { NextRequest, NextResponse } from "next/server";
 
-// This route is a proxy used by the frontend Create Idea flow.
+// This route is a proxy used by the frontend Create idea flow.
 // Frontend calls: fetch("/api/ideas")
 // We forward it to the backend: ${NEXT_PUBLIC_API_BASE_URL}/api/v1/idea (or /idea if base already includes /api/v1)
 
 const API_BASE_URL = process.env.NEXT_PUBLIC_API_BASE_URL;
 
-const getBackendIdeaUrl = (): string => {
+const getBackendideaUrl = (): string => {
   if (!API_BASE_URL) return "";
   const base = API_BASE_URL.replace(/\/$/, "");
   // If the env already points to the API version root (e.g. http://localhost:5000/api/v1)
@@ -29,7 +29,7 @@ export async function GET(request: NextRequest) {
     );
   }
 
-  const backendUrl = getBackendIdeaUrl();
+  const backendUrl = getBackendideaUrl();
 
   const cookie = request.headers.get("cookie") ?? "";
   const accessToken = cookie ? getAccessTokenFromCookie(cookie) : null;
@@ -61,7 +61,7 @@ export async function POST(request: NextRequest) {
     );
   }
 
-  const backendUrl = getBackendIdeaUrl();
+  const backendUrl = getBackendideaUrl();
 
   const cookie = request.headers.get("cookie") ?? "";
   const accessToken = cookie ? getAccessTokenFromCookie(cookie) : null;

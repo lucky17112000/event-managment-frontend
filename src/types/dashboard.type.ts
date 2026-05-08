@@ -27,7 +27,7 @@ export interface IAdminDashboardData {
   paymentCount: number;
   pieChartData: PieChartData[];
   barChartData: BarChartData[];
-  totalRevenue: number;
+  totalRideaue: number;
 }
 
 /*
@@ -37,12 +37,12 @@ export interface IAdminDashboardData {
  reviewCount,
     patientCount: patientCount.length,
     appoinmentCount,
-    totalRevenue: totalRevenue._sum.amount || 0,
+    totalRideaue: totalRideaue._sum.amount || 0,
     appoinmentStatusDistribution: formattedAppointmentStatusDistribution,
 */
 // export interface IDoctorDashboardData {
 //   patientCount: number;
 //   appoinmentCount: number;
-//   totalRevenue: number;
+//   totalRideaue: number;
 //   appoinmentStatusDistribution: PieChartData[];
 // }

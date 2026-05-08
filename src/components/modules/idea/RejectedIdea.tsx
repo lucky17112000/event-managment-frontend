@@ -1,10 +1,10 @@
 ﻿"use client";
 
-// import { deleteIdea, getIdea } from "@/services/idea.services";
+// import { deleteidea, getidea } from "@/services/idea.services";
 import { useMutation, useQuery } from "@tanstack/react-query";
 import { useEffect, useMemo, useState } from "react";
 import { useRouter } from "next/navigation";
-import type { IIdeaResponse } from "@/types/idea.type";
+import type { IideaResponse } from "@/types/idea.type";
 import { Badge } from "@/components/ui/badge";
 import { Button } from "@/components/ui/button";
 import {
@@ -25,9 +25,9 @@ import {
 } from "@/components/ui/collapsible";
 import { cn } from "@/lib/utils";
 import { X } from "lucide-react";
-// import { getIdeatestvaia } from "@/services/idea.services";
+// import { getideatestvaia } from "@/services/idea.services";
 import { useForm } from "@tanstack/react-form";
-import { getIdea } from "@/services/idea.services";
+import { getidea } from "@/services/idea.services";
 import {
   Pagination,
   PaginationContent,
@@ -37,7 +37,7 @@ import {
   PaginationNext,
   PaginationPrevious,
 } from "@/components/ui/pagination";
-import { IdeaCardShell } from "@/components/shared/IdeaCardShell";
+import { ideaCardShell as IdeaCardShell } from "@/components/shared/IdeaCardShell";
 
 //pagination
 type pageItem = number | "ellipsis";
@@ -62,7 +62,7 @@ const getPaginationItems = (currentPage: number, totalPages: number) => {
 };
 //pagination
 
-const DEFAULT_IDEA_IMAGE = "/window.svg";
+const DEFAULT_idea_IMAGE = "/window.svg";
 
 type ImageLike = string | { url?: unknown };
 
@@ -102,7 +102,7 @@ const safeFormatDate = (value: unknown) => {
 };
 
 const pickImage = (urls: string[], preferredIndex: number): string => {
-  return urls[preferredIndex] || urls[0] || DEFAULT_IDEA_IMAGE;
+  return urls[preferredIndex] || urls[0] || DEFAULT_idea_IMAGE;
 };
 
 type UserLike = {
@@ -180,16 +180,16 @@ const parseFeedback = (feedback: FeedbackLike) => {
   return [{ message: trimmed, reason: "" }];
 };
 
-const RejectedIdeaPage = ({ user }: { user: UserLike }) => {
+const RejectedideaPage = ({ user }: { user: UserLike }) => {
   const router = useRouter();
   const [drawerOpen, setDrawerOpen] = useState(false);
-  const [selectedIdea, setSelectedIdea] = useState<IIdeaResponse | null>(null);
+  const [selectedidea, setSelectedidea] = useState<IideaResponse | null>(null);
   const [feedbackOpen, setFeedbackOpen] = useState(false);
-  const [openFeedbackIdeaId, setOpenFeedbackIdeaId] = useState<string | null>(
+  const [openFeedbackideaId, setOpenFeedbackideaId] = useState<string | null>(
     null,
   );
   const grapIdClick = async (id: string) => {
-    // await deleteIdea(id);
+    // await deleteidea(id);
   };
 
   const userId =
@@ -206,7 +206,7 @@ const RejectedIdeaPage = ({ user }: { user: UserLike }) => {
 
   const { data } = useQuery({
     queryKey: ["idea", page, limit],
-    queryFn: () => getIdea({ page, limit }),
+    queryFn: () => getidea({ page, limit }),
   });
   //!SECTION pagination
   const meta = data?.meta;
@@ -233,10 +233,10 @@ const RejectedIdeaPage = ({ user }: { user: UserLike }) => {
   //!SECTION pagination
 
   const ideas = useMemo(() => {
-    return Array.isArray(data?.data) ? data.data : ([] as IIdeaResponse[]);
+    return Array.isArray(data?.data) ? data.data : ([] as IideaResponse[]);
   }, [data]);
 
-  const rejectedIdeas = useMemo(() => {
+  const rejectedideas = useMemo(() => {
     return ideas.filter((idea) => {
       const matchesStatus = idea?.status === "REJECTED";
       if (!matchesStatus) return false;
@@ -248,11 +248,11 @@ const RejectedIdeaPage = ({ user }: { user: UserLike }) => {
   }, [ideas, userId]);
 
   const selectedFeedback = useMemo(() => {
-    return parseFeedback(selectedIdea?.feedback as FeedbackLike);
-  }, [selectedIdea?.feedback]);
+    return parseFeedback(selectedidea?.feedback as FeedbackLike);
+  }, [selectedidea?.feedback]);
 
   const selectedImages = useMemo(() => {
-    const urls = normalizeImageUrls(selectedIdea?.images);
+    const urls = normalizeImageUrls(selectedidea?.images);
     const coverImage = pickImage(urls, 0);
     const descriptionImage = pickImage(urls, 1);
     const solutionImage = pickImage(urls, 2);
@@ -269,7 +269,7 @@ const RejectedIdeaPage = ({ user }: { user: UserLike }) => {
       solutionImage,
       extraImages,
     };
-  }, [selectedIdea]);
+  }, [selectedidea]);
 
   return (
     <div className="w-full">
@@ -277,17 +277,17 @@ const RejectedIdeaPage = ({ user }: { user: UserLike }) => {
         <div className="flex items-end justify-between gap-3">
           <div>
             <h1 className="text-lg font-semibold tracking-tight">
-              Rejected Ideas
+              Rejected ideas
             </h1>
             <p className="text-sm text-muted-foreground">
               Showing only ideas with status REJECTED.
             </p>
           </div>
-          <Badge variant="secondary">{rejectedIdeas.length}</Badge>
+          <Badge variant="secondary">{rejectedideas.length}</Badge>
         </div>
 
         <div className="mt-5 grid gap-5 sm:grid-cols-2 lg:grid-cols-3">
-          {rejectedIdeas.map((idea) => {
+          {rejectedideas.map((idea) => {
             const imageUrls = normalizeImageUrls(idea?.images);
             const coverImage = pickImage(imageUrls, 0);
 
@@ -305,9 +305,7 @@ const RejectedIdeaPage = ({ user }: { user: UserLike }) => {
                 createdAt={createdAt}
                 category={idea?.category?.name}
                 isPaid={idea?.isPaid}
-                price={
-                  typeof idea?.price === "number" ? idea.price : undefined
-                }
+                price={typeof idea?.price === "number" ? idea.price : undefined}
                 topRightBadge={
                   <span className="inline-flex items-center rounded-full bg-red-500/90 px-2 py-0.5 text-[10px] font-bold text-white">
                     Rejected
@@ -328,7 +326,7 @@ const RejectedIdeaPage = ({ user }: { user: UserLike }) => {
                         );
                         return;
                       }
-                      setSelectedIdea(idea);
+                      setSelectedidea(idea);
                       setFeedbackOpen(false);
                       setDrawerOpen(true);
                     }}
@@ -339,16 +337,22 @@ const RejectedIdeaPage = ({ user }: { user: UserLike }) => {
               >
                 {/* Feedback collapsible as children */}
                 {(() => {
-                  const feedbackItems = parseFeedback(idea?.feedback as unknown as FeedbackLike);
+                  const feedbackItems = parseFeedback(
+                    idea?.feedback as unknown as FeedbackLike,
+                  );
                   const hasFeedback = feedbackItems.length > 0;
-                  const isOpen = openFeedbackIdeaId === idea?.id;
+                  const isOpen = openFeedbackideaId === idea?.id;
                   return (
                     <Collapsible
                       open={isOpen}
-                      onOpenChange={(open) => setOpenFeedbackIdeaId(open ? idea?.id : null)}
+                      onOpenChange={(open) =>
+                        setOpenFeedbackideaId(open ? idea?.id : null)
+                      }
                     >
                       <div className="flex items-center justify-between gap-2">
-                        <p className="text-xs font-medium text-muted-foreground">Feedback</p>
+                        <p className="text-xs font-medium text-muted-foreground">
+                          Feedback
+                        </p>
                         <CollapsibleTrigger
                           disabled={!hasFeedback}
                           className={cn(
@@ -358,7 +362,11 @@ const RejectedIdeaPage = ({ user }: { user: UserLike }) => {
                               : "cursor-not-allowed opacity-50",
                           )}
                         >
-                          {hasFeedback ? (isOpen ? "Hide" : "Show") : "No feedback"}
+                          {hasFeedback
+                            ? isOpen
+                              ? "Hide"
+                              : "Show"
+                            : "No feedback"}
                         </CollapsibleTrigger>
                       </div>
                       <CollapsibleContent className="mt-2 space-y-2">
@@ -368,7 +376,9 @@ const RejectedIdeaPage = ({ user }: { user: UserLike }) => {
                             className="rounded-xl border bg-muted/30 p-3"
                           >
                             <div className="flex flex-wrap items-center justify-between gap-2">
-                              <p className="text-xs font-medium text-muted-foreground">Admin message</p>
+                              <p className="text-xs font-medium text-muted-foreground">
+                                Admin message
+                              </p>
                               {item.reason ? (
                                 <Badge variant="outline">{item.reason}</Badge>
                               ) : null}
@@ -391,7 +401,7 @@ const RejectedIdeaPage = ({ user }: { user: UserLike }) => {
           open={drawerOpen}
           onOpenChange={(open) => {
             setDrawerOpen(open);
-            if (!open) setSelectedIdea(null);
+            if (!open) setSelectedidea(null);
             if (!open) setFeedbackOpen(false);
           }}
         >
@@ -401,25 +411,25 @@ const RejectedIdeaPage = ({ user }: { user: UserLike }) => {
                 <div className="flex items-start justify-between gap-3">
                   <div className="min-w-0">
                     <DrawerTitle className="line-clamp-2">
-                      {selectedIdea?.title || "Idea Details"}
+                      {selectedidea?.title || "idea Details"}
                     </DrawerTitle>
                     <DrawerDescription className="mt-1">
-                      {selectedIdea?.author?.name ||
-                        selectedIdea?.authorName ||
+                      {selectedidea?.author?.name ||
+                        selectedidea?.authorName ||
                         "Unknown"}
-                      {selectedIdea?.createdAt
-                        ? ` • ${safeFormatDate(selectedIdea.createdAt)}`
+                      {selectedidea?.createdAt
+                        ? ` • ${safeFormatDate(selectedidea.createdAt)}`
                         : ""}
                     </DrawerDescription>
                   </div>
 
                   <div className="flex shrink-0 items-center gap-2">
-                    {selectedIdea?.category?.name ? (
+                    {selectedidea?.category?.name ? (
                       <Badge variant="outline">
-                        {selectedIdea.category.name}
+                        {selectedidea.category.name}
                       </Badge>
                     ) : null}
-                    {selectedIdea?.isPaid ? (
+                    {selectedidea?.isPaid ? (
                       <Badge className="border-destructive/30 bg-destructive text-destructive-foreground">
                         PAID
                       </Badge>
@@ -437,12 +447,12 @@ const RejectedIdeaPage = ({ user }: { user: UserLike }) => {
               <div className="px-4 pb-2">
                 <img
                   src={selectedImages.coverImage}
-                  alt="Idea cover"
+                  alt="idea cover"
                   className="h-56 w-full rounded-xl object-cover"
                   loading="lazy"
                   onError={(e) => {
                     (e.currentTarget as HTMLImageElement).src =
-                      DEFAULT_IDEA_IMAGE;
+                      DEFAULT_idea_IMAGE;
                   }}
                 />
               </div>
@@ -454,7 +464,7 @@ const RejectedIdeaPage = ({ user }: { user: UserLike }) => {
                       Problem Statement
                     </p>
                     <p className="mt-1 whitespace-pre-line text-sm leading-relaxed text-foreground/90">
-                      {selectedIdea?.problemStatement || "—"}
+                      {selectedidea?.problemStatement || "—"}
                     </p>
                   </div>
 
@@ -508,13 +518,13 @@ const RejectedIdeaPage = ({ user }: { user: UserLike }) => {
                       loading="lazy"
                       onError={(e) => {
                         (e.currentTarget as HTMLImageElement).src =
-                          DEFAULT_IDEA_IMAGE;
+                          DEFAULT_idea_IMAGE;
                       }}
                     />
                     <div>
                       <p className="text-sm font-semibold">Description</p>
                       <p className="mt-1 whitespace-pre-line text-sm leading-relaxed text-foreground/85">
-                        {selectedIdea?.description || "—"}
+                        {selectedidea?.description || "—"}
                       </p>
                     </div>
                   </div>
@@ -529,7 +539,7 @@ const RejectedIdeaPage = ({ user }: { user: UserLike }) => {
                       loading="lazy"
                       onError={(e) => {
                         (e.currentTarget as HTMLImageElement).src =
-                          DEFAULT_IDEA_IMAGE;
+                          DEFAULT_idea_IMAGE;
                       }}
                     />
                     <div>
@@ -538,7 +548,7 @@ const RejectedIdeaPage = ({ user }: { user: UserLike }) => {
                       </p>
                       <div className="mt-2 rounded-xl border bg-muted/30 p-3 sm:p-4">
                         <p className="whitespace-pre-wrap wrap-break-word text-base leading-7 text-foreground">
-                          {selectedIdea?.solution || "—"}
+                          {selectedidea?.solution || "—"}
                         </p>
                       </div>
                     </div>
@@ -554,12 +564,12 @@ const RejectedIdeaPage = ({ user }: { user: UserLike }) => {
                             <img
                               key={url}
                               src={url}
-                              alt="Idea image"
+                              alt="idea image"
                               className="aspect-square w-full rounded-xl object-cover"
                               loading="lazy"
                               onError={(e) => {
                                 (e.currentTarget as HTMLImageElement).src =
-                                  DEFAULT_IDEA_IMAGE;
+                                  DEFAULT_idea_IMAGE;
                               }}
                             />
                           ))}
@@ -579,7 +589,7 @@ const RejectedIdeaPage = ({ user }: { user: UserLike }) => {
           </DrawerContent>
         </Drawer>
 
-        {rejectedIdeas.length === 0 ? (
+        {rejectedideas.length === 0 ? (
           <div className="mt-10 rounded-2xl border bg-muted/30 p-6 text-sm text-muted-foreground">
             No REJECTED ideas found.
           </div>
@@ -601,7 +611,7 @@ const RejectedIdeaPage = ({ user }: { user: UserLike }) => {
                 <PaginationPrevious
                   href="#"
                   aria-disabled={!canGoPrev}
-                  className={!canGoPrev ? "pointer-events-none opacity-50" : ""}
+                  className={!canGoPrev ? "pointer-ideas-none opacity-50" : ""}
                   onClick={(e) => {
                     e.preventDefault();
                     if (!canGoPrev) return;
@@ -642,7 +652,7 @@ const RejectedIdeaPage = ({ user }: { user: UserLike }) => {
                 <PaginationNext
                   href="#"
                   aria-disabled={!canGoNext}
-                  className={!canGoNext ? "pointer-events-none opacity-50" : ""}
+                  className={!canGoNext ? "pointer-ideas-none opacity-50" : ""}
                   onClick={(e) => {
                     e.preventDefault();
                     if (!canGoNext) return;
@@ -658,4 +668,4 @@ const RejectedIdeaPage = ({ user }: { user: UserLike }) => {
   );
 };
 
-export default RejectedIdeaPage;
+export default RejectedideaPage;

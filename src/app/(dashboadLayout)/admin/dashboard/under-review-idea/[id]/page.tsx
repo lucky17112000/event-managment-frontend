@@ -8,8 +8,8 @@ import { Label } from "@/components/ui/label";
 import { Textarea } from "@/components/ui/textarea";
 import {
   ideaUpdatebyAdminAction,
-  toggleIdeaIspaidAction,
-  toggleIdeaIspaidPayload,
+  toggleideaIspaidAction,
+  toggleideaIspaidPayload,
 } from "@/services/idea.services";
 import type { ApiResponse } from "@/types/api.types";
 import { useForm } from "@tanstack/react-form";
@@ -17,14 +17,14 @@ import { useMutation } from "@tanstack/react-query";
 import { useParams, useSearchParams } from "next/navigation";
 import { useState } from "react";
 
-type IdeaUpdateByAdminPayload = {
+type ideaUpdateByAdminPayload = {
   ideaId: string;
   ideaStatus: "APPROVED" | "REJECTED" | "";
   message: string;
   reason:
     | "FEASIBILITY_ISSUE"
     | "INCOMPLETE"
-    | "DUPLICATE_IDEA"
+    | "DUPLICATE_idea"
     | "IRRELEVANT"
     | "OTHER"
     | "";
@@ -34,10 +34,10 @@ type IdeaUpdateByAdminPayload = {
 /*
 "ideaId":"e358b52b-674f-4f05-8ba3-00b9ad3021be",
     "ideaStatus":"APPROVED",
-    "message":"Your Idea is Awesome i approved it lets enjoy",
+    "message":"Your idea is Awesome i approved it lets enjoy",
     "reason":"OTHER"*/
 
-const IdeaReciePage = () => {
+const ideaReciePage = () => {
   const params = useParams();
   const searchParams = useSearchParams();
   const ideaIdFromParams =
@@ -59,14 +59,14 @@ const IdeaReciePage = () => {
   const [isPaid, setIsPaid] = useState<boolean>(isPaidFromQuery ?? false);
   const [serverError, setServerError] = useState<string | null>(null);
   const { mutateAsync } = useMutation({
-    mutationFn: (payload: IdeaUpdateByAdminPayload) =>
+    mutationFn: (payload: ideaUpdateByAdminPayload) =>
       ideaUpdatebyAdminAction(payload),
   });
 
-  const { mutateAsync: toggleIdeaIspaid, isPending: isTogglingPaid } =
+  const { mutateAsync: toggleideaIspaid, isPending: isTogglingPaid } =
     useMutation({
-      mutationFn: (payload: toggleIdeaIspaidPayload) =>
-        toggleIdeaIspaidAction(payload),
+      mutationFn: (payload: toggleideaIspaidPayload) =>
+        toggleideaIspaidAction(payload),
     });
   const form = useForm({
     defaultValues: {
@@ -79,7 +79,7 @@ const IdeaReciePage = () => {
       setServerError(null);
       try {
         const result = (await mutateAsync(
-          value as IdeaUpdateByAdminPayload,
+          value as ideaUpdateByAdminPayload,
         )) as ApiResponse<unknown> | undefined;
         if (result && result.success === false) {
           setServerError(
@@ -113,7 +113,7 @@ const IdeaReciePage = () => {
         <Card className="overflow-hidden">
           <CardHeader className="border-b">
             <CardTitle className="text-base sm:text-lg">
-              Edit Idea (Admin Review)
+              Edit idea (Admin Review)
             </CardTitle>
           </CardHeader>
 
@@ -121,7 +121,7 @@ const IdeaReciePage = () => {
             <form.Field name="ideaId">
               {(field) => (
                 <div className="space-y-1.5">
-                  <Label htmlFor={field.name}>Idea ID</Label>
+                  <Label htmlFor={field.name}>idea ID</Label>
                   <input
                     id={field.name}
                     name={field.name}
@@ -146,7 +146,7 @@ const IdeaReciePage = () => {
                     setServerError(null);
                     const nextPaid = !isPaid;
                     try {
-                      const result = await toggleIdeaIspaid({
+                      const result = await toggleideaIspaid({
                         ideaId: ideaIdFromParams,
                         isPaid: nextPaid,
                       });
@@ -226,7 +226,7 @@ const IdeaReciePage = () => {
                         FEASIBILITY_ISSUE
                       </option>
                       <option value="INCOMPLETE">INCOMPLETE</option>
-                      <option value="DUPLICATE_IDEA">DUPLICATE_IDEA</option>
+                      <option value="DUPLICATE_idea">DUPLICATE_idea</option>
                       <option value="IRRELEVANT">IRRELEVANT</option>
                       <option value="OTHER">OTHER</option>
                     </select>
@@ -269,7 +269,7 @@ const IdeaReciePage = () => {
                   pendingLabel="Updating..."
                   classname="w-full h-10 rounded-lg"
                 >
-                  Update Idea
+                  Update idea
                 </AppSubmitButton>
               )}
             </form.Subscribe>
@@ -280,4 +280,4 @@ const IdeaReciePage = () => {
   );
 };
 
-export default IdeaReciePage;
+export default ideaReciePage;

@@ -28,6 +28,7 @@ import {
   GlobeIcon,
   ChevronRightIcon,
   ChevronLeftIcon,
+  ChevronDownIcon,
   QuoteIcon,
   MicIcon,
   TrophyIcon,
@@ -41,8 +42,8 @@ import {
 } from "lucide-react";
 import { Footer2 } from "../footer2";
 import { useQuery } from "@tanstack/react-query";
-import { getLimitedIdea } from "@/services/idea.services";
-import { IdeaInfiniteSlider } from "./IdeaInfiniteSlider";
+import { getLimitedidea } from "@/services/idea.services";
+import { ideaInfiniteSlider } from "./IdeaInfiniteSlider";
 import { getBlogs, GetBlogResponse } from "@/services/blog.service";
 
 // ── hero slides ───────────────────────────────────────────────────────────────
@@ -66,23 +67,6 @@ const HERO_SLIDES = [
     },
   },
   {
-    src: "/pic2.jpg",
-    alt: "Tech conference speakers",
-    category: "Tech Conference",
-    title: "Where Ideas\nShape Tomorrow",
-    subtitle:
-      "Connect with 2,000+ innovators, builders, and thought leaders redefining the future of technology.",
-    location: "San Francisco Convention Center",
-    date: "Jul 8–10, 2025",
-    eventCard: {
-      title: "Global Tech Summit 2025",
-      badge: "HOT",
-      seats: 89,
-      soldPct: 91,
-      price: "From $299",
-    },
-  },
-  {
     src: "/pic3.jpg",
     alt: "Community event gathering",
     category: "Community Event",
@@ -97,6 +81,23 @@ const HERO_SLIDES = [
       seats: 512,
       soldPct: 43,
       price: "Free Entry",
+    },
+  },
+  {
+    src: "/2222222.jpg",
+    alt: "Premium event experience",
+    category: "Premium Event",
+    title: "Experience\nUnforgettable Moments",
+    subtitle:
+      "Discover curated events designed to create lasting memories and meaningful connections.",
+    location: "Downtown Event Center",
+    date: "Sep 5–7, 2025",
+    eventCard: {
+      title: "Exclusive Experience Showcase",
+      badge: "NEW",
+      seats: 156,
+      soldPct: 62,
+      price: "From $129",
     },
   },
 ];
@@ -381,39 +382,39 @@ const ARTICLES = [
   },
 ];
 
-const FAQS = [
-  {
-    q: "What is EventHub?",
-    a: "EventHub is a platform where anyone can discover, create, and manage events — from intimate community meetups to large-scale conferences and festivals.",
-  },
-  {
-    q: "How do I list my event?",
-    a: "Create a free account, navigate to your dashboard, and click 'Create Event'. Fill in your event details and it will go live after a brief review.",
-  },
-  {
-    q: "Is EventHub free to use?",
-    a: "Browsing and attending free events is completely free. Event organizers can list events and sell tickets — we only charge a small fee on paid ticket transactions.",
-  },
-  {
-    q: "How does ticketing work?",
-    a: "Set your ticket types, prices, and capacity. Attendees purchase directly through EventHub and receive digital tickets instantly. You get paid after your event.",
-  },
-  {
-    q: "Can I buy or gift tickets?",
-    a: "Yes — once an event is published, you can purchase tickets and transfer them to others directly through the platform.",
-  },
-  {
-    q: "How do I contact the team?",
-    a: "Reach us via the Contact page or email us directly. We respond within 1–2 business days.",
-  },
-];
+// const FAQS = [
+//   {
+//     q: "What is EventHub?",
+//     a: "EventHub is a platform where anyone can discover, create, and manage events — from intimate community meetups to large-scale conferences and festivals.",
+//   },
+//   {
+//     q: "How do I list my event?",
+//     a: "Create a free account, navigate to your dashboard, and click 'Create Event'. Fill in your event details and it will go live after a brief review.",
+//   },
+//   {
+//     q: "Is EventHub free to use?",
+//     a: "Browsing and attending free events is completely free. Event organizers can list events and sell tickets — we only charge a small fee on paid ticket transactions.",
+//   },
+//   {
+//     q: "How does ticketing work?",
+//     a: "Set your ticket types, prices, and capacity. Attendees purchase directly through EventHub and receive digital tickets instantly. You get paid after your event.",
+//   },
+//   {
+//     q: "Can I buy or gift tickets?",
+//     a: "Yes — once an event is published, you can purchase tickets and transfer them to others directly through the platform.",
+//   },
+//   {
+//     q: "How do I contact the team?",
+//     a: "Reach us via the Contact page or email us directly. We respond within 1–2 business days.",
+//   },
+// ];
 
 // ── page component ────────────────────────────────────────────────────────────
 
 const LandingPage = () => {
   const { data, isLoading } = useQuery({
     queryKey: ["ideaLimit"],
-    queryFn: () => getLimitedIdea(),
+    queryFn: () => getLimitedidea(),
   });
 
   const { data: blogData, isLoading: blogsLoading } = useQuery({
@@ -436,6 +437,7 @@ const LandingPage = () => {
   // ── hero slider state ──────────────────────────────────────────────────────
 
   const [activeSlide, setActiveSlide] = useState(0);
+  const [scrollProgress, setScrollProgress] = useState(0);
   const timerRef = useRef<ReturnType<typeof setInterval> | null>(null);
 
   const startTimer = useCallback(() => {
@@ -452,6 +454,21 @@ const LandingPage = () => {
       if (timerRef.current) clearInterval(timerRef.current);
     };
   }, [startTimer]);
+
+  // ── scroll progress tracking ──────────────────────────────────────────────
+
+  useEffect(() => {
+    const handleScroll = () => {
+      const scrollTop = window.scrollY;
+      const docHeight =
+        document.documentElement.scrollHeight - window.innerHeight;
+      const scrollPercent = docHeight > 0 ? (scrollTop / docHeight) * 100 : 0;
+      setScrollProgress(Math.min(scrollPercent, 100));
+    };
+
+    window.addEventListener("scroll", handleScroll);
+    return () => window.removeEventListener("scroll", handleScroll);
+  }, []);
 
   const goToSlide = useCallback(
     (idx: number) => {
@@ -1057,6 +1074,25 @@ const LandingPage = () => {
 
           {/* ── Bottom: progress bars + stat strip ── */}
           <div className="absolute bottom-0 left-0 right-0 z-20">
+            {/* Scroll Indicator */}
+            <div className="absolute bottom-32 left-1/2 -translate-x-1/2">
+              <div className="flex flex-col items-center gap-3">
+                {/* Smooth scroll progress line */}
+                <div className="h-12 w-1 overflow-hidden rounded-full bg-white/10">
+                  <div
+                    className="h-full rounded-full bg-gradient-to-b from-zinc-400 to-zinc-500 transition-all duration-300 ease-out"
+                    style={{ height: `${scrollProgress * 100}%` }}
+                  />
+                </div>
+                {/* Bouncing chevron */}
+                <div className="animate-bounce">
+                  <ChevronDownIcon className="size-5 text-zinc-400 drop-shadow-lg" />
+                </div>
+              </div>
+            </div>
+
+            {/* Scroll Down Button removed per request */}
+
             <div className="mx-auto w-full max-w-7xl px-4 pb-8 sm:px-6">
               <div className="mb-5 flex items-center gap-2">
                 {HERO_SLIDES.map((_, i) => (
@@ -1404,7 +1440,7 @@ const LandingPage = () => {
           </div>
 
           <div className="mx-auto w-full max-w-7xl px-4 sm:px-6">
-            <IdeaInfiniteSlider ideas={liveIdeas} isLoading={isLoading} />
+            {ideaInfiniteSlider({ ideas: liveIdeas, isLoading })}
           </div>
         </section>
 
@@ -1651,7 +1687,7 @@ const LandingPage = () => {
         {/* ═══════════════════════════════════════════════════════════════════
             13. FAQ
         ═══════════════════════════════════════════════════════════════════ */}
-        <section className="py-20 sm:py-24">
+        {/* <section className="py-20 sm:py-24">
           <div className="mx-auto w-full max-w-2xl px-4 sm:px-6">
             <div className="mb-12 text-center">
               <span className="mb-4 inline-block rounded-full border border-zinc-200 bg-zinc-50 px-4 py-1.5 text-xs font-bold uppercase tracking-widest text-zinc-600">
@@ -1677,7 +1713,7 @@ const LandingPage = () => {
               </Accordion>
             </div>
           </div>
-        </section>
+        </section> */}
 
         {/* ═══════════════════════════════════════════════════════════════════
             14. FINAL CTA

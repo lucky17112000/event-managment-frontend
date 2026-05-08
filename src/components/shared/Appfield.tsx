@@ -92,7 +92,7 @@ const AppField = ({
       </Label>
       <div className="relative">
         {prepand && (
-          <div className="absolute inset-y-0 left-0 flex items-center pl-3 pointer-events-none z-10">
+          <div className="absolute inset-y-0 left-0 flex items-center pl-3 pointer-ideas-none z-10">
             {prepand}
           </div>
         )}
@@ -113,7 +113,7 @@ const AppField = ({
           )}
         />
         {append && (
-          <div className="absolute inset-y-0 right-0 flex items-center pr-3 pointer-events-auto z-10">
+          <div className="absolute inset-y-0 right-0 flex items-center pr-3 pointer-ideas-auto z-10">
             {append}
           </div>
         )}

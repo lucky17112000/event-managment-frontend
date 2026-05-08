@@ -1,8 +1,8 @@
-import UnderReviewIdea from "@/components/modules/Admin-mangment/UnderReviewIdea";
+import UnderReviewidea from "@/components/modules/Admin-mangment/UnderReviewIdea";
 import React from "react";
 
-const AdminUnderReviewIdeaPage = () => {
-  return <UnderReviewIdea />;
+const AdminUnderReviewideaPage = () => {
+  return <UnderReviewidea />;
 };
 
-export default AdminUnderReviewIdeaPage;
+export default AdminUnderReviewideaPage;

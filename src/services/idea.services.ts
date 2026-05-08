@@ -1,11 +1,11 @@
 "use server";
 import { httpClient } from "@/lib/axios/httpClient";
 import type { ApiResponse } from "@/types/api.types";
-import type { IIdeaResponse } from "@/types/idea.type";
+import type { IideaResponse } from "@/types/idea.type";
 import { cookies, headers } from "next/headers";
 import {
-  createIdeaFormZodSchema,
-  ICreateIdeaFormInput,
+  createideaFormZodSchema,
+  ICreateideaFormInput,
 } from "@/zod/idea.validation";
 
 const API_BASE_URL = process.env.NEXT_PUBLIC_API_BASE_URL;
@@ -17,23 +17,25 @@ const API_BASE_URL = process.env.NEXT_PUBLIC_API_BASE_URL;
 //         : "/api/ideas"; // Next.js API proxy: src/app/api/ideas/route.ts
 
 //     const res = await fetch(url, { method: "GET", cache: "no-store" });
-//     return (await res.json()) as ApiResponse<IIdeaResponse[]>;
+//     return (await res.json()) as ApiResponse<IideaResponse[]>;
 //   } catch (error) {
 //     console.error("Error fetching ideas:", error);
 //     throw error;
 //   }
 // };
-export type GetIdeaParams = {
+export type GetideaParams = {
   page?: number;
   limit?: number;
   status?: string;
   searchTerm?: string;
 };
-export const getIdea = async (
-  params?: GetIdeaParams,
-): Promise<ApiResponse<IIdeaResponse[]>> => {
+export const getidea = async (
+  params?: GetideaParams,
+): Promise<ApiResponse<IideaResponse[]>> => {
   try {
-    const response = await httpClient.get<IIdeaResponse[]>("/idea", { params });
+    const response = await httpClient.get<IideaResponse[]>("/idea", {
+      params,
+    });
     return response;
   } catch (error) {
     console.error("Error fetching ideas:", error);
@@ -41,10 +43,10 @@ export const getIdea = async (
   }
 };
 
-export const createIdea = async (
-  values: ICreateIdeaFormInput,
-): Promise<ApiResponse<IIdeaResponse>> => {
-  const safeParse = createIdeaFormZodSchema.safeParse(values);
+export const createidea = async (
+  values: ICreateideaFormInput,
+): Promise<ApiResponse<IideaResponse>> => {
+  const safeParse = createideaFormZodSchema.safeParse(values);
   if (!safeParse.success) {
     console.error(
       "Validation failed:",
@@ -71,8 +73,8 @@ export const createIdea = async (
     if (safeParse.data.seatConfig) {
       const sc = safeParse.data.seatConfig;
       formData.append("seatConfig[totalSeats]", sc.totalSeats);
-      formData.append("seatConfig[startTime]",  sc.startTime);
-      formData.append("seatConfig[endTime]",    sc.endTime);
+      formData.append("seatConfig[startTime]", sc.startTime);
+      formData.append("seatConfig[endTime]", sc.endTime);
       if (sc.venue) formData.append("seatConfig[venue]", sc.venue);
     }
 
@@ -175,7 +177,7 @@ export const createIdea = async (
     }
 
     if (!parsed) throw new Error("Unexpected response from server");
-    return parsed as ApiResponse<IIdeaResponse>;
+    return parsed as ApiResponse<IideaResponse>;
   } catch (error) {
     console.error("Error creating idea:", error);
     throw error;
@@ -193,7 +195,7 @@ export const ideaUpdatebyAdminAction = async (
     throw error;
   }
 };
-// export const deleteIdea = async (id: string): Promise<ApiResponse<unknown>> => {
+// export const deleteidea = async (id: string): Promise<ApiResponse<unknown>> => {
 //   try {
 //     if (!id?.trim()) throw new Error("Missing id");
 //     return await httpClient.delete<unknown>(`/idea/soft`, {
@@ -205,8 +207,8 @@ export const ideaUpdatebyAdminAction = async (
 //   }
 // };
 
-// export const getIdeatestvaia = async (): Promise<
-//   ApiResponse<IIdeaResponse[]>
+// export const getideatestvaia = async (): Promise<
+//   ApiResponse<IideaResponse[]>
 // > => {
 //   try {
 //     const url =
@@ -215,7 +217,7 @@ export const ideaUpdatebyAdminAction = async (
 //         : "/api/ideas"; // Next.js API proxy: src/app/api/ideas/route.ts
 
 //     const res = await fetch(url, { method: "GET", cache: "no-store" });
-//     return (await res.json()) as ApiResponse<IIdeaResponse[]>;
+//     return (await res.json()) as ApiResponse<IideaResponse[]>;
 //   } catch (error) {
 //     console.error("Error fetching ideas:", error);
 //     throw error;
@@ -224,7 +226,7 @@ export const ideaUpdatebyAdminAction = async (
 
 type DeleteByAdminPayload = { id: string };
 
-export const softDeleteIdeaByAdminAction = async (
+export const softDeleteideaByAdminAction = async (
   payload: DeleteByAdminPayload,
 ): Promise<ApiResponse<unknown>> => {
   try {
@@ -237,16 +239,16 @@ export const softDeleteIdeaByAdminAction = async (
     throw error;
   }
 };
-// export const getIdea2 = async (payload: DeleteByAdminPayload): => {
-//   return await httpClient.get<IIdeaResponse[]>("/idea");
+// export const getidea2 = async (payload: DeleteByAdminPayload): => {
+//   return await httpClient.get<IideaResponse[]>("/idea");
 // };
-export type toggleIdeaIspaidPayload = {
+export type toggleideaIspaidPayload = {
   ideaId: string;
   isPaid: boolean;
 };
 
-export const toggleIdeaIspaidAction = async (
-  payload: toggleIdeaIspaidPayload,
+export const toggleideaIspaidAction = async (
+  payload: toggleideaIspaidPayload,
 ): Promise<ApiResponse<unknown>> => {
   try {
     if (!payload?.ideaId?.trim()) throw new Error("Missing ideaId");
@@ -257,11 +259,11 @@ export const toggleIdeaIspaidAction = async (
   }
 };
 
-export const getIdeaById = async (
+export const getideaById = async (
   id: string,
-): Promise<ApiResponse<IIdeaResponse>> => {
+): Promise<ApiResponse<IideaResponse>> => {
   try {
-    const response = await httpClient.get<IIdeaResponse>(`/idea/${id}`);
+    const response = await httpClient.get<IideaResponse>(`/idea/${id}`);
     return response;
   } catch (error) {
     console.error("Error fetching idea by id:", error);
@@ -269,11 +271,11 @@ export const getIdeaById = async (
   }
 };
 
-export const getLimitedIdea = async (): Promise<
-  ApiResponse<IIdeaResponse[]>
+export const getLimitedidea = async (): Promise<
+  ApiResponse<IideaResponse[]>
 > => {
   try {
-    const response = await httpClient.get<IIdeaResponse[]>("idea/home/limited");
+    const response = await httpClient.get<IideaResponse[]>("idea/home/limited");
     return response;
   } catch (error) {
     console.error("Error fetching ideas:", error);

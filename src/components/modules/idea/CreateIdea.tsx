@@ -1,15 +1,15 @@
 ﻿"use client";
 
 import { getcategories } from "@/services/category.service";
-import { createIdea } from "@/services/idea.services";
+import { createidea } from "@/services/idea.services";
 import AppSubmitButton from "@/components/shared/AppSubmitButton";
 import { Alert, AlertDescription } from "@/components/ui/alert";
 import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
 import { Textarea } from "@/components/ui/textarea";
 import {
-  createIdeaFormZodSchema,
-  ICreateIdeaFormInput,
+  createideaFormZodSchema,
+  ICreateideaFormInput,
 } from "@/zod/idea.validation";
 import { cn } from "@/lib/utils";
 import { useForm } from "@tanstack/react-form";
@@ -194,7 +194,7 @@ const FileUploadZone = ({
 
 // ─── Main Component ───────────────────────────────────────────────────────────
 
-const CreateIdeaPage = ({ id }: { id: string }) => {
+const CreateideaPage = ({ id }: { id: string }) => {
   const [serverError, setServerError] = useState<string | null>(null);
   const [serverSuccess, setServerSuccess] = useState<string | null>(null);
   const router = useRouter();
@@ -205,7 +205,7 @@ const CreateIdeaPage = ({ id }: { id: string }) => {
   });
 
   const { mutateAsync } = useMutation({
-    mutationFn: (payload: ICreateIdeaFormInput) => createIdea(payload),
+    mutationFn: (payload: ICreateideaFormInput) => createidea(payload),
   });
 
   const categories = categoriesResponse?.data ?? [];
@@ -236,7 +236,11 @@ const CreateIdeaPage = ({ id }: { id: string }) => {
       // Validate seat config when enabled
       if (value.hasSeatConfig) {
         const seats = Number(value.seatConfigTotalSeats);
-        if (!value.seatConfigTotalSeats || !Number.isInteger(seats) || seats <= 0) {
+        if (
+          !value.seatConfigTotalSeats ||
+          !Number.isInteger(seats) ||
+          seats <= 0
+        ) {
           setServerError("Total seats must be a positive whole number.");
           return;
         }
@@ -261,9 +265,11 @@ const CreateIdeaPage = ({ id }: { id: string }) => {
           seatConfig: value.hasSeatConfig
             ? {
                 totalSeats: value.seatConfigTotalSeats,
-                startTime:  value.seatConfigStartTime,
-                endTime:    value.seatConfigEndTime,
-                ...(value.seatConfigVenue ? { venue: value.seatConfigVenue } : {}),
+                startTime: value.seatConfigStartTime,
+                endTime: value.seatConfigEndTime,
+                ...(value.seatConfigVenue
+                  ? { venue: value.seatConfigVenue }
+                  : {}),
               }
             : undefined,
         };
@@ -274,7 +280,7 @@ const CreateIdeaPage = ({ id }: { id: string }) => {
           return;
         }
 
-        setServerSuccess(result.message || "Idea created successfully.");
+        setServerSuccess(result.message || "idea created successfully.");
         setTimeout(() => router.push("/dashboard/under-review-idea"), 600);
       } catch (error) {
         setServerError((error as Error)?.message || "Failed to create idea.");
@@ -291,7 +297,7 @@ const CreateIdeaPage = ({ id }: { id: string }) => {
         </div>
         <div>
           <h1 className="font-heading text-2xl font-bold tracking-tight">
-            Create New Idea
+            Create New idea
           </h1>
           <p className="mt-1 text-sm text-muted-foreground">
             Share your sustainability idea with the EcoSpark community.
@@ -322,7 +328,7 @@ const CreateIdeaPage = ({ id }: { id: string }) => {
             {/* Title */}
             <form.Field
               name="title"
-              validators={{ onChange: createIdeaFormZodSchema.shape.title }}
+              validators={{ onChange: createideaFormZodSchema.shape.title }}
             >
               {(field) => {
                 const err =
@@ -361,7 +367,7 @@ const CreateIdeaPage = ({ id }: { id: string }) => {
             <form.Field
               name="categoryId"
               validators={{
-                onChange: createIdeaFormZodSchema.shape.categoryId,
+                onChange: createideaFormZodSchema.shape.categoryId,
               }}
             >
               {(field) => {
@@ -382,7 +388,7 @@ const CreateIdeaPage = ({ id }: { id: string }) => {
                       </span>
                     </Label>
                     <div className="relative">
-                      <TagIcon className="pointer-events-none absolute left-3 top-1/2 h-4 w-4 -translate-y-1/2 text-muted-foreground" />
+                      <TagIcon className="pointer-ideas-none absolute left-3 top-1/2 h-4 w-4 -translate-y-1/2 text-muted-foreground" />
                       <select
                         id={field.name}
                         name={field.name}
@@ -425,7 +431,7 @@ const CreateIdeaPage = ({ id }: { id: string }) => {
             <form.Field
               name="problemStatement"
               validators={{
-                onChange: createIdeaFormZodSchema.shape.problemStatement,
+                onChange: createideaFormZodSchema.shape.problemStatement,
               }}
             >
               {(field) => {
@@ -464,7 +470,7 @@ const CreateIdeaPage = ({ id }: { id: string }) => {
             {/* Solution */}
             <form.Field
               name="solution"
-              validators={{ onChange: createIdeaFormZodSchema.shape.solution }}
+              validators={{ onChange: createideaFormZodSchema.shape.solution }}
             >
               {(field) => {
                 const err =
@@ -524,7 +530,7 @@ const CreateIdeaPage = ({ id }: { id: string }) => {
             <form.Field
               name="description"
               validators={{
-                onChange: createIdeaFormZodSchema.shape.description,
+                onChange: createideaFormZodSchema.shape.description,
               }}
             >
               {(field) => {
@@ -630,7 +636,7 @@ const CreateIdeaPage = ({ id }: { id: string }) => {
                     </span>
                   </Label>
                   <div className="relative max-w-xs">
-                    <span className="pointer-events-none absolute left-3 top-1/2 -translate-y-1/2 text-sm font-medium text-muted-foreground">
+                    <span className="pointer-ideas-none absolute left-3 top-1/2 -translate-y-1/2 text-sm font-medium text-muted-foreground">
                       $
                     </span>
                     <Input
@@ -674,7 +680,9 @@ const CreateIdeaPage = ({ id }: { id: string }) => {
                   </span>
                   <div>
                     <p className="text-sm font-semibold">
-                      {field.state.value ? "Seat booking enabled" : "Enable seat booking?"}
+                      {field.state.value
+                        ? "Seat booking enabled"
+                        : "Enable seat booking?"}
                     </p>
                     <p className="mt-0.5 text-xs text-muted-foreground">
                       {field.state.value
@@ -700,7 +708,9 @@ const CreateIdeaPage = ({ id }: { id: string }) => {
                     )}
                   />
                   <span className="sr-only">
-                    {field.state.value ? "Disable seat booking" : "Enable seat booking"}
+                    {field.state.value
+                      ? "Disable seat booking"
+                      : "Enable seat booking"}
                   </span>
                 </button>
               </div>
@@ -712,23 +722,28 @@ const CreateIdeaPage = ({ id }: { id: string }) => {
             {(hasSeatConfig) =>
               hasSeatConfig ? (
                 <div className="mt-5 grid gap-4 sm:grid-cols-2">
-
                   {/* Total Seats */}
                   <form.Field name="seatConfigTotalSeats">
                     {(field) => {
                       const err =
-                        field.state.meta.isTouched && field.state.meta.errors.length > 0
+                        field.state.meta.isTouched &&
+                        field.state.meta.errors.length > 0
                           ? String(field.state.meta.errors[0])
                           : "";
                       return (
                         <div className="space-y-1.5">
                           <Label
                             htmlFor={field.name}
-                            className={cn("flex items-center gap-1.5", err && "text-destructive")}
+                            className={cn(
+                              "flex items-center gap-1.5",
+                              err && "text-destructive",
+                            )}
                           >
                             <UsersIcon className="h-3.5 w-3.5" />
                             Total Seats{" "}
-                            <span className="text-destructive" aria-hidden>*</span>
+                            <span className="text-destructive" aria-hidden>
+                              *
+                            </span>
                           </Label>
                           <Input
                             id={field.name}
@@ -777,18 +792,24 @@ const CreateIdeaPage = ({ id }: { id: string }) => {
                   <form.Field name="seatConfigStartTime">
                     {(field) => {
                       const err =
-                        field.state.meta.isTouched && field.state.meta.errors.length > 0
+                        field.state.meta.isTouched &&
+                        field.state.meta.errors.length > 0
                           ? String(field.state.meta.errors[0])
                           : "";
                       return (
                         <div className="space-y-1.5">
                           <Label
                             htmlFor={field.name}
-                            className={cn("flex items-center gap-1.5", err && "text-destructive")}
+                            className={cn(
+                              "flex items-center gap-1.5",
+                              err && "text-destructive",
+                            )}
                           >
                             <CalendarClockIcon className="h-3.5 w-3.5" />
                             Start Time{" "}
-                            <span className="text-destructive" aria-hidden>*</span>
+                            <span className="text-destructive" aria-hidden>
+                              *
+                            </span>
                           </Label>
                           <Input
                             id={field.name}
@@ -809,18 +830,24 @@ const CreateIdeaPage = ({ id }: { id: string }) => {
                   <form.Field name="seatConfigEndTime">
                     {(field) => {
                       const err =
-                        field.state.meta.isTouched && field.state.meta.errors.length > 0
+                        field.state.meta.isTouched &&
+                        field.state.meta.errors.length > 0
                           ? String(field.state.meta.errors[0])
                           : "";
                       return (
                         <div className="space-y-1.5">
                           <Label
                             htmlFor={field.name}
-                            className={cn("flex items-center gap-1.5", err && "text-destructive")}
+                            className={cn(
+                              "flex items-center gap-1.5",
+                              err && "text-destructive",
+                            )}
                           >
                             <CalendarClockIcon className="h-3.5 w-3.5" />
                             End Time{" "}
-                            <span className="text-destructive" aria-hidden>*</span>
+                            <span className="text-destructive" aria-hidden>
+                              *
+                            </span>
                           </Label>
                           <Input
                             id={field.name}
@@ -836,7 +863,6 @@ const CreateIdeaPage = ({ id }: { id: string }) => {
                       );
                     }}
                   </form.Field>
-
                 </div>
               ) : null
             }
@@ -864,7 +890,9 @@ const CreateIdeaPage = ({ id }: { id: string }) => {
 
         {/* ── Submit ── */}
         <form.Subscribe
-          selector={(s) => [s.canSubmit, s.isSubmitting, s.values.hasSeatConfig] as const}
+          selector={(s) =>
+            [s.canSubmit, s.isSubmitting, s.values.hasSeatConfig] as const
+          }
         >
           {([canSubmit, isSubmitting, hasSeatConfig]) => (
             <AppSubmitButton
@@ -874,7 +902,7 @@ const CreateIdeaPage = ({ id }: { id: string }) => {
               pendingLabel="Submitting…"
             >
               <SendIcon className="mr-2 h-4 w-4" />
-              {hasSeatConfig ? "Submit Event with Seat Booking" : "Submit Idea"}
+              {hasSeatConfig ? "Submit idea with Seat Booking" : "Submit idea"}
             </AppSubmitButton>
           )}
         </form.Subscribe>
@@ -883,4 +911,4 @@ const CreateIdeaPage = ({ id }: { id: string }) => {
   );
 };
 
-export default CreateIdeaPage;
+export default CreateideaPage;
