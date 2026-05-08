@@ -74,6 +74,17 @@ const LoginForm = () => {
   const [showPassword, setShowPassword] = useState(false);
   const router = useRouter();
 
+  const presetLogins = {
+    user: {
+      email: "tempreal17112000@gmail.com",
+      password: "passwor12345",
+    },
+    admin: {
+      email: "ajubayer319@gmail.com",
+      password: "passwor1234",
+    },
+  };
+
   const { mutateAsync } = useMutation({
     mutationFn: (payload: ILoginPayload) => loginAction(payload),
   });
@@ -108,6 +119,17 @@ const LoginForm = () => {
       }
     },
   });
+
+  const submitPresetLogin = (role: keyof typeof presetLogins) => {
+    const credentials = presetLogins[role];
+    form.setFieldValue("email", credentials.email);
+    form.setFieldValue("password", credentials.password);
+    setServerError(null);
+
+    queueMicrotask(() => {
+      form.handleSubmit();
+    });
+  };
 
   return (
     <div className="min-h-screen flex bg-neutral-50">
@@ -266,13 +288,12 @@ const LoginForm = () => {
                 Continue with Google
               </button>
 
-              {/* Divider */}
-              <div className="flex items-center gap-3 my-5">
-                <div className="flex-1 h-px bg-neutral-200" />
-                <span className="text-xs text-muted-foreground whitespace-nowrap px-1">
+              <div className="my-5 flex items-center gap-3">
+                <div className="h-px flex-1 bg-neutral-200" />
+                <span className="px-1 text-xs whitespace-nowrap text-muted-foreground">
                   or continue with email
                 </span>
-                <div className="flex-1 h-px bg-neutral-200" />
+                <div className="h-px flex-1 bg-neutral-200" />
               </div>
 
               {/* Form */}
@@ -354,6 +375,23 @@ const LoginForm = () => {
                 )}
 
                 {/* Submit */}
+                <div className="grid gap-3 sm:grid-cols-2">
+                  <Button
+                    type="button"
+                    onClick={() => submitPresetLogin("user")}
+                    className="h-11 rounded-xl bg-zinc-600 text-white hover:bg-zinc-700"
+                  >
+                    User Login
+                  </Button>
+                  <Button
+                    type="button"
+                    onClick={() => submitPresetLogin("admin")}
+                    className="h-11 rounded-xl border border-zinc-200 bg-white text-foreground hover:bg-zinc-50"
+                  >
+                    Admin Login
+                  </Button>
+                </div>
+
                 <form.Subscribe
                   selector={(s) => [s.canSubmit, s.isSubmitting] as const}
                 >
