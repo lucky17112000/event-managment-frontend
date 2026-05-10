@@ -45,6 +45,12 @@ import AppTooltip from "./Tooltip";
 import { createPurchaseAction } from "@/services/purchase.service";
 import { ideaCardShell } from "./IdeaCardShell";
 import { EcoCardSkeleton, EcoSpinner } from "./EcoLoading";
+import { useInfiniteScroll } from "@/hooks/useInfiniteScroll";
+import { ApiResponse } from "@/types/api.types";
+import { InfiniteScrollObserver } from "../InfiniteScrollObserver";
+import { toast } from "sonner";
+import { useDebounce } from "@/hooks/useDebounce";
+import { searchSuggestions } from "@/services/search.service";
 
 // ─── Pagination helper ────────────────────────────────────────────────────────
 type pageItem = number | "ellipsis";
@@ -178,21 +184,84 @@ const AllIdeas = ({ user }: { user?: unknown }) => {
   const searchInputRef = useRef<HTMLInputElement>(null);
   const [searchText, setSearchText] = useState("");
   const [debouncedSearch, setDebouncedSearch] = useState("");
+  const [suggestions, setSuggestions] = useState<
+    Array<{ id: string; title: string }>
+  >([]);
+  const [showSuggestions, setShowSuggestions] = useState(false);
+  const [selectedSuggestionIndex, setSelectedSuggestionIndex] = useState(-1);
+  const suggestionsRef = useRef<HTMLDivElement>(null);
+
+  // useEffect(() => {
+  //   const t = setTimeout(() => {
+  //     setDebouncedSearch(searchText.trim());
+  //   }, 400);
+  //   return () => clearTimeout(t);
+  // }, [searchText]);
+  const debouncedSearchTerm = useDebounce(searchText.trim(), 400);
+  useEffect(() => {
+    setDebouncedSearch(debouncedSearchTerm);
+  }, [debouncedSearchTerm]);
+  useEffect(() => {
+    const fetchSuggestions = async () => {
+      if (debouncedSearchTerm.length < 2) {
+        setSuggestions([]);
+        setShowSuggestions(false);
+        return;
+      }
+      try {
+        const data = await searchSuggestions({ q: debouncedSearchTerm });
+        setSuggestions(data.suggestions);
+        setShowSuggestions(data.suggestions.length > 0);
+      } catch (error) {
+        console.error("Suggestion fetch error:", error);
+        setSuggestions([]);
+      }
+    };
+    fetchSuggestions();
+  }, [debouncedSearchTerm]);
 
   useEffect(() => {
-    const t = setTimeout(() => {
-      setDebouncedSearch(searchText.trim());
-    }, 400);
-    return () => clearTimeout(t);
-  }, [searchText]);
+    const handleClickOutside = (event: MouseEvent) => {
+      // Only close if clicking outside suggestions AND outside input field
+      if (
+        suggestionsRef.current &&
+        !suggestionsRef.current.contains(event.target as Node) &&
+        searchInputRef.current &&
+        !searchInputRef.current.contains(event.target as Node)
+      ) {
+        setShowSuggestions(false);
+        setSelectedSuggestionIndex(-1);
+      }
+    };
 
-  useEffect(() => {
-    setPage(1);
-  }, [debouncedSearch]);
+    // Close suggestions on blur
+    const handleInputBlur = () => {
+      setTimeout(() => {
+        setShowSuggestions(false);
+        setSelectedSuggestionIndex(-1);
+      }, 150); // Small delay to allow clicking on suggestions
+    };
+
+    document.addEventListener("mousedown", handleClickOutside);
+    if (searchInputRef.current) {
+      searchInputRef.current.addEventListener("blur", handleInputBlur);
+    }
+
+    return () => {
+      document.removeEventListener("mousedown", handleClickOutside);
+      if (searchInputRef.current) {
+        searchInputRef.current.removeEventListener("blur", handleInputBlur);
+      }
+    };
+  }, []);
+
+  // useEffect(() => {
+  //   setPage(1);
+  // }, [debouncedSearch]);
 
   const router = useRouter();
   const queryClient = useQueryClient();
-  const [page, setPage] = useState(1);
+  // const [page, setPage] = useState(1);
   const [limit] = useState(6);
 
   const userId =
@@ -212,17 +281,49 @@ const AllIdeas = ({ user }: { user?: unknown }) => {
           )
         : "";
 
-  const { data, isLoading, isError, isFetching } = useQuery({
-    queryKey: ["idea", page, limit, debouncedSearch],
-    queryFn: () =>
+  // const { data, isLoading, isError, isFetching } = useQuery({
+  //   queryKey: ["idea", page, limit, debouncedSearch],
+  //   queryFn: () =>
+  //     getidea({
+  //       page,
+  //       limit,
+  //       status: "APPROVED",
+  //       searchTerm: debouncedSearch || undefined,
+  //     }),
+  // });
+  // console.log("Fetched ideas data:", data);
+  //!SECTION infinite scroll
+  const LIMIT = 3; // আগে থেকেই ছিল, নিশ্চিত করো const limit = 6 এর জায়গায় লিখো
+
+  const {
+    data: infiniteData, // পুরো pages array (র কাঁচা ডাটা)
+    fetchNextPage,
+    hasNextPage,
+    isFetchingNextPage,
+    isLoading,
+    isError,
+    isFetching,
+    refetch,
+  } = useInfiniteScroll<IideaResponse, ApiResponse<IideaResponse[]>>({
+    queryKey: ["idea", "infinite", LIMIT, debouncedSearch],
+    queryFn: (page) =>
       getidea({
         page,
-        limit,
+        limit: LIMIT,
         status: "APPROVED",
         searchTerm: debouncedSearch || undefined,
       }),
+    limit: LIMIT,
+    getDataFromResponse: (response) => response?.data ?? [],
   });
-  // console.log("Fetched ideas data:", data);
+
+  // useEffect(() => {
+  //   if (isError) {
+  //     // show a generic rate limit / error message; specific error object isn't available here
+  //     toast.error("Too many requests!");
+  //   }
+  // }, [isError]);
+  //!SECTION infinite scroll
 
   const purchaseMutation = useMutation({
     mutationFn: createPurchaseAction,
@@ -239,29 +340,29 @@ const AllIdeas = ({ user }: { user?: unknown }) => {
     },
   });
 
-  const meta = data?.meta;
-  const totalPages = Math.max(1, meta?.totalPages ?? 1);
-  const currentPage = Math.min(Math.max(1, meta?.page ?? page), totalPages);
-  const totalItems = meta?.total ?? undefined;
+  // const meta = data?.meta;
+  // const totalPages = Math.max(1, meta?.totalPages ?? 1);
+  // const currentPage = Math.min(Math.max(1, meta?.page ?? page), totalPages);
+  // const totalItems = meta?.total ?? undefined;
 
-  useEffect(() => {
-    if (page !== currentPage) setPage(currentPage);
-    // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, [currentPage, totalPages]);
+  // useEffect(() => {
+  //   if (page !== currentPage) setPage(currentPage);
+  //   // eslint-disable-next-line react-hooks/exhaustive-deps
+  // }, [currentPage, totalPages]);
 
-  const canGoPrev = currentPage > 1;
-  const canGoNext = currentPage < totalPages;
-  const paginationItems = useMemo(
-    () => getPaginationItems(currentPage, totalPages),
-    [currentPage, totalPages],
-  );
-  const showingRange = useMemo(() => {
-    if (typeof totalItems !== "number") return null;
-    if (totalItems <= 0) return null;
-    const start = (currentPage - 1) * limit + 1;
-    const end = Math.min(currentPage * limit, totalItems);
-    return { start, end, total: totalItems };
-  }, [currentPage, limit, totalItems]);
+  // const canGoPrev = currentPage > 1;
+  // const canGoNext = currentPage < totalPages;
+  // const paginationItems = useMemo(
+  //   () => getPaginationItems(currentPage, totalPages),
+  //   [currentPage, totalPages],
+  // );
+  // const showingRange = useMemo(() => {
+  //   if (typeof totalItems !== "number") return null;
+  //   if (totalItems <= 0) return null;
+  //   const start = (currentPage - 1) * limit + 1;
+  //   const end = Math.min(currentPage * limit, totalItems);
+  //   return { start, end, total: totalItems };
+  // }, [currentPage, limit, totalItems]);
 
   const { mutateAsync, isPending: isVoting } = useMutation({
     mutationFn: (payload: { ideaId: string; voteType: "UP" | "DOWN" }) =>
@@ -278,6 +379,32 @@ const AllIdeas = ({ user }: { user?: unknown }) => {
       delete next[ideaId];
       return next;
     });
+  };
+  const handleSearchKeyDown = (e: React.KeyboardEvent<HTMLInputElement>) => {
+    if (!showSuggestions) return;
+    if (e.key === "ArrowDown") {
+      e.preventDefault();
+      setSelectedSuggestionIndex((prev) =>
+        prev + 1 < suggestions.length ? prev + 1 : prev,
+      );
+    } else if (e.key === "ArrowUp") {
+      e.preventDefault();
+      setSelectedSuggestionIndex((prev) => (prev > 0 ? prev - 1 : -1));
+    } else if (e.key === "Enter") {
+      e.preventDefault();
+      if (
+        selectedSuggestionIndex >= 0 &&
+        suggestions[selectedSuggestionIndex]
+      ) {
+        const selectedTitle = suggestions[selectedSuggestionIndex].title;
+        setSearchText(selectedTitle);
+        setShowSuggestions(false);
+        setSelectedSuggestionIndex(-1);
+      }
+    } else if (e.key === "Escape") {
+      setShowSuggestions(false);
+      setSelectedSuggestionIndex(-1);
+    }
   };
 
   const handleVote = async (idea: IideaResponse, voteType: "UP" | "DOWN") => {
@@ -321,11 +448,17 @@ const AllIdeas = ({ user }: { user?: unknown }) => {
     }
   };
 
-  const ideas = useMemo(
-    () => (Array.isArray(data?.data) ? data.data : ([] as IideaResponse[])),
-    [data],
-  );
+  // const ideas = useMemo(
+  //   () => (Array.isArray(data?.data) ? data.data : ([] as IideaResponse[])),
+  //   [data],
+  // );
   // console.log("Normalized ideas array:", ideas.map((idea) => idea.ideaId));
+  //!SECTION infinite scroll
+  const ideas = useMemo(() => {
+    if (!infiniteData) return [];
+    return infiniteData; // useInfiniteScroll থেকে আসা data ইতিমধ্যে ফ্ল্যাট করা
+  }, [infiniteData]);
+  //!SECTION infinite scroll
 
   // Search-awareness flags — used by parent commands
   const isSearching = debouncedSearch.length > 0;
@@ -340,7 +473,7 @@ const AllIdeas = ({ user }: { user?: unknown }) => {
   return (
     <div className="w-full animate-eco-fade-down animate-delay-200">
       {/* ══ HERO SEARCH SECTION ════════════════════════════════════════════ */}
-      <section className="relative mb-10 overflow-hidden rounded-3xl border border-zinc-100/70 bg-linear-to-br from-zinc-50/90 via-white to-teal-50/70 px-6 py-12 dark:border-zinc-900/30 dark:from-zinc-950/40 dark:via-card dark:to-teal-950/20">
+      <section className="relative mb-10 rounded-3xl border border-zinc-100/70 bg-linear-to-br from-zinc-50/90 via-white to-teal-50/70 px-6 py-12 dark:border-zinc-900/30 dark:from-zinc-950/40 dark:via-card dark:to-teal-950/20">
         {/* Decorative background blobs */}
         <div
           aria-hidden
@@ -392,31 +525,69 @@ const AllIdeas = ({ user }: { user?: unknown }) => {
                   )}
                 </div>
 
-                <AppTooltip
-                  side="bottom"
-                  delay={600}
-                  content={
-                    <span className="flex items-center gap-1.5">
-                      <Sprout className="size-3.5 shrink-0 text-zinc-300" />
-                      Search by title, problem statement, or solution
-                    </span>
-                  }
-                  trigger={
-                    <Input
-                      ref={searchInputRef}
-                      value={searchText}
-                      onChange={(e) => setSearchText(e.target.value)}
-                      placeholder="Search ideas — title, solution, or problem…"
-                      className={cn(
-                        "relative h-13 rounded-2xl border bg-white pl-11 pr-11 text-sm shadow-sm",
-                        "placeholder:text-muted-foreground/55",
-                        "border-zinc-100 transition-all duration-200",
-                        "focus:border-zinc-300 focus:ring-2 focus:ring-zinc-500/20 focus:outline-none",
-                        "dark:border-zinc-900/40 dark:bg-card dark:focus:border-zinc-700/60 dark:focus:ring-zinc-600/20",
-                      )}
-                    />
-                  }
-                />
+                {showSuggestions ? (
+                  // When suggestions are visible, show input without tooltip
+                  <Input
+                    ref={searchInputRef}
+                    value={searchText}
+                    onChange={(e) => setSearchText(e.target.value)}
+                    onFocus={() => {
+                      // Show suggestions if they exist and input has text
+                      if (
+                        debouncedSearchTerm.length >= 2 &&
+                        suggestions.length > 0
+                      ) {
+                        setShowSuggestions(true);
+                      }
+                    }}
+                    onKeyDown={handleSearchKeyDown}
+                    placeholder="Search Events — title, solution, or problem…"
+                    className={cn(
+                      "relative h-13 rounded-2xl border bg-white pl-11 pr-11 text-sm shadow-sm",
+                      "placeholder:text-muted-foreground/55",
+                      "border-zinc-100 transition-all duration-200",
+                      "focus:border-zinc-300 focus:ring-2 focus:ring-zinc-500/20 focus:outline-none",
+                      "dark:border-zinc-900/40 dark:bg-card dark:focus:border-zinc-700/60 dark:focus:ring-zinc-600/20",
+                    )}
+                  />
+                ) : (
+                  // When suggestions are hidden, show tooltip
+                  <AppTooltip
+                    side="bottom"
+                    delay={600}
+                    content={
+                      <span className="flex items-center gap-1.5">
+                        <Sprout className="size-3.5 shrink-0 text-zinc-300" />
+                        Search by title, problem statement, or solution
+                      </span>
+                    }
+                    trigger={
+                      <Input
+                        ref={searchInputRef}
+                        value={searchText}
+                        onChange={(e) => setSearchText(e.target.value)}
+                        onFocus={() => {
+                          // Show suggestions if they exist and input has text
+                          if (
+                            debouncedSearchTerm.length >= 2 &&
+                            suggestions.length > 0
+                          ) {
+                            setShowSuggestions(true);
+                          }
+                        }}
+                        onKeyDown={handleSearchKeyDown}
+                        placeholder="Search Events — title, solution, or problem…"
+                        className={cn(
+                          "relative h-13 rounded-2xl border bg-white pl-11 pr-11 text-sm shadow-sm",
+                          "placeholder:text-muted-foreground/55",
+                          "border-zinc-100 transition-all duration-200",
+                          "focus:border-zinc-300 focus:ring-2 focus:ring-zinc-500/20 focus:outline-none",
+                          "dark:border-zinc-900/40 dark:bg-card dark:focus:border-zinc-700/60 dark:focus:ring-zinc-600/20",
+                        )}
+                      />
+                    }
+                  />
+                )}
 
                 {/* Clear button */}
                 {searchText ? (
@@ -429,6 +600,41 @@ const AllIdeas = ({ user }: { user?: unknown }) => {
                     <X className="size-3.5" />
                   </button>
                 ) : null}
+                {/* Suggestions dropdown */}
+                {showSuggestions && suggestions.length > 0 && (
+                  <div
+                    ref={suggestionsRef}
+                    className="absolute left-0 right-0 top-full z-[9999] mt-3 w-full max-h-96 overflow-y-auto rounded-lg border border-emerald-200 bg-white shadow-2xl dark:border-emerald-900/30 dark:bg-zinc-950"
+                  >
+                    {suggestions.map((suggestion, idx) => (
+                      <div
+                        key={suggestion.id}
+                        onClick={() => {
+                          setSearchText(suggestion.title);
+                          setShowSuggestions(false);
+                          setSelectedSuggestionIndex(-1);
+                        }}
+                        className={`cursor-pointer border-b border-zinc-100/50 px-4 py-3.5 transition-all duration-150 last:border-b-0 ${
+                          idx === selectedSuggestionIndex
+                            ? "bg-gradient-to-r from-emerald-50 via-teal-50 to-emerald-50 text-emerald-900 font-semibold dark:from-emerald-950/40 dark:via-teal-950/40 dark:to-emerald-950/40 dark:text-emerald-100"
+                            : "text-zinc-800 hover:bg-emerald-50 dark:text-zinc-200 dark:hover:bg-zinc-900/60"
+                        }`}
+                      >
+                        <div className="flex items-center justify-between gap-3">
+                          <div className="flex items-center gap-2.5 flex-1 min-w-0">
+                            <div className="h-2 w-2 rounded-full bg-emerald-500 shrink-0" />
+                            <span className="truncate text-sm font-medium">
+                              {suggestion.title}
+                            </span>
+                          </div>
+                          {idx === selectedSuggestionIndex && (
+                            <div className="h-2 w-2 rounded-full bg-emerald-600 shrink-0" />
+                          )}
+                        </div>
+                      </div>
+                    ))}
+                  </div>
+                )}
               </div>
             </div>
 
@@ -450,7 +656,6 @@ const AllIdeas = ({ user }: { user?: unknown }) => {
           </div>
         </div>
       </section>
-
       {/* ══ DUPLICATE VOTE DIALOG ══════════════════════════════════════════ */}
       <AlertDialog
         open={duplicateVoteDialog.open}
@@ -471,7 +676,6 @@ const AllIdeas = ({ user }: { user?: unknown }) => {
           </AlertDialogFooter>
         </AlertDialogContent>
       </AlertDialog>
-
       {/* ══ IDEAS GRID SECTION ════════════════════════════════════════════ */}
       <div className="mx-auto w-full max-w-6xl px-4 py-2">
         {/* Section header */}
@@ -487,11 +691,11 @@ const AllIdeas = ({ user }: { user?: unknown }) => {
             )}
           </div>
 
-          {showingRange && !showSkeletonGrid && (
+          {/* {showingRange && !showSkeletonGrid && (
             <p className="text-xs text-muted-foreground">
               {showingRange.start}–{showingRange.end} of {showingRange.total}
             </p>
-          )}
+          )} */}
         </div>
 
         {/* ── Skeleton grid ─────────────────────────────────────────────── */}
@@ -734,9 +938,27 @@ const AllIdeas = ({ user }: { user?: unknown }) => {
           </div>
         )}
       </div>
-
       {/* ══ PAGINATION ════════════════════════════════════════════════════ */}
-      {totalPages > 1 && (
+      //!SECTION infinite scroll trigger
+      {/* ══ ইনফিনিটি স্ক্রল ট্রিগার ═════════════════════════════════ */}
+      {!showSkeletonGrid && !isError && underReviewIdeas.length > 0 && (
+        <InfiniteScrollObserver
+          hasNextPage={hasNextPage}
+          isFetchingNextPage={isFetchingNextPage}
+          onLoadMore={fetchNextPage}
+          loadingComponent={
+            <div className="flex justify-center py-6">
+              <EcoSpinner size="sm" />
+              <span className="ml-2 text-sm text-muted-foreground">
+                Loading more ideas...
+              </span>
+            </div>
+          }
+          className="h-10 w-full"
+        />
+      )}
+      //!SECTION infinite scroll trigger
+      {/* {totalPages > 1 && (
         <div className="mt-10 space-y-3">
           {showingRange && (
             <p className="text-center text-xs text-muted-foreground">
@@ -816,7 +1038,7 @@ const AllIdeas = ({ user }: { user?: unknown }) => {
             </div>
           </div>
         </div>
-      )}
+      )} */}
     </div>
   );
 };

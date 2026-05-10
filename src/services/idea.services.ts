@@ -7,6 +7,7 @@ import {
   createideaFormZodSchema,
   ICreateideaFormInput,
 } from "@/zod/idea.validation";
+import { toast } from "sonner";
 
 const API_BASE_URL = process.env.NEXT_PUBLIC_API_BASE_URL;
 
@@ -180,6 +181,7 @@ export const createidea = async (
     return parsed as ApiResponse<IideaResponse>;
   } catch (error) {
     console.error("Error creating idea:", error);
+
     throw error;
   }
 };
@@ -190,8 +192,14 @@ export const ideaUpdatebyAdminAction = async (
   try {
     const response = await httpClient.put("/idea/status", payload);
     return response;
-  } catch (error) {
+  } catch (error: any) {
     console.error("Error updating idea:", error);
+    if (error?.status === 429) {
+      // ক্লায়েন্ট সাইডে টোস্ট দেখাও
+      toast.error(
+        error?.messageFromServer || "Too many requests! Please wait.",
+      );
+    }
     throw error;
   }
 };
@@ -265,9 +273,13 @@ export const getideaById = async (
   try {
     const response = await httpClient.get<IideaResponse>(`/idea/${id}`);
     return response;
-  } catch (error) {
-    console.error("Error fetching idea by id:", error);
-    throw error;
+  } catch (err: any) {
+    console.error("Error fetching idea by id:", err);
+    if (err?.status === 429) {
+      // ক্লায়েন্ট সাইডে টোস্ট দেখাও
+      toast.error(err?.messageFromServer || "Too many requests! Please wait.");
+    }
+    throw err;
   }
 };
 
@@ -277,8 +289,12 @@ export const getLimitedidea = async (): Promise<
   try {
     const response = await httpClient.get<IideaResponse[]>("idea/home/limited");
     return response;
-  } catch (error) {
-    console.error("Error fetching ideas:", error);
-    throw error;
+  } catch (err: any) {
+    console.error("Error fetching ideas:", err);
+    if (err?.status === 429) {
+      // ক্লায়েন্ট সাইডে টোস্ট দেখাও
+      toast.error(err?.messageFromServer || "Too many requests! Please wait.");
+    }
+    throw err;
   }
 };

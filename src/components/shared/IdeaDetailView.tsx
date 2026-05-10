@@ -108,7 +108,7 @@ const SectionBlock = ({
   );
 };
 
-const ideaImage = ({
+const IdeaImage = ({
   src,
   alt,
   className,
@@ -292,7 +292,7 @@ export function ideaDetailView({
             className="animate-delay-200"
           >
             {descriptionImage && (
-              <ideaImage
+              <IdeaImage
                 src={descriptionImage}
                 alt="Description visual"
                 className="mb-4 h-56 sm:h-72"
@@ -311,7 +311,7 @@ export function ideaDetailView({
             className="animate-delay-300"
           >
             {solutionImage && (
-              <ideaImage
+              <IdeaImage
                 src={solutionImage}
                 alt="Solution visual"
                 className="mb-4 h-56 sm:h-72"
@@ -332,7 +332,7 @@ export function ideaDetailView({
             >
               <div className="grid grid-cols-2 gap-3 sm:grid-cols-3">
                 {extraImages.map((url, idx) => (
-                  <ideaImage
+                  <IdeaImage
                     key={url}
                     src={url}
                     alt={`Gallery image ${idx + 1}`}

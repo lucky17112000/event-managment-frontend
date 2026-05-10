@@ -124,7 +124,7 @@ Now answer the user's question based ONLY on the above context. If asked about a
         headers: {
           Authorization: `Bearer ${process.env.OPENROUTER_API_KEY}`,
           "Content-Type": "application/json",
-          "HTTP-Referer": "http://localhost:3000",
+          "HTTP-Referer": "https://event-managment-frontend-kappa.vercel.app",
           "X-Title": "Event Hub Chatbot",
         },
         body: JSON.stringify({

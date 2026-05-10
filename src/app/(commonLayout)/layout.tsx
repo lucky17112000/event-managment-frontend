@@ -1,6 +1,8 @@
 import LandingNavbar from "@/components/shared/LandingNavbar";
 import { ThemeProvider } from "@/components/theme-provider";
 
+export const dynamic = "force-dynamic";
+
 export default function CommonLayout({
   children,
 }: Readonly<{

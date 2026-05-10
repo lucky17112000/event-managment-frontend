@@ -263,7 +263,7 @@ const CreateBlog = ({ userInfo }: { userInfo: any }) => {
                   action="#"
                   noValidate
                   onSubmit={(e) => {
-                    e.preventdefault()();
+                    e.preventDefault();
                     e.stopPropagation();
                     form.handleSubmit().catch((error: any) => {
                       setServerError(

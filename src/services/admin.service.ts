@@ -1,6 +1,8 @@
 "use server";
+import error from "@/app/error";
 import { httpClient } from "@/lib/axios/httpClient";
 import type { ApiResponse } from "@/types/api.types";
+import { toast } from "sonner";
 
 const API_BASE_URL = process.env.NEXT_PUBLIC_API_BASE_URL;
 export type getUserParams = {
@@ -36,9 +38,13 @@ export const getAllUserByAdmiAction = async (
       { params },
     );
     return response;
-  } catch (error) {
-    console.error("Error fetching users:", error);
-    throw error;
+  } catch (err: any) {
+    console.error("Error fetching users:", err);
+    if (err?.status === 429) {
+      // ক্লায়েন্ট সাইডে টোস্ট দেখাও
+      toast.error(err?.messageFromServer || "Too many requests! Please wait.");
+    }
+    throw err;
   }
 };
 export type UpdateUserRolePayload = {
@@ -57,9 +63,13 @@ export const updateUserRoleByAdminAction = async (
       role: payload.role,
     });
     return response;
-  } catch (error) {
-    console.error("Error updating user role:", error);
-    throw error;
+  } catch (err: any) {
+    console.error("Error updating user role:", err);
+    if (err?.status === 429) {
+      // ক্লায়েন্ট সাইডে টোস্ট দেখাও
+      toast.error(err?.messageFromServer || "Too many requests! Please wait.");
+    }
+    throw err;
   }
 };
 
@@ -75,9 +85,13 @@ export const deleteUserByAdminAction = async (
     const url = `${API_BASE_URL}/admin/users/delete/${payload.userId}`;
     const response = await httpClient.delete<unknown>(url);
     return response;
-  } catch (error) {
-    console.error("Error deleting user:", error);
-    throw error;
+  } catch (err: any) {
+    console.error("Error deleting user:", err);
+    if (err?.status === 429) {
+      // ক্লায়েন্ট সাইডে টোস্ট দেখাও
+      toast.error(err?.messageFromServer || "Too many requests! Please wait.");
+    }
+    throw err;
   }
 };
 /*
@@ -113,9 +127,9 @@ export const getAdminDashboardStatsAction = async (): Promise<
       `${API_BASE_URL}/admin/dashboard/stats`,
     );
     return response;
-  } catch (error) {
-    console.error("Error fetching admin dashboard stats:", error);
-    throw error;
+  } catch (err) {
+    console.error("Error fetching admin dashboard stats:", err);
+    throw err;
   }
 };
 
@@ -151,9 +165,13 @@ export const getAdminIndividualUserStatsAction = async (): Promise<
       `${API_BASE_URL}/admin/users/stats`,
     );
     return response;
-  } catch (error) {
-    console.error("Error fetching individual user stats:", error);
-    throw error;
+  } catch (err: any) {
+    if (err?.status === 429) {
+      // ক্লায়েন্ট সাইডে টোস্ট দেখাও
+      toast.error(err?.messageFromServer || "Too many requests! Please wait.");
+    }
+    console.error("Error fetching individual user stats:", err);
+    throw err;
   }
 };
 // localhost:5000/api/v1/booking/8013f109-03a3-4ad0-aad1-08cbb7abd6ba
@@ -165,12 +183,15 @@ export const getBookingDetailsByideaIdAction = async (
   try {
     const response = await httpClient.get<unknown>(`/booking/${ideaId}`);
     return response;
-  } catch (error) {
-    console.error("Error fetching booking details:", error);
+  } catch (err: any) {
+    if (err?.status === 429) {
+      // ক্লায়েন্ট সাইডে টোস্ট দেখাও
+      toast.error(err?.messageFromServer || "Too many requests! Please wait.");
+    }
+    console.error("Error fetching booking details:", err);
     const body =
-      error && typeof error === "object" && "response" in error
-        ? (error as { response?: { data?: { message?: string } } }).response
-            ?.data
+      err && typeof err === "object" && "response" in err
+        ? (err as { response?: { data?: { message?: string } } }).response?.data
         : undefined;
     return {
       success: false,

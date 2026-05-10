@@ -42,6 +42,9 @@ import {
   DialogHeader,
   DialogTitle,
 } from "@/components/ui/dialog";
+import { useInfiniteScroll } from "@/hooks/useInfiniteScroll";
+import { ApiResponse } from "@/types/api.types";
+import { InfiniteScrollObserver } from "@/components/InfiniteScrollObserver";
 
 // ─── Pagination helper ────────────────────────────────────────────────────────
 type pageItem = number | "ellipsis";
@@ -236,13 +239,13 @@ const ideaManagmentPage = ({ user }: { user?: unknown }) => {
     return () => clearTimeout(t);
   }, [searchText]);
 
-  useEffect(() => {
-    setPage(1);
-  }, [debouncedSearch]);
+  // useEffect(() => {
+  //   setPage(1);
+  // }, [debouncedSearch]);
 
   const router = useRouter();
   const queryClient = useQueryClient();
-  const [page, setPage] = useState(1);
+  // const [page, setPage] = useState(1);
   const [limit] = useState(6);
 
   const userId =
@@ -262,17 +265,40 @@ const ideaManagmentPage = ({ user }: { user?: unknown }) => {
           )
         : "";
 
-  const { data, isLoading, isError, isFetching } = useQuery({
-    queryKey: ["idea", page, limit, debouncedSearch],
-    queryFn: () =>
+  // const { data, isLoading, isError, isFetching } = useQuery({
+  //   queryKey: ["idea", page, limit, debouncedSearch],
+  //   queryFn: () =>
+  //     getidea({
+  //       page,
+  //       limit,
+  //       status: "APPROVED",
+  //       searchTerm: debouncedSearch || undefined,
+  //     }),
+  // });
+  // console.log("Fetched ideas data:", data);
+  const LIMIT = 3; // আগের limit স্টেটের মান
+
+  const {
+    data: infiniteData,
+    fetchNextPage,
+    hasNextPage,
+    isFetchingNextPage,
+    isLoading,
+    isError,
+    isFetching,
+    refetch,
+  } = useInfiniteScroll<IideaResponse, ApiResponse<IideaResponse[]>>({
+    queryKey: ["idea", "infinite", LIMIT, debouncedSearch],
+    queryFn: (page) =>
       getidea({
         page,
-        limit,
+        limit: LIMIT,
         status: "APPROVED",
         searchTerm: debouncedSearch || undefined,
       }),
+    limit: LIMIT,
+    getDataFromResponse: (response) => response?.data ?? [],
   });
-  // console.log("Fetched ideas data:", data);
 
   const purchaseMutation = useMutation({
     mutationFn: createPurchaseAction,
@@ -289,35 +315,36 @@ const ideaManagmentPage = ({ user }: { user?: unknown }) => {
     },
   });
 
-  const meta = data?.meta;
-  const totalPages = Math.max(1, meta?.totalPages ?? 1);
-  const currentPage = Math.min(Math.max(1, meta?.page ?? page), totalPages);
-  const totalItems = meta?.total ?? undefined;
+  // const meta = data?.meta;
+  // const totalPages = Math.max(1, meta?.totalPages ?? 1);
+  // const currentPage = Math.min(Math.max(1, meta?.page ?? page), totalPages);
+  // const totalItems = meta?.total ?? undefined;
 
-  useEffect(() => {
-    if (page !== currentPage) setPage(currentPage);
-    // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, [currentPage, totalPages]);
+  // useEffect(() => {
+  //   if (page !== currentPage) setPage(currentPage);
+  //   // eslint-disable-next-line react-hooks/exhaustive-deps
+  // }, [currentPage, totalPages]);
 
-  const canGoPrev = currentPage > 1;
-  const canGoNext = currentPage < totalPages;
-  const paginationItems = useMemo(
-    () => getPaginationItems(currentPage, totalPages),
-    [currentPage, totalPages],
-  );
-  const showingRange = useMemo(() => {
-    if (typeof totalItems !== "number") return null;
-    if (totalItems <= 0) return null;
-    const start = (currentPage - 1) * limit + 1;
-    const end = Math.min(currentPage * limit, totalItems);
-    return { start, end, total: totalItems };
-  }, [currentPage, limit, totalItems]);
+  // const canGoPrev = currentPage > 1;
+  // const canGoNext = currentPage < totalPages;
+  // const paginationItems = useMemo(
+  //   () => getPaginationItems(currentPage, totalPages),
+  //   [currentPage, totalPages],
+  // );
+  // const showingRange = useMemo(() => {
+  //   if (typeof totalItems !== "number") return null;
+  //   if (totalItems <= 0) return null;
+  //   const start = (currentPage - 1) * limit + 1;
+  //   const end = Math.min(currentPage * limit, totalItems);
+  //   return { start, end, total: totalItems };
+  // }, [currentPage, limit, totalItems]);
 
-  const ideas = useMemo(
-    () => (Array.isArray(data?.data) ? data.data : ([] as IideaResponse[])),
-    [data],
-  );
+  // const ideas = useMemo(
+  //   () => (Array.isArray(data?.data) ? data.data : ([] as IideaResponse[])),
+  //   [data],
+  // );
   // console.log("Normalized ideas array:", ideas.map((idea) => idea.ideaId));
+  const ideas = useMemo(() => infiniteData ?? [], [infiniteData]);
 
   const loadBookingDetails = async (idea: IideaResponse) => {
     setBookingDetailsDialog({
@@ -759,11 +786,11 @@ const ideaManagmentPage = ({ user }: { user?: unknown }) => {
             )}
           </div>
 
-          {showingRange && !showSkeletonGrid && (
+          {/* {showingRange && !showSkeletonGrid && (
             <p className="text-xs text-muted-foreground">
               {showingRange.start}–{showingRange.end} of {showingRange.total}
             </p>
-          )}
+          )} */}
         </div>
 
         {/* ── Skeleton grid ─────────────────────────────────────────────── */}
@@ -795,7 +822,9 @@ const ideaManagmentPage = ({ user }: { user?: unknown }) => {
               size="sm"
               className="rounded-xl"
               onClick={() =>
-                queryClient.invalidateQueries({ queryKey: ["idea"] })
+                queryClient.invalidateQueries({
+                  queryKey: ["idea", "infinite"],
+                })
               }
             >
               Retry
@@ -934,7 +963,25 @@ const ideaManagmentPage = ({ user }: { user?: unknown }) => {
       </div>
 
       {/* ══ PAGINATION ════════════════════════════════════════════════════ */}
-      {totalPages > 1 && (
+
+      {/* ══ ইনফিনিটি স্ক্রল ট্রিগার ═════════════════════════════════ */}
+      {!showSkeletonGrid && !isError && underReviewideas.length > 0 && (
+        <InfiniteScrollObserver
+          hasNextPage={hasNextPage}
+          isFetchingNextPage={isFetchingNextPage}
+          onLoadMore={fetchNextPage}
+          loadingComponent={
+            <div className="flex justify-center py-6">
+              <EcoSpinner size="sm" />
+              <span className="ml-2 text-sm text-muted-foreground">
+                Loading more ideas...
+              </span>
+            </div>
+          }
+          className="h-10 w-full"
+        />
+      )}
+      {/* {totalPages > 1 && (
         <div className="mt-10 space-y-3">
           {showingRange && (
             <p className="text-center text-xs text-muted-foreground">
@@ -1014,7 +1061,7 @@ const ideaManagmentPage = ({ user }: { user?: unknown }) => {
             </div>
           </div>
         </div>
-      )}
+      )} */}
     </div>
   );
 };

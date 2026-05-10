@@ -40,6 +40,8 @@ import {
   UsersIcon,
   XCircleIcon,
 } from "lucide-react";
+import { useInfiniteScroll } from "@/hooks/useInfiniteScroll";
+import { InfiniteScrollObserver } from "@/components/InfiniteScrollObserver";
 
 // ─── Types ────────────────────────────────────────────────────────────────────
 
@@ -231,20 +233,41 @@ const SkeletonRows = () => (
 // ─── Main Component ───────────────────────────────────────────────────────────
 
 const UserManagment = () => {
-  const [page, setPage] = useState(1);
-  const [limit] = useState(4);
+  // const [page, setPage] = useState(1);
+  const [limit] = useState(1);
   const [confirmDeleteId, setConfirmDeleteId] = useState<string | null>(null);
   const queryClient = useQueryClient();
 
-  const { data, isLoading, isError } = useQuery({
-    queryKey: ["users", page, limit],
-    queryFn: () => getAllUserByAdmiAction({ page, limit }),
+  // const { data, isLoading, isError } = useQuery({
+  //   queryKey: ["users", page, limit],
+  //   queryFn: () => getAllUserByAdmiAction({ page, limit }),
+  // });
+  const {
+    data: infiniteData,
+    fetchNextPage,
+    hasNextPage,
+    isFetchingNextPage,
+    isLoading,
+    isError,
+    refetch,
+  } = useInfiniteScroll<
+    UserRow,
+    {
+      data: UserRow[];
+      meta?: { total?: number; totalPages?: number; page?: number };
+    }
+  >({
+    queryKey: ["users", "infinite", limit],
+    queryFn: (page) => getAllUserByAdmiAction({ page, limit }),
+    limit: limit,
+    getDataFromResponse: (response) => response?.data ?? [],
   });
 
-  const users = useMemo(
-    () => (Array.isArray(data?.data) ? (data.data as UserRow[]) : []),
-    [data],
-  );
+  // const users = useMemo(
+  //   () => (Array.isArray(data?.data) ? (data.data as UserRow[]) : []),
+  //   [data],
+  // );
+  const users = useMemo(() => infiniteData ?? [], [infiniteData]);
 
   const { mutate: deleteUser, isPending: isDeleting } = useMutation({
     mutationFn: deleteUserByAdminAction,
@@ -264,28 +287,28 @@ const UserManagment = () => {
   });
 
   // ── Pagination ──────────────────────────────────────────────────────────────
-  const meta = data?.meta;
-  const totalPages = Math.max(1, meta?.totalPages ?? 1);
-  const currentPage = Math.min(Math.max(1, meta?.page ?? page), totalPages);
-  const totalItems = meta?.total ?? undefined;
+  // const meta = data?.meta;
+  // const totalPages = Math.max(1, meta?.totalPages ?? 1);
+  // const currentPage = Math.min(Math.max(1, meta?.page ?? page), totalPages);
+  // const totalItems = meta?.total ?? undefined;
 
-  useEffect(() => {
-    if (page !== currentPage) setPage(currentPage);
-    // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, [currentPage, totalPages]);
+  // useEffect(() => {
+  //   if (page !== currentPage) setPage(currentPage);
+  //   // eslint-disable-next-line react-hooks/exhaustive-deps
+  // }, [currentPage, totalPages]);
 
-  const canGoPrev = currentPage > 1;
-  const canGoNext = currentPage < totalPages;
-  const paginationItems = useMemo(
-    () => getPaginationItems(currentPage, totalPages),
-    [currentPage, totalPages],
-  );
-  const showingRange = useMemo(() => {
-    if (typeof totalItems !== "number" || totalItems <= 0) return null;
-    const start = (currentPage - 1) * limit + 1;
-    const end = Math.min(currentPage * limit, totalItems);
-    return { start, end, total: totalItems };
-  }, [currentPage, limit, totalItems]);
+  // const canGoPrev = currentPage > 1;
+  // const canGoNext = currentPage < totalPages;
+  // const paginationItems = useMemo(
+  //   () => getPaginationItems(currentPage, totalPages),
+  //   [currentPage, totalPages],
+  // );
+  // const showingRange = useMemo(() => {
+  //   if (typeof totalItems !== "number" || totalItems <= 0) return null;
+  //   const start = (currentPage - 1) * limit + 1;
+  //   const end = Math.min(currentPage * limit, totalItems);
+  //   return { start, end, total: totalItems };
+  // }, [currentPage, limit, totalItems]);
 
   // ── Derived stats ───────────────────────────────────────────────────────────
   const activeCount = users.filter(
@@ -313,11 +336,11 @@ const UserManagment = () => {
           </div>
         </div>
 
-        {typeof totalItems === "number" && (
+        {/* {typeof totalItems === "number" && (
           <Badge variant="secondary" className="h-7 rounded-full px-3 text-sm">
             {totalItems} total
           </Badge>
-        )}
+        )} */}
       </div>
 
       {/* ── Stats row ────────────────────────────────────────────────────── */}
@@ -418,9 +441,9 @@ const UserManagment = () => {
                         className="group transition-colors duration-150 hover:bg-muted/30"
                       >
                         {/* # */}
-                        <TableCell className="pl-5 text-xs text-muted-foreground">
+                        {/* <TableCell className="pl-5 text-xs text-muted-foreground">
                           {(currentPage - 1) * limit + index + 1}
-                        </TableCell>
+                        </TableCell> */}
 
                         {/* Member: avatar + name + email */}
                         <TableCell>
@@ -674,7 +697,24 @@ const UserManagment = () => {
       </div>
 
       {/* ── Pagination ───────────────────────────────────────────────────── */}
-      {totalPages > 1 && !isLoading && !isError && users.length > 0 && (
+      {/* ══ ইনফিনিটি স্ক্রল ট্রিগার ═════════════════════ */}
+      {!isLoading && !isError && users.length > 0 && (
+        <InfiniteScrollObserver
+          hasNextPage={hasNextPage}
+          isFetchingNextPage={isFetchingNextPage}
+          onLoadMore={fetchNextPage}
+          loadingComponent={
+            <div className="flex justify-center py-6">
+              <div className="h-5 w-5 animate-spin rounded-full border-2 border-zinc-300 border-t-zinc-600" />
+              <span className="ml-2 text-sm text-muted-foreground">
+                Loading more users...
+              </span>
+            </div>
+          }
+          className="h-10 w-full"
+        />
+      )}
+      {/* {totalPages > 1 && !isLoading && !isError && users.length > 0 && (
         <div className="animate-eco-fade-up animate-delay-300 space-y-2">
           {showingRange && (
             <p className="text-center text-xs text-muted-foreground">
@@ -690,7 +730,7 @@ const UserManagment = () => {
                   aria-disabled={!canGoPrev}
                   className={!canGoPrev ? "pointer-ideas-none opacity-40" : ""}
                   onClick={(e) => {
-                    e.preventdefault()();
+                    e.preventDefault();
                     if (!canGoPrev) return;
                     setPage((p) => Math.max(1, p - 1));
                   }}
@@ -708,7 +748,7 @@ const UserManagment = () => {
                       href="#"
                       isActive={item === currentPage}
                       onClick={(e) => {
-                        e.preventdefault()();
+                        e.preventDefault();
                         if (item !== currentPage) setPage(item);
                       }}
                     >
@@ -724,7 +764,7 @@ const UserManagment = () => {
                   aria-disabled={!canGoNext}
                   className={!canGoNext ? "pointer-ideas-none opacity-40" : ""}
                   onClick={(e) => {
-                    e.preventdefault()();
+                    e.preventDefault();
                     if (!canGoNext) return;
                     setPage((p) => Math.min(totalPages, p + 1));
                   }}
@@ -733,7 +773,7 @@ const UserManagment = () => {
             </PaginationContent>
           </Pagination>
         </div>
-      )}
+      )} */}
     </div>
   );
 };

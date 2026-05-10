@@ -5,7 +5,7 @@ import QueryProviders from "@/lib/provider/QueryProvider";
 import { ThemeProvider } from "@/components/theme-provider";
 import { Toaster } from "@/components/ui/sonner";
 import { TooltipProvider } from "@/components/ui/tooltip";
-import Chatbot from "@/components/chatbot/Chatbot";
+
 // import Chat from "@/components/chat/Chat";
 import FloatingChatIcon from "@/components/chat/FloatingChatIcon";
 
