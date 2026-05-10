@@ -299,7 +299,7 @@ const CreateBlog = ({ userInfo }: { userInfo: any }) => {
                           />
                           <div className="group relative">
                             {/* Green glow on focus */}
-                            <div className="absolute -inset-px rounded-xl bg-linear-to-r from-zinc-400 to-teal-400 opacity-0 blur-sm transition-all duration-300 group-focus-within:opacity-30" />
+                            <div className="absolute -inset-px rounded-xl bg-linear-to-r from-zinc-400 to-teal-400 opacity-0 blur-sm transition-all duration-300 group-focus-within:opacity-30 pointer-events-none" />
                             <Input
                               id={field.name}
                               name={field.name}
@@ -369,7 +369,7 @@ const CreateBlog = ({ userInfo }: { userInfo: any }) => {
                             }
                           />
                           <div className="group relative">
-                            <div className="absolute -inset-px rounded-xl bg-linear-to-r from-zinc-400 to-teal-400 opacity-0 blur-sm transition-all duration-300 group-focus-within:opacity-30" />
+                            <div className="absolute -inset-px rounded-xl bg-linear-to-r from-zinc-400 to-teal-400 opacity-0 blur-sm transition-all duration-300 group-focus-within:opacity-30 pointer-events-none" />
                             <StyledTextarea
                               id={field.name}
                               name={field.name}
@@ -378,7 +378,7 @@ const CreateBlog = ({ userInfo }: { userInfo: any }) => {
                               rows={10}
                               hasError={!!err}
                               onBlur={field.handleBlur}
-                              onChange={field.handleChange}
+                              onChange={(v: string) => field.handleChange(v)}
                             />
                           </div>
                           {err && <FieldError>{err}</FieldError>}

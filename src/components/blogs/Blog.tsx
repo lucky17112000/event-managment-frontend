@@ -45,7 +45,7 @@ function BlogCard({ blog, index }: { blog: GetBlogResponse; index: number }) {
         visible ? "opacity-100 translate-y-0" : "opacity-0 translate-y-10",
       )}
     >
-      <Card className="group h-full flex flex-col overflow-hidden border bg-card transition-all duration-300 hover:-translate-y-2 hover:shadow-2xl hover:shadow-zinc-500/10 hover:border-zinc-200 dark:hover:border-zinc-800">
+      <Card className="group h-full flex flex-col overflow-hidden border bg-card transition-all duration-300 hover:-translate-y-1 hover:shadow-lg hover:shadow-zinc-300/6 hover:border-zinc-200 dark:hover:border-zinc-800">
         {/* Banner */}
         <div className="relative flex h-44 shrink-0 items-center justify-center bg-linear-to-br from-zinc-50 to-zinc-100 transition-all duration-300 group-hover:from-zinc-100 group-hover:to-zinc-200 dark:from-zinc-950/50 dark:to-zinc-900/30 dark:group-hover:from-zinc-900/60 dark:group-hover:to-zinc-800/40">
           <LeafIcon className="size-16 text-zinc-300 transition-all duration-300 group-hover:scale-110 group-hover:text-zinc-400 dark:text-zinc-700 dark:group-hover:text-zinc-600" />
@@ -62,22 +62,34 @@ function BlogCard({ blog, index }: { blog: GetBlogResponse; index: number }) {
             {blog.title}
           </h3>
 
-          <p className="text-sm leading-relaxed text-muted-foreground transition-all duration-300">
-            {displayContent}
-          </p>
+          <div
+            className={cn(
+              "text-sm leading-relaxed text-muted-foreground transition-all duration-300 overflow-hidden",
+            )}
+            style={{
+              maxHeight: !expanded && isTruncatable ? "4.5rem" : "1000px",
+            }}
+            aria-expanded={expanded}
+          >
+            <p className="m-0">{displayContent}</p>
+          </div>
 
           {isTruncatable && (
             <button
               onClick={() => setExpanded((p) => !p)}
-              className="flex items-center gap-1 self-start text-xs font-semibold text-zinc-600 transition-all duration-200 hover:text-zinc-700 dark:text-zinc-400 dark:hover:text-zinc-300"
+              className="flex items-center gap-1 self-start text-xs font-semibold text-zinc-600 transition-transform duration-200 hover:translate-x-0.5 hover:text-zinc-700 dark:text-zinc-400 dark:hover:text-zinc-300"
+              aria-controls={`blog-content-${blog.id}`}
+              aria-expanded={expanded}
             >
               {expanded ? (
                 <>
-                  See less <ChevronUpIcon className="size-3.5" />
+                  See less{" "}
+                  <ChevronUpIcon className="size-3.5 transition-transform" />
                 </>
               ) : (
                 <>
-                  See more <ChevronDownIcon className="size-3.5" />
+                  See more{" "}
+                  <ChevronDownIcon className="size-3.5 transition-transform" />
                 </>
               )}
             </button>

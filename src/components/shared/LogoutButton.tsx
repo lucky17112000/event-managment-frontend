@@ -30,6 +30,8 @@ export default function LogoutButton({
         try {
           setLoading(true);
           await logoutAction();
+          // Dispatch custom event for navbar to listen
+          window.dispatchEvent(new Event("auth-state-changed"));
           router.replace(redirectTo);
           router.refresh();
         } finally {
