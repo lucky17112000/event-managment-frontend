@@ -438,6 +438,7 @@ const LandingPage = () => {
 
   const [activeSlide, setActiveSlide] = useState(0);
   const [scrollProgress, setScrollProgress] = useState(0);
+  const [isAtBottom, setIsAtBottom] = useState(false);
   const timerRef = useRef<ReturnType<typeof setInterval> | null>(null);
 
   const startTimer = useCallback(() => {
@@ -464,6 +465,10 @@ const LandingPage = () => {
         document.documentElement.scrollHeight - window.innerHeight;
       const scrollPercent = docHeight > 0 ? (scrollTop / docHeight) * 100 : 0;
       setScrollProgress(Math.min(scrollPercent, 100));
+      const atBottom =
+        window.innerHeight + window.scrollY >=
+        document.documentElement.scrollHeight - 8;
+      setIsAtBottom(atBottom);
     };
 
     window.addEventListener("scroll", handleScroll);
@@ -1013,42 +1018,17 @@ const LandingPage = () => {
                       </div>
                     </div>
 
-                    {/* Floating attendees pill */}
-                    <div
-                      className="absolute -bottom-4 -left-5 flex items-center gap-2.5 rounded-xl border border-white/10 bg-white/[0.07] px-4 py-3 shadow-xl backdrop-blur-xl"
-                      style={{
-                        animation: "eco-float 8s ease-in-out infinite reverse",
-                      }}
-                    >
-                      <div className="flex -space-x-2">
-                        {["#71717a", "#a1a1aa", "#d4d4d8"].map((c, i) => (
-                          <div
-                            key={i}
-                            className="size-7 rounded-full border-2 border-black/60"
-                            style={{ background: c }}
-                          />
-                        ))}
-                      </div>
-                      <div>
-                        <p className="text-xs font-bold text-white">
-                          +2.4K going
-                        </p>
-                        <p className="text-[10px] text-white/40">
-                          already registered
-                        </p>
-                      </div>
-                    </div>
-
-                    {/* "Selling fast" floating tag */}
-                    <div
-                      className="absolute -top-3 -right-3 rounded-xl border border-zinc-500/30 bg-zinc-500/15 px-3 py-1.5 backdrop-blur-xl"
-                      style={{
-                        animation: "eco-float 7s ease-in-out infinite 1s",
-                      }}
-                    >
-                      <p className="text-xs font-bold text-zinc-400">
-                        ⚡ Selling fast
-                      </p>
+                    {/* Inline attendees & urgency info (moved inside card for clarity) */}
+                    <div className="mb-3 flex items-center gap-3 text-xs text-white/60">
+                      <UsersIcon className="size-4 text-zinc-400" />
+                      <span className="font-semibold text-white">
+                        +2.4K going
+                      </span>
+                      {HERO_SLIDES[activeSlide].eventCard.soldPct > 70 && (
+                        <span className="ml-2 rounded-full bg-red-600 px-2 py-0.5 text-[11px] font-bold text-white">
+                          Selling fast
+                        </span>
+                      )}
                     </div>
                   </div>
                 </div>
@@ -1074,6 +1054,23 @@ const LandingPage = () => {
 
           {/* ── Bottom: progress bars + stat strip ── */}
           <div className="absolute bottom-0 left-0 right-0 z-20">
+            {/* Floating scroll indicator button (click to go to bottom) */}
+            <div className="absolute left-1/2 bottom-40 z-30 -translate-x-1/2">
+              {!isAtBottom && (
+                <button
+                  onClick={() =>
+                    window.scrollTo({
+                      top: document.documentElement.scrollHeight,
+                      behavior: "smooth",
+                    })
+                  }
+                  aria-label="Scroll to bottom"
+                  className="flex items-center justify-center rounded-full bg-white/8 p-3 text-white/90 shadow-lg backdrop-blur-sm transition hover:bg-white/12"
+                >
+                  <ChevronDownIcon className="size-5 text-white" />
+                </button>
+              )}
+            </div>
             {/* Scroll Indicator */}
             <div className="absolute bottom-32 left-1/2 -translate-x-1/2">
               <div className="flex flex-col items-center gap-3">
@@ -1127,6 +1124,24 @@ const LandingPage = () => {
                   <StarIcon className="size-3.5 text-zinc-500/70" />
                   Free to join
                 </span>
+              </div>
+            </div>
+            {/* Bottom fixed nav bar shown when user reaches page bottom */}
+            <div
+              className={cn(
+                "pointer-events-auto fixed left-1/2 bottom-6 z-40 w-[92%] max-w-3xl -translate-x-1/2 rounded-full border border-white/10 bg-black/60 p-3 shadow-2xl backdrop-blur-md transition-opacity duration-300",
+                isAtBottom ? "opacity-100" : "opacity-0 pointer-events-none",
+              )}
+            >
+              <div className="flex items-center justify-center">
+                <button
+                  onClick={() =>
+                    window.scrollTo({ top: 0, behavior: "smooth" })
+                  }
+                  className="inline-flex items-center gap-2 rounded-full bg-zinc-800/80 px-4 py-2 text-sm font-semibold text-white shadow-md hover:bg-zinc-800"
+                >
+                  Go to Top
+                </button>
               </div>
             </div>
           </div>

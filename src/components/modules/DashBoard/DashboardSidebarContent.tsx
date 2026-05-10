@@ -107,8 +107,8 @@ const CollapsedLogoutButton = ({ redirectTo }: { redirectTo: string }) => {
       }}
       className={cn(
         "flex w-full justify-center rounded-xl p-2.5",
-        "text-red-400 transition-all duration-200",
-        "hover:bg-red-50 hover:text-red-600 dark:hover:bg-red-950/30 dark:hover:text-red-400",
+        "text-amber-600 transition-all duration-200",
+        "hover:bg-amber-50 hover:text-amber-700 dark:hover:bg-amber-950/20 dark:hover:text-amber-400",
         "active:scale-95",
         loading && "opacity-50 cursor-not-allowed",
       )}
@@ -321,9 +321,8 @@ const DashboardSidebarContent = ({
         ) : (
           <LogoutButton
             className={cn(
-              "text-red-500 hover:text-red-600 hover:bg-red-50",
-              "dark:text-red-400 dark:hover:text-red-300 dark:hover:bg-red-950/30",
-              "transition-colors duration-200 rounded-xl",
+              "text-amber-600 hover:text-amber-700 hover:bg-amber-50",
+              "dark:text-amber-400 dark:hover:text-amber-300 dark:hover:bg-amber-950/20",
             )}
             redirectTo="/login"
           />

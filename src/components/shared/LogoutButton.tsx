@@ -20,12 +20,18 @@ export default function LogoutButton({
   const router = useRouter();
   const [loading, setLoading] = React.useState(false);
 
+  const defaultColorClasses =
+    "text-amber-600 hover:text-amber-700 hover:bg-amber-50 dark:text-amber-400 dark:hover:text-amber-300 dark:hover:bg-amber-950/20";
+
   return (
     <Button
       type="button"
       variant="ghost"
       disabled={loading}
-      className={cn("w-full justify-start", className)}
+      className={cn(
+        "w-full justify-start transition-colors duration-200 rounded-xl",
+        className ?? defaultColorClasses,
+      )}
       onClick={async () => {
         try {
           setLoading(true);

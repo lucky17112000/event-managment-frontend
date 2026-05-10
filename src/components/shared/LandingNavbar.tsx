@@ -365,8 +365,8 @@ const LandingNavbar = ({
               className={cn(
                 "inline-flex items-center h-10 px-4 py-2 rounded-lg text-sm font-semibold shadow-md transition-all duration-200 active:scale-95",
                 theme === "light"
-                  ? "bg-red-600 text-white hover:bg-red-700"
-                  : "bg-red-600 text-white hover:bg-red-700",
+                  ? "bg-amber-600 text-white hover:bg-amber-700"
+                  : "bg-amber-600 text-white hover:bg-amber-700",
               )}
             >
               Logout

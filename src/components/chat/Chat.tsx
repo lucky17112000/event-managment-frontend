@@ -25,11 +25,11 @@ export default function Chat() {
   const bottomRef = useRef<HTMLDivElement | null>(null);
 
   // A small set of suggested questions — clicking one will send it
-  const SUGGESTED_QUESTIONS = [
-    "How do I create an event?",
-    "What are the guidelines for posting events?",
-    "How does the voting system work?",
-  ];
+  // const SUGGESTED_QUESTIONS = [
+  //   "How do I create an event?",
+  //   "What are the guidelines for posting events?",
+  //   "How does the voting system work?",
+  // ];
 
   useEffect(() => {
     // scroll to bottom when messages change or while loading
@@ -174,7 +174,7 @@ export default function Chat() {
         ))}
         {isLoading && (
           <div className="flex justify-start">
-            <div className="bg-gray-700 rounded-lg p-3">🤖 টাইপ করছে...</div>
+            <div className="bg-gray-700 rounded-lg p-3">🤖 typing...</div>
           </div>
         )}
         <div ref={bottomRef} />
@@ -183,7 +183,7 @@ export default function Chat() {
       {/* Quick replies */}
       <div className="px-4 py-2 border-t border-gray-800">
         <div className="flex flex-wrap gap-2">
-          {SUGGESTED_QUESTIONS.map((q) => (
+          {/* {SUGGESTED_QUESTIONS.map((q) => (
             <motion.button
               key={q}
               whileHover={{ scale: 1.03 }}
@@ -194,7 +194,7 @@ export default function Chat() {
             >
               {q}
             </motion.button>
-          ))}
+          ))} */}
         </div>
       </div>
 

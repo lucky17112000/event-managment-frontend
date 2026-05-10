@@ -132,7 +132,7 @@ const LoginForm = () => {
   };
 
   return (
-    <div className="min-h-screen flex bg-neutral-50">
+    <div className="min-h-screen flex bg-neutral-50 dark:bg-zinc-900">
       <Suspense fallback={null}>
         <OAuthErrorToast />
       </Suspense>
@@ -258,7 +258,7 @@ const LoginForm = () => {
           </div>
 
           {/* Card */}
-          <div className="bg-white border border-neutral-200 rounded-2xl shadow-sm overflow-hidden animate-eco-fade-up">
+          <div className="bg-white border border-neutral-200 rounded-2xl shadow-sm overflow-hidden animate-eco-fade-up dark:bg-zinc-800 dark:border-zinc-700">
             {/* Card header */}
             <div className="px-6 pt-8 pb-6 sm:px-8 border-b border-neutral-100 text-center">
               <div className="inline-flex size-14 items-center justify-center rounded-2xl bg-zinc-600 shadow-lg shadow-zinc-600/25 mb-4 animate-eco-float">
@@ -282,18 +282,18 @@ const LoginForm = () => {
                   window.location.href = `${baseUrl}/auth/login/google`;
                 }}
                 type="button"
-                className="w-full flex items-center justify-center gap-2.5 h-11 px-4 bg-white border border-neutral-200 rounded-xl text-sm text-foreground font-medium hover:bg-neutral-50 hover:border-neutral-300 hover:shadow-sm active:scale-[0.98] transition-all duration-200 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-zinc-500/40"
+                className="w-full flex items-center justify-center gap-2.5 h-11 px-4 bg-white border border-neutral-200 rounded-xl text-sm text-foreground font-medium hover:bg-neutral-50 hover:border-neutral-300 hover:shadow-sm active:scale-[0.98] transition-all duration-200 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-zinc-500/40 dark:bg-zinc-700 dark:border-zinc-700 dark:text-white dark:hover:bg-zinc-600"
               >
                 <GoogleIcon />
                 Continue with Google
               </button>
 
               <div className="my-5 flex items-center gap-3">
-                <div className="h-px flex-1 bg-neutral-200" />
+                <div className="h-px flex-1 bg-neutral-200 dark:bg-zinc-700" />
                 <span className="px-1 text-xs whitespace-nowrap text-muted-foreground">
                   or continue with email
                 </span>
-                <div className="h-px flex-1 bg-neutral-200" />
+                <div className="h-px flex-1 bg-neutral-200 dark:bg-zinc-700" />
               </div>
 
               {/* Form */}
@@ -386,7 +386,7 @@ const LoginForm = () => {
                   <Button
                     type="button"
                     onClick={() => submitPresetLogin("admin")}
-                    className="h-11 rounded-xl border border-zinc-200 bg-white text-foreground hover:bg-zinc-50"
+                    className="h-11 rounded-xl border border-zinc-200 bg-white text-foreground hover:bg-neutral-50 dark:border-zinc-700 dark:bg-zinc-700 dark:text-white dark:hover:bg-zinc-600"
                   >
                     Admin Login
                   </Button>

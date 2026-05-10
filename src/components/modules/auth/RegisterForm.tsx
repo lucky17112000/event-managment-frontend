@@ -80,7 +80,7 @@ const RegisterForm = () => {
   });
 
   return (
-    <div className="min-h-screen flex bg-neutral-50">
+    <div className="min-h-screen flex bg-neutral-50 dark:bg-zinc-900">
       {/* ── Left Hero Panel (lg+) ──────────────────────────────────── */}
       <div className="hidden lg:flex lg:w-[52%] xl:w-[55%] sticky top-0 h-screen flex-col justify-between p-10 xl:p-14 bg-linear-to-br from-zinc-900 via-zinc-800 to-zinc-600 overflow-hidden">
         {/* Ambient glow blobs */}
@@ -200,7 +200,7 @@ const RegisterForm = () => {
           </div>
 
           {/* Card */}
-          <div className="bg-white border border-neutral-200 rounded-2xl shadow-sm overflow-hidden animate-eco-fade-up">
+          <div className="bg-white border border-neutral-200 rounded-2xl shadow-sm overflow-hidden animate-eco-fade-up dark:bg-zinc-800 dark:border-zinc-700">
             {/* Card header */}
             <div className="px-6 pt-8 pb-6 sm:px-8 border-b border-neutral-100 text-center">
               <div className="inline-flex size-14 items-center justify-center rounded-2xl bg-zinc-600 shadow-lg shadow-zinc-600/25 mb-4 animate-eco-float">
@@ -219,7 +219,7 @@ const RegisterForm = () => {
               {/* Google sign-up */}
               <button
                 type="button"
-                className="w-full flex items-center justify-center gap-2.5 h-11 px-4 bg-white border border-neutral-200 rounded-xl text-sm text-foreground font-medium hover:bg-neutral-50 hover:border-neutral-300 hover:shadow-sm active:scale-[0.98] transition-all duration-200 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-zinc-500/40"
+                className="w-full flex items-center justify-center gap-2.5 h-11 px-4 bg-white border border-neutral-200 rounded-xl text-sm text-foreground font-medium hover:bg-neutral-50 hover:border-neutral-300 hover:shadow-sm active:scale-[0.98] transition-all duration-200 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-zinc-500/40 dark:bg-zinc-700 dark:border-zinc-700 dark:text-white dark:hover:bg-zinc-600"
               >
                 <GoogleIcon />
                 Continue with Google
@@ -227,11 +227,11 @@ const RegisterForm = () => {
 
               {/* Divider */}
               <div className="flex items-center gap-3 my-5">
-                <div className="flex-1 h-px bg-neutral-200" />
+                <div className="flex-1 h-px bg-neutral-200 dark:bg-zinc-700" />
                 <span className="text-xs text-muted-foreground whitespace-nowrap px-1">
                   or register with email
                 </span>
-                <div className="flex-1 h-px bg-neutral-200" />
+                <div className="flex-1 h-px bg-neutral-200 dark:bg-zinc-700" />
               </div>
 
               {/* Form */}
@@ -338,7 +338,7 @@ const RegisterForm = () => {
                   Already have an account?{" "}
                   <Link
                     href="/login"
-                    className="text-zinc-600 font-semibold hover:underline underline-offset-4 transition-colors"
+                    className="text-zinc-600 font-semibold hover:underline underline-offset-4 transition-colors dark:text-zinc-200"
                   >
                     Sign in
                   </Link>
