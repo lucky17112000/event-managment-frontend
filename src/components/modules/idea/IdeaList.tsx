@@ -113,17 +113,13 @@ const ideaList = ({ user }: { user: any }) => {
   const [limit] = useState(3);
   const { data } = useQuery({
     queryKey: ["idea", page, limit],
-    queryFn: () => getidea({ page, limit }),
+    queryFn: () => getidea({ page, limit, status: "UNDER_REVIEW" }),
   });
   //!SECTION pagination
   const meta = data?.meta;
   const totalPages = Math.max(1, meta?.totalPages ?? 1);
-  const currentPage = Math.min(Math.max(1, meta?.page ?? page), totalPages);
+  const currentPage = Math.min(Math.max(1, page), totalPages);
   const totalItems = meta?.total ?? undefined;
-  useEffect(() => {
-    if (page !== currentPage) setPage(currentPage);
-    // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, [currentPage, totalPages]);
   const canGoPrev = currentPage > 1;
   const canGoNext = currentPage < totalPages;
   const paginationItems = useMemo(() => {
@@ -143,15 +139,35 @@ const ideaList = ({ user }: { user: any }) => {
     return Array.isArray(data?.data) ? data.data : ([] as IideaResponse[]);
   }, [data]);
 
-  // const underReviewideas = useMemo(() => {
-  //   return ideas.filter((idea) => idea?.status === "UNDER_REVIEW");
-  // }, [ideas]);
+  useEffect(() => {
+    if (!data) return;
+    try {
+      const counts = (data.data ?? []).reduce((acc: any, it: any) => {
+        const s = String(it?.status ?? "").toUpperCase();
+        acc[s] = (acc[s] || 0) + 1;
+        return acc;
+      }, {});
+      // eslint-disable-next-line no-console
+      console.debug("[IdeaList] fetched ideas:", {
+        total: data?.meta?.total ?? (data.data || []).length,
+        page: data?.meta?.page,
+        counts,
+        sample: (data.data ?? [])
+          .slice(0, 5)
+          .map((i: any) => ({
+            id: i.id,
+            status: i.status,
+            authorId: i.authorId,
+          })),
+      });
+    } catch (e) {
+      // eslint-disable-next-line no-console
+      console.warn("[IdeaList] debug logging failed", e);
+    }
+  }, [data]);
+
   const underReviewideas = useMemo(() => {
     return ideas.filter((idea) => {
-      const matchesStatus = idea?.status === "UNDER_REVIEW";
-      if (!matchesStatus) return false;
-
-      // If parent passes user id, scope to that user's ideas
       if (!userId) return true;
       return idea?.authorId === userId || idea?.author?.id === userId;
     });

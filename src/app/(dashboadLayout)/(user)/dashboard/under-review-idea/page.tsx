@@ -9,12 +9,12 @@ export const dynamic = "force-dynamic";
 
 const UnderReviewPage = async () => {
   const queryClient = new QueryClient();
-  const page = 0;
+  const page = 1;
   const limit = 3;
   try {
     await queryClient.prefetchQuery({
       queryKey: ["idea", page, limit],
-      queryFn: () => getidea({ page, limit }),
+      queryFn: () => getidea({ page, limit, status: "UNDER_REVIEW" }),
     });
   } catch (error) {
     console.error("Under review ideas prefetch skipped:", error);
