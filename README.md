@@ -2,6 +2,8 @@
 
 **Where green ideas don't just get shared — they get reviewed, voted on, and sold.**
 
+Event Hub is a modern event management site where ideas move from submission to review, community engagement, and real impact.
+
 [![Next.js](https://img.shields.io/badge/Next.js-16.2.4-black?style=flat-square&logo=next.js)](https://nextjs.org)
 [![React](https://img.shields.io/badge/React-19-61DAFB?style=flat-square&logo=react)](https://react.dev)
 [![TypeScript](https://img.shields.io/badge/TypeScript-5-3178C6?style=flat-square&logo=typescript)](https://www.typescriptlang.org)
@@ -72,6 +74,14 @@ This means:
 
 ---
 
+## Notable UX Features
+
+- **Chatbot support**: Event Hub includes a dedicated chat experience at `/chat` for conversational assistance.
+- **Infinite scrolling**: Event discovery supports infinite scrolling behavior for smoother browsing across large lists.
+- **Streaming-friendly data flow**: Combined with TanStack Query hydration, list and feed interactions stay responsive.
+
+---
+
 ## Tech Stack
 
 | Layer         | Technology                                                                   |
@@ -98,6 +108,7 @@ This means:
 /idea/[id]               Full idea detail — votes, purchase gate, images
 /login  /register        Auth entry points
 /verify-email            OTP-based email confirmation
+/chat                    Chatbot experience for in-app assistance
 /forgot-password         Initiates reset flow
 /reset-password          Token-validated new password
 /change-password         Authenticated password update
