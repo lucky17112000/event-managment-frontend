@@ -161,11 +161,10 @@ const MyProfile = ({ data }: { data: ProfileData }) => {
             className="absolute right-0 top-0 h-px w-2/3 bg-linear-to-l from-white/40 to-transparent"
           />
 
-          {/* EcoSpark chip */}
           <div className="absolute right-4 top-4 inline-flex items-center gap-1.5 rounded-full border border-white/25 bg-white/15 px-3 py-1.5 backdrop-blur-sm">
             <Sprout className="size-3.5 text-white" />
             <span className="text-[11px] font-bold tracking-wide text-white">
-              EcoSpark
+              Event Hub
             </span>
           </div>
 
@@ -371,7 +370,7 @@ const MyProfile = ({ data }: { data: ProfileData }) => {
           <div className="flex items-center justify-center gap-1.5">
             <Sprout className="size-3.5 text-zinc-500" />
             <span className="text-[11px] font-semibold text-muted-foreground">
-              EcoSpark Community Member
+              Event Hub Community Member
             </span>
           </div>
         </div>

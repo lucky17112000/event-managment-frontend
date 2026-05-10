@@ -60,7 +60,7 @@ const DashboardMobileSidebar = ({
             <Sprout className="size-4 text-white" />
           </div>
           <span className="text-xl font-extrabold tracking-tight text-white">
-            EcoSpark
+            Event Hub
           </span>
         </Link>
 

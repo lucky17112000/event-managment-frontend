@@ -131,7 +131,7 @@ function SuccessScreen() {
           <div className="mt-2 inline-flex items-center gap-1.5 rounded-full border border-zinc-200/70 bg-zinc-50 px-3.5 py-1.5 dark:border-zinc-800/50 dark:bg-zinc-950/40">
             <Sprout className="size-3.5 text-zinc-600 dark:text-zinc-400" />
             <span className="text-[11px] font-bold tracking-wide text-zinc-700 dark:text-zinc-400">
-              EcoSpark
+              Event Hub
             </span>
           </div>
         </div>
@@ -238,12 +238,10 @@ const ChangePassword = () => {
             className="absolute left-0 top-0 h-px w-full bg-linear-to-r from-transparent via-white/40 to-transparent"
           />
 
-          {/* EcoSpark badge */}
+          {/*  badge */}
           <div className="absolute right-4 top-4 inline-flex items-center gap-1.5 rounded-full border border-white/25 bg-white/15 px-2.5 py-1 backdrop-blur-sm">
             <Sprout className="size-3 text-white" />
-            <span className="text-[10px] font-bold tracking-widest text-white uppercase">
-              EcoSpark
-            </span>
+            <span className="text-[10px] font-bold tracking-widest text-white uppercase"></span>
           </div>
 
           {/* Lock icon */}
@@ -435,7 +433,7 @@ const ChangePassword = () => {
           <div className="flex items-center justify-center gap-1.5">
             <Sprout className="size-3.5 text-zinc-500" />
             <span className="text-[11px] font-semibold text-muted-foreground">
-              EcoSpark · Secure Account Management
+              · Secure Account Management
             </span>
           </div>
         </div>

@@ -500,7 +500,7 @@ const AllIdeas = ({ user }: { user?: unknown }) => {
           {/* Heading */}
           <div className="space-y-2.5 text-center">
             <h1 className="bg-linear-to-br from-zinc-700 via-zinc-600 to-teal-600 bg-clip-text text-3xl font-extrabold tracking-tight text-transparent dark:from-zinc-300 dark:via-zinc-400 dark:to-teal-300 sm:text-4xl">
-              Discover Eco Ideas
+              Discover Events, Spark Change
             </h1>
             <p className="mx-auto max-w-md text-sm leading-relaxed text-muted-foreground">
               Browse, vote, and get inspired by community-driven sustainability
@@ -649,7 +649,7 @@ const AllIdeas = ({ user }: { user?: unknown }) => {
                 </p>
               ) : (
                 <p className="text-muted-foreground/50 text-xs">
-                  Type to filter ideas by keyword
+                  Type to Event Keywordd
                 </p>
               )}
             </div>
@@ -939,7 +939,7 @@ const AllIdeas = ({ user }: { user?: unknown }) => {
         )}
       </div>
       {/* ══ PAGINATION ════════════════════════════════════════════════════ */}
-      //!SECTION infinite scroll trigger
+
       {/* ══ ইনফিনিটি স্ক্রল ট্রিগার ═════════════════════════════════ */}
       {!showSkeletonGrid && !isError && underReviewIdeas.length > 0 && (
         <InfiniteScrollObserver
@@ -957,7 +957,7 @@ const AllIdeas = ({ user }: { user?: unknown }) => {
           className="h-10 w-full"
         />
       )}
-      //!SECTION infinite scroll trigger
+
       {/* {totalPages > 1 && (
         <div className="mt-10 space-y-3">
           {showingRange && (

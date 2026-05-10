@@ -66,7 +66,7 @@ function DeleteBlogCard({
     return () => io.disconnect();
   }, [index]);
 
-  const authorName = blog.authorName ?? blog.author?.name ?? "EcoSpark Team";
+  const authorName = blog.authorName ?? blog.author?.name ?? "Event Hub Team";
   const isTruncatable = (blog.content?.length ?? 0) > PREVIEW_LENGTH;
   const displayContent =
     !expanded && isTruncatable
@@ -283,7 +283,7 @@ const DeleteBlog = () => {
           <div className="mb-4 inline-flex items-center gap-1.5 rounded-full border border-white/25 bg-white/15 px-3 py-1.5 backdrop-blur-sm">
             <Sprout className="size-3.5 text-white" />
             <span className="text-[11px] font-bold uppercase tracking-widest text-white">
-              EcoSpark ·
+              Event Hub ·
             </span>
           </div>
 
@@ -296,7 +296,7 @@ const DeleteBlog = () => {
                 Manage Blog Posts
               </h1>
               <p className="max-w-lg text-sm leading-relaxed text-red-100/80">
-                Review and remove blog posts from the EcoSpark platform.
+                Review and remove blog posts from the Event Hub platform.
                 Deletions are permanent.
               </p>
             </div>

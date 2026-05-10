@@ -1,11 +1,6 @@
 ﻿"use client";
 
-import {
-  Card,
-  CardContent,
-  CardHeader,
-  CardTitle,
-} from "@/components/ui/card";
+import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
 import { ThumbsDown, ThumbsUp } from "lucide-react";
 
 interface VoteComparisonProps {
@@ -27,7 +22,7 @@ export function VoteComparison({
     <div className={`animate-eco-fade-up ${animationDelay}`}>
       <Card className="h-full">
         <CardHeader className="border-b">
-          <CardTitle className="text-base">Vote Analysis</CardTitle>
+          <CardTitle className="text-base">Engagement Analysis</CardTitle>
         </CardHeader>
 
         <CardContent className="flex flex-col gap-6 pt-6">
@@ -56,8 +51,8 @@ export function VoteComparison({
               </div>
             </div>
             <div className="flex justify-between text-xs text-muted-foreground">
-              <span>Upvotes</span>
-              <span>Downvotes</span>
+              <span>Positive</span>
+              <span>Neutral</span>
             </div>
           </div>
 
@@ -67,7 +62,7 @@ export function VoteComparison({
               <div className="flex items-center gap-2">
                 <ThumbsUp className="h-4 w-4 text-zinc-600" />
                 <span className="text-xs font-medium text-zinc-700 dark:text-zinc-400">
-                  Up Votes
+                  Positive
                 </span>
               </div>
               <span className="text-3xl font-bold tabular-nums text-zinc-600">
@@ -78,7 +73,7 @@ export function VoteComparison({
               <div className="flex items-center gap-2">
                 <ThumbsDown className="h-4 w-4 text-rose-600" />
                 <span className="text-xs font-medium text-rose-700 dark:text-rose-400">
-                  Down Votes
+                  Neutral
                 </span>
               </div>
               <span className="text-3xl font-bold tabular-nums text-rose-600">
@@ -90,7 +85,7 @@ export function VoteComparison({
           {/* Total */}
           {total > 0 && (
             <p className="text-center text-xs text-muted-foreground">
-              {total.toLocaleString()} total votes received
+              {total.toLocaleString()} total interactions
             </p>
           )}
         </CardContent>

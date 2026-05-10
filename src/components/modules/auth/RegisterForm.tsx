@@ -115,7 +115,7 @@ const RegisterForm = () => {
             </span>
             <div>
               <span className="text-xl font-bold text-white tracking-tight block leading-none">
-                EcoSpark Hub
+                Event Hub
               </span>
               <span className="text-xs text-zinc-200/70 mt-0.5 block">
                 Sustainable Future Initiative
@@ -140,7 +140,7 @@ const RegisterForm = () => {
             </h2>
             <p className="mt-4 text-zinc-100/65 text-sm leading-relaxed max-w-sm">
               Create your free account and join thousands of innovators building
-              a greener, more sustainable world — one idea at a time.
+              a creative, more sustainable world — one event at a time.
             </p>
           </div>
 
@@ -150,10 +150,10 @@ const RegisterForm = () => {
               [
                 {
                   icon: Sparkles,
-                  text: "Share and discover sustainable ideas",
+                  text: "Share and discover sustainable event ideas",
                 },
-                { icon: Users, text: "Connect with 50,000+ eco-innovators" },
-                { icon: Zap, text: "Track your environmental impact" },
+                { icon: Users, text: "Connect with 50,000+ event organizers" },
+                { icon: Zap, text: "Track your social impact" },
                 { icon: Globe, text: "Make a difference globally" },
               ] as const
             ).map(({ icon: Icon, text }) => (
@@ -175,12 +175,12 @@ const RegisterForm = () => {
               Secure Platform
             </span>
             <span>·</span>
-            <span>Verified ideas</span>
+            <span>Verified events</span>
             <span>·</span>
             <span>Active Community</span>
           </div>
           <p className="mt-2 text-zinc-200/30 text-[11px]">
-            © 2026 EcoSpark Hub. All rights reserved.
+            © 2026 Event Hub. All rights reserved.
           </p>
         </div>
       </div>
@@ -193,7 +193,7 @@ const RegisterForm = () => {
             <span className="inline-flex size-14 items-center justify-center rounded-2xl bg-zinc-600 shadow-lg shadow-zinc-600/25 mb-3">
               <Leaf className="size-7 text-white" />
             </span>
-            <h2 className="text-lg font-bold text-foreground">EcoSpark Hub</h2>
+            <h2 className="text-lg font-bold text-foreground">Event Hub</h2>
             <p className="text-sm text-muted-foreground">
               Sustainable Future Initiative
             </p>
@@ -210,7 +210,7 @@ const RegisterForm = () => {
                 Create your account
               </h1>
               <p className="mt-1.5 text-sm text-muted-foreground">
-                Join the EcoSpark community today — it&apos;s free
+                Join the Event Hub community today — it&apos;s free
               </p>
             </div>
 
@@ -272,7 +272,7 @@ const RegisterForm = () => {
                         field={field}
                         label="Email"
                         type="email"
-                        placeholder="hello@ecosparkhub.com"
+                        placeholder="hello@eventhub.com"
                       />
                     )}
                   </form.Field>

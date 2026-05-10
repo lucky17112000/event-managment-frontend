@@ -209,7 +209,7 @@ const DashboardSidebarContent = ({
                 : "w-auto opacity-100",
             )}
           >
-            EcoSpark
+            EventHub
           </span>
         </Link>
 

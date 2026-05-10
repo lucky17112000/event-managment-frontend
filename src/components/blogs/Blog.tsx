@@ -2,9 +2,16 @@
 import { getBlogs, GetBlogResponse } from "@/services/blog.service";
 import { useQuery } from "@tanstack/react-query";
 import { useEffect, useRef, useState } from "react";
+import Link from "next/link";
 import { Badge } from "@/components/ui/badge";
+import { LogoImage } from "@/components/logo";
 import { Card, CardContent } from "@/components/ui/card";
-import { LeafIcon, ChevronDownIcon, ChevronUpIcon } from "lucide-react";
+import {
+  LeafIcon,
+  ChevronDownIcon,
+  ChevronUpIcon,
+  BookOpen,
+} from "lucide-react";
 import { cn } from "@/lib/utils";
 
 const PREVIEW_LENGTH = 140;
@@ -48,12 +55,27 @@ function BlogCard({ blog, index }: { blog: GetBlogResponse; index: number }) {
       <Card className="group h-full flex flex-col overflow-hidden border bg-card transition-all duration-300 hover:-translate-y-1 hover:shadow-lg hover:shadow-zinc-300/6 hover:border-zinc-200 dark:hover:border-zinc-800">
         {/* Banner */}
         <div className="relative flex h-44 shrink-0 items-center justify-center bg-linear-to-br from-zinc-50 to-zinc-100 transition-all duration-300 group-hover:from-zinc-100 group-hover:to-zinc-200 dark:from-zinc-950/50 dark:to-zinc-900/30 dark:group-hover:from-zinc-900/60 dark:group-hover:to-zinc-800/40">
-          <LeafIcon className="size-16 text-zinc-300 transition-all duration-300 group-hover:scale-110 group-hover:text-zinc-400 dark:text-zinc-700 dark:group-hover:text-zinc-600" />
+          <LogoImage
+            src="/globe.svg"
+            alt="EcoSpark"
+            className="h-20 w-auto transition-all duration-300 group-hover:scale-105"
+          />
           <div className="absolute top-3 left-3">
             <Badge className="bg-zinc-600/90 text-white backdrop-blur-sm border-0 text-xs">
               Blog
             </Badge>
           </div>
+          {/* Event Hub action button */}
+          <Link
+            href="/book"
+            className="absolute bottom-3 right-3 z-10 opacity-0 transform transition-all duration-200 group-hover:opacity-100 group-hover:translate-y-0"
+            aria-label="Go to Event Hub"
+          >
+            <span className="inline-flex items-center gap-2 rounded-full bg-white/95 px-3 py-1 text-xs font-semibold text-zinc-800 shadow-sm dark:bg-zinc-900/90 dark:text-white">
+              <BookOpen className="size-3 text-zinc-700 dark:text-zinc-200" />
+              Go to Event Hub
+            </span>
+          </Link>
         </div>
 
         {/* Content */}
@@ -149,18 +171,23 @@ const BlogsShow = () => {
         </div>
         <div className="relative mx-auto w-full max-w-7xl px-4 sm:px-6 text-center">
           <Badge className="mb-4 rounded-full border-zinc-200 bg-zinc-50 text-zinc-700 dark:border-zinc-800 dark:bg-zinc-950/50 dark:text-zinc-400">
-            <LeafIcon className="mr-1.5 size-3" />
-            EcoSpark Blog
+            <LogoImage
+              src="/globe.svg"
+              alt="Event Hub"
+              className="mr-1.5 h-4 w-auto"
+            />
+            Event Hub Blog
           </Badge>
           <h1 className="font-heading text-4xl font-bold tracking-tight sm:text-5xl animate-eco-fade-up animate-delay-100">
-            Stories for a{" "}
+            Type to Event Keywordfor a{" "}
             <span className="bg-linear-to-r from-zinc-600 via-teal-500 to-zinc-500 bg-clip-text text-transparent dark:from-zinc-400 dark:via-teal-400 dark:to-zinc-400">
-              greener world
+              event world
             </span>
           </h1>
           <p className="mt-4 max-w-xl mx-auto text-muted-foreground animate-eco-fade-up animate-delay-200">
-            Insights, stories, and ideas from the EcoSpark community on building
-            a more sustainable future.
+            Insights, stories, and ideas from the Event hub community on
+            building a more sustainable future.k community on building a more
+            sustainable future.
           </p>
         </div>
       </section>

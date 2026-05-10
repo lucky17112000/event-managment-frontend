@@ -15,7 +15,7 @@ All Next.js commands use `bun --bun` flag — do not use `npm run` or `npx next`
 
 ## Architecture Overview
 
-**EcoSpark** is a Next.js 16 + React 19 idea marketplace where users submit eco-friendly ideas for review, voting, and purchase.
+**Event Hub** is a Next.js 16 + React 19 event marketplace where users submit eco-friendly events for review, voting, and purchase.
 
 ### API Proxy Pattern
 

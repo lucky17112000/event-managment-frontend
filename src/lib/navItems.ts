@@ -43,7 +43,7 @@ export const adminNavItems: NavSection[] = [
       {
         title: "User Management",
         href: "/admin/dashboard/user-mangment",
-        icon: "Clock",
+        icon: "Users",
       },
     ],
   },
@@ -54,7 +54,7 @@ export const adminNavItems: NavSection[] = [
       {
         title: "Create Blog",
         href: "/admin/dashboard/blog-create",
-        icon: "FileText",
+        icon: "PenTool",
       },
     ],
   },
@@ -63,16 +63,16 @@ export const adminNavItems: NavSection[] = [
       {
         title: "Delete Blog",
         href: "/admin/dashboard/delete-blog",
-        icon: "FileText",
+        icon: "Trash2",
       },
     ],
   },
 
   {
-    title: "idea Management",
+    title: "Event Management",
     items: [
       {
-        title: "ideas",
+        title: "Events",
         href: "/admin/dashboard/idea-managment",
         icon: "Calendar",
       },
@@ -81,28 +81,18 @@ export const adminNavItems: NavSection[] = [
   {
     items: [
       {
-        title: "Rejected ideas",
+        title: "Archived Events",
         href: "/admin/dashboard/rejected-idea",
-        icon: "ClipboardList",
+        icon: "Archive",
       },
     ],
   },
-  // {
-  //   title: "Approved ideas",
-  //   items: [
-  //     {
-  //       title: "Approved ideas",
-  //       href: "/admin/dashboard/selected-idea",
-  //       icon: "Calendar",
-  //     },
-  //   ],
-  // },
   {
     items: [
       {
-        title: "Under Review ideas",
+        title: "Pending Events",
         href: "/admin/dashboard/under-review-idea",
-        icon: "FileText",
+        icon: "AlertCircle",
       },
     ],
   },
@@ -110,42 +100,42 @@ export const adminNavItems: NavSection[] = [
 
 export const userNavItems: NavSection[] = [
   {
-    title: "ideas Worlds",
+    title: "Event Hub",
     items: [
       {
-        title: "Create idea",
+        title: "Create Event",
         href: "/dashboard/create-idea",
-        icon: "Calendar",
+        icon: "Plus",
       },
       {
-        title: "Approved ideas",
+        title: "Live Events",
         href: "/dashboard/selected-idea",
-        icon: "Calendar",
+        icon: "CheckCircle",
       },
     ],
   },
   {
-    title: "idea Monitoring",
+    title: "Event Monitoring",
     items: [
       {
-        title: "Under Review ideas",
+        title: "Pending Events",
         href: "/dashboard/under-review-idea",
-        icon: "FileText",
+        icon: "Clock",
       },
       {
-        title: "Rejected ideas",
+        title: "Archived Events",
         href: "/dashboard/rejected-idea",
-        icon: "ClipboardList",
+        icon: "Archive",
       },
     ],
   },
   {
-    title: "My ideas",
+    title: "My Events",
     items: [
       {
         title: "My Bookings",
         href: "/dashboard/my-booking",
-        icon: "FileText",
+        icon: "Bookmark",
       },
     ],
   },

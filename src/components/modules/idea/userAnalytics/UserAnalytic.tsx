@@ -29,46 +29,46 @@ const UserAnalytic = () => {
   /* ── KPI card config ─────────────────────────────────────────────────── */
   const kpiCards = [
     {
-      title: "Total ideas",
+      title: "Events Created",
       value: totalideas,
       icon: FileText,
-      trend: "All submitted ideas",
+      trend: "All submitted events",
       trendUp: true,
       iconBg: "bg-blue-50 dark:bg-blue-950/40",
       iconColor: "text-blue-600 dark:text-blue-400",
       delay: "animate-delay-100",
     },
     {
-      title: "Approved ideas",
+      title: "Live Events",
       value: approvedideas,
       icon: CheckCircle,
-      trend: `${rejectedideas} pending / rejected`,
+      trend: `${rejectedideas} pending / draft`,
       trendUp: true,
       iconBg: "bg-zinc-50 dark:bg-zinc-950/40",
       iconColor: "text-zinc-600 dark:text-zinc-400",
       delay: "animate-delay-200",
     },
     {
-      title: "Total Votes",
+      title: "Total Engagement",
       value: totalVotes,
       icon: ThumbsUp,
-      trend: "Community engagement",
+      trend: "Attendee interactions",
       trendUp: true,
       iconBg: "bg-violet-50 dark:bg-violet-950/40",
       iconColor: "text-violet-600 dark:text-violet-400",
       delay: "animate-delay-300",
     },
     {
-      title: "Approval Rate",
+      title: "Success Rate",
       value: approvalRate,
       suffix: "%",
       icon: Star,
       trend:
         approvalRate >= 70
-          ? "Excellent performance"
+          ? "Outstanding launch rate"
           : approvalRate >= 40
-            ? "Room to improve"
-            : "Focus on quality",
+            ? "Good momentum"
+            : "Focus on quality events",
       trendUp: approvalRate >= 50,
       iconBg: "bg-amber-50 dark:bg-amber-950/40",
       iconColor: "text-amber-600 dark:text-amber-400",
@@ -78,8 +78,8 @@ const UserAnalytic = () => {
 
   /* ── Donut chart data ─────────────────────────────────────────────────── */
   const donutData = [
-    { label: "Approved", value: approvedideas, color: "#10b981" },
-    { label: "Rejected", value: rejectedideas, color: "#f43f5e" },
+    { label: "Live", value: approvedideas, color: "#10b981" },
+    { label: "Draft", value: rejectedideas, color: "#f43f5e" },
   ];
 
   /* ── Approval rate progress ───────────────────────────────────────────── */
@@ -113,9 +113,9 @@ const UserAnalytic = () => {
     <div className="space-y-8 p-4 sm:p-6 lg:p-8">
       {/* ── Page header ─────────────────────────────────────────────────── */}
       <div className="animate-eco-fade-down">
-        <h1 className="text-2xl font-bold tracking-tight">My Analytics</h1>
+        <h1 className="text-2xl font-bold tracking-tight">Event Analytics</h1>
         <p className="mt-1 text-sm text-muted-foreground">
-          Track your ideas, votes, and engagement.
+          Track your events, engagement, and performance.
         </p>
       </div>
 
@@ -145,7 +145,7 @@ const UserAnalytic = () => {
           <Card>
             <CardHeader className="border-b">
               <CardTitle className="text-base">
-                Approval Rate Progress
+                Event Launch Success Rate
               </CardTitle>
             </CardHeader>
             <CardContent className="pt-6">
@@ -159,7 +159,7 @@ const UserAnalytic = () => {
                     </span>
                   </p>
                   <p className="mt-1 text-sm text-muted-foreground">
-                    {approvedideas} of {totalideas} ideas approved
+                    {approvedideas} of {totalideas} events live
                   </p>
                 </div>
 
@@ -180,14 +180,14 @@ const UserAnalytic = () => {
                       <p className="text-xl font-bold tabular-nums text-zinc-600">
                         {approvedideas}
                       </p>
-                      <p className="text-xs text-muted-foreground">Approved</p>
+                      <p className="text-xs text-muted-foreground">Live</p>
                     </div>
                     <div className="rounded-xl bg-rose-50 p-3 text-center dark:bg-rose-950/30">
                       <p className="text-xl font-bold tabular-nums text-rose-500">
                         {rejectedideas}
                       </p>
                       <p className="text-xs text-muted-foreground">
-                        Rejected / Pending
+                        Draft / Archived
                       </p>
                     </div>
                   </div>
@@ -201,11 +201,11 @@ const UserAnalytic = () => {
       {/* ── Charts ──────────────────────────────────────────────────────── */}
       <section>
         <h2 className="animate-eco-fade-in animate-delay-400 mb-4 text-sm font-semibold uppercase tracking-wider text-muted-foreground">
-          Charts
+          Analytics
         </h2>
         <div className="grid grid-cols-1 gap-4 lg:grid-cols-2">
           <DonutChart
-            title="idea Status Distribution"
+            title="Event Status"
             data={donutData}
             animationDelay="animate-delay-500"
           />

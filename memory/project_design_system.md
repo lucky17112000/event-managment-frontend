@@ -1,10 +1,10 @@
 ---
-name: EcoSpark Design System
-description: Card patterns, animation classes, section templates, and color system used across all EcoSpark pages
+name: Event Hub Design System
+description: Card patterns, animation classes, section templates, and color system used across all Event Hub pages
 type: project
 ---
 
-EcoSpark uses a unified emerald design system across all public pages.
+Event Hub uses a unified emerald design system across all public pages.
 
 **Why:** Consistency was broken — ContactPage and MissionPage used `green-xxx` Tailwind classes while all other pages used `emerald-xxx`. Standardized in May 2025.
 

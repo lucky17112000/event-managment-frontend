@@ -92,7 +92,7 @@ interface EcoPageLoaderProps {
 }
 
 export function EcoPageLoader({
-  message = "Loading EcoSpark…",
+  message = "Loading Event Hub…",
 }: EcoPageLoaderProps) {
   return (
     <div className="fixed inset-0 z-9999 flex flex-col items-center justify-center bg-background/75 backdrop-blur-md">
@@ -108,7 +108,7 @@ export function EcoPageLoader({
         {/* Brand + message */}
         <div className="flex flex-col items-center gap-2 text-center">
           <span className="text-sm font-semibold tracking-[0.18em] uppercase text-[oklch(0.72_0.2_145)] animate-pulse">
-            EcoSpark
+            Event Hub
           </span>
           <p className="text-xs text-muted-foreground">{message}</p>
         </div>

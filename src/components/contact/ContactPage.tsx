@@ -22,33 +22,33 @@ const CONTACT_INFO = [
   {
     icon: MailIcon,
     label: "Email",
-    value: "hello@ecospark.com",
-    href: "mailto:hello@ecospark.com",
+    value: "support@eventhub.com",
+    href: "mailto:support@eventhub.com",
   },
   {
     icon: PhoneIcon,
     label: "Phone",
-    value: "+1 (555) 123-4567",
-    href: "tel:+15551234567",
+    value: "+1 (555) 234-5678",
+    href: "tel:+15552345678",
   },
   {
     icon: MapPinIcon,
     label: "Location",
-    value: "123 Green Street, San Francisco, CA 94102",
+    value: "456 Event Plaza, New York, NY 10001",
     href: undefined,
   },
   {
     icon: GlobeIcon,
     label: "Website",
-    value: "www.ecospark.com",
+    value: "www.eventhub.com",
     href: "#",
   },
 ];
 
 const BUSINESS_HOURS = [
-  { day: "Monday – Friday", hours: "9:00 AM – 6:00 PM" },
-  { day: "Saturday", hours: "10:00 AM – 4:00 PM" },
-  { day: "Sunday", hours: "Closed" },
+  { day: "Monday – Friday", hours: "9:00 AM – 8:00 PM EST" },
+  { day: "Saturday", hours: "10:00 AM – 6:00 PM EST" },
+  { day: "Sunday", hours: "12:00 PM – 5:00 PM EST" },
 ];
 
 const SOCIAL_LINKS = [
@@ -125,26 +125,26 @@ export default function ContactPage() {
             </Badge>
 
             <h1 className="font-heading text-4xl font-bold leading-tight tracking-tight sm:text-5xl lg:text-6xl animate-eco-fade-up animate-delay-200">
-              We&apos;d love to{" "}
+              Let&apos;s{" "}
               <span className="bg-linear-to-r from-zinc-600 via-teal-500 to-zinc-500 bg-clip-text text-transparent dark:from-zinc-400 dark:via-teal-400 dark:to-zinc-400">
-                hear from you.
+                create together.
               </span>
             </h1>
 
             <p className="max-w-lg text-lg text-muted-foreground animate-eco-fade-up animate-delay-300">
-              Have a question, a great eco idea, or just want to say hello? Drop
-              us a message and we&apos;ll get back to you within 1–2 business
-              days.
+              Have questions about hosting an event, want to partner with us, or
+              need support? We&apos;re here to help and will respond within 24
+              hours.
             </p>
 
             <div className="flex flex-wrap items-center gap-6 text-sm text-muted-foreground animate-eco-fade-up animate-delay-400">
               <span className="flex items-center gap-1.5">
                 <MailIcon className="size-4 text-zinc-600" />
-                hello@ecospark.com
+                support@eventhub.com
               </span>
               <span className="flex items-center gap-1.5">
                 <ClockIcon className="size-4 text-zinc-600" />
-                Mon–Fri, 9 AM – 6 PM
+                Mon–Fri, 9 AM – 8 PM EST
               </span>
             </div>
           </div>
@@ -171,7 +171,8 @@ export default function ContactPage() {
                       Message sent!
                     </p>
                     <p className="text-sm text-muted-foreground">
-                      Thanks for reaching out. We&apos;ll be in touch shortly.
+                      Thanks for reaching out. Our team will get back to you
+                      soon.
                     </p>
                   </div>
                 ) : (
@@ -221,7 +222,7 @@ export default function ContactPage() {
                         required
                         value={formData.subject}
                         onChange={handleChange}
-                        placeholder="How can we help?"
+                        placeholder="What can we help with?"
                         className={inputBase}
                       />
                     </div>
@@ -237,7 +238,7 @@ export default function ContactPage() {
                         value={formData.message}
                         onChange={handleChange}
                         rows={6}
-                        placeholder="Tell us more about your question or idea..."
+                        placeholder="Tell us more about your question or event needs..."
                         className={cn(
                           inputBase,
                           "h-auto resize-none py-3 leading-relaxed",
@@ -354,11 +355,11 @@ export default function ContactPage() {
           </div>
           <div className="relative mx-auto w-full max-w-3xl px-4 text-center sm:px-6">
             <h2 className="font-heading mb-3 text-2xl font-bold tracking-tight text-white sm:text-3xl animate-eco-fade-up animate-delay-100">
-              Have a green idea to share?
+              Ready to launch your first event?
             </h2>
             <p className="mb-6 text-zinc-100 animate-eco-fade-up animate-delay-200">
-              Don&apos;t just contact us — join EcoSpark and post your idea to
-              the community.
+              Join thousands of event creators hosting amazing experiences on
+              Event Hub. Start building your dream event today.
             </p>
             <div className="flex flex-col gap-3 sm:flex-row sm:items-center sm:justify-center animate-eco-fade-up animate-delay-300">
               <Link
@@ -372,13 +373,13 @@ export default function ContactPage() {
                 <ArrowRightIcon className="ml-2 size-4" />
               </Link>
               <Link
-                href="/idea"
+                href="/book"
                 className={cn(
                   buttonVariants({ variant: "outline", size: "lg" }),
                   "border-white/40 text-white hover:bg-white/10 hover:text-white",
                 )}
               >
-                Browse ideas
+                Browse Events
               </Link>
             </div>
           </div>

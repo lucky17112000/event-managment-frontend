@@ -166,7 +166,7 @@ const LoginForm = () => {
             </span>
             <div>
               <span className="text-xl font-bold text-white tracking-tight block leading-none">
-                EcoSpark Hub
+                Event Hub
               </span>
               <span className="text-xs text-zinc-200/70 mt-0.5 block">
                 Sustainable Future Initiative
@@ -181,7 +181,7 @@ const LoginForm = () => {
             <div className="flex items-center gap-2 mb-5">
               <span className="h-px w-8 bg-zinc-400/60" />
               <span className="text-zinc-200/75 text-xs font-medium tracking-widest uppercase">
-                Join the Green Revolution
+                Join the Events Revolution
               </span>
             </div>
             <h2 className="text-4xl xl:text-5xl font-bold text-white leading-[1.1]">
@@ -233,12 +233,12 @@ const LoginForm = () => {
               Secure Platform
             </span>
             <span>·</span>
-            <span>Verified ideas</span>
+            <span>Verified Events</span>
             <span>·</span>
             <span>Active Community</span>
           </div>
           <p className="mt-2 text-zinc-200/30 text-[11px]">
-            © 2026 EcoSpark Hub. All rights reserved.
+            © 2026 Event Hub. All rights reserved.
           </p>
         </div>
       </div>
@@ -251,7 +251,7 @@ const LoginForm = () => {
             <span className="inline-flex size-14 items-center justify-center rounded-2xl bg-zinc-600 shadow-lg shadow-zinc-600/25 mb-3">
               <Leaf className="size-7 text-white" />
             </span>
-            <h2 className="text-lg font-bold text-foreground">EcoSpark Hub</h2>
+            <h2 className="text-lg font-bold text-foreground">Event Hub</h2>
             <p className="text-sm text-muted-foreground">
               Sustainable Future Initiative
             </p>
@@ -318,7 +318,7 @@ const LoginForm = () => {
                         field={field}
                         label="Email"
                         type="email"
-                        placeholder="hello@ecosparkhub.com"
+                        placeholder="hello@eventhub.com"
                       />
                     )}
                   </form.Field>

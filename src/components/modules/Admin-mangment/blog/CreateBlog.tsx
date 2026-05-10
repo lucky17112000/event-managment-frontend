@@ -43,7 +43,7 @@ const TIPS = [
   {
     icon: BookOpen,
     title: "Tell a story",
-    desc: "Personal or community stories make eco content relatable and shareable.",
+    desc: "Personal or community Type to Event Keywordmake eco content relatable and shareable.",
   },
   {
     icon: Hash,
@@ -185,11 +185,10 @@ const CreateBlog = ({ userInfo }: { userInfo: any }) => {
         </div>
 
         <div className="relative z-10 mx-auto max-w-5xl">
-          {/* EcoSpark chip */}
           <div className="mb-4 inline-flex items-center gap-1.5 rounded-full border border-white/25 bg-white/15 px-3 py-1.5 backdrop-blur-sm">
             <Sprout className="size-3.5 text-white" />
             <span className="text-[11px] font-bold uppercase tracking-widest text-white">
-              EcoSpark · Admin
+              Event Hub · Admin
             </span>
           </div>
 
@@ -202,8 +201,8 @@ const CreateBlog = ({ userInfo }: { userInfo: any }) => {
                 Create a Blog Post
               </h1>
               <p className="max-w-lg text-sm text-zinc-100/80 leading-relaxed">
-                Share your sustainability insights, stories, and ideas with the
-                EcoSpark community.
+                Share your sustainability insights, stories, and events with the
+                Event Hub community.
               </p>
             </div>
 

@@ -20,7 +20,7 @@ const geistMono = Geist_Mono({
 });
 
 export const metadata: Metadata = {
-  title: "Eco Spark",
+  title: "-Event Hub ",
   description:
     "A tool to help you find the most eco-friendly products and services.",
 };

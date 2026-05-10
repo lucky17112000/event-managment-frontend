@@ -1,4 +1,4 @@
-# EcoSpark
+# Event Hub
 
 **Where green ideas don't just get shared — they get reviewed, voted on, and sold.**
 
@@ -11,15 +11,15 @@
 
 ---
 
-## What is EcoSpark?
+## What is Event Hub?
 
-Most platforms let you post things. EcoSpark lets you **build a case for your idea** — define the problem, propose the solution, back it with images, and let the community vote on whether it's worth pursuing. Admins review everything. High-value ideas can be monetized. The result is a structured pipeline, not a comment feed.
+Most platforms let you post things. Event Hub lets you **build a case for your idea** — define the problem, propose the solution, back it with images, and let the community vote on whether it's worth pursuing. Admins review everything. High-value ideas can be monetized. The result is a structured pipeline, not a comment feed.
 
 ---
 
 ## The Life of an idea
 
-Every idea on EcoSpark takes this journey:
+Every idea on Event Hub takes this journey:
 
 ```
   YOU                PLATFORM              ADMIN              COMMUNITY
@@ -37,7 +37,7 @@ Your dashboard shows exactly where each of your ideas sits in that pipeline.
 
 ---
 
-## Who Uses EcoSpark?
+## Who Uses Event Hub?
 
 | You are...            | What you can do                                                                                |
 | --------------------- | ---------------------------------------------------------------------------------------------- |
@@ -57,7 +57,7 @@ The browser never talks directly to the backend. Every request goes through **Ne
   Browser                Next.js Server              Backend (Vercel)
   ───────                ──────────────              ────────────────
 
-  fetch("/api/ideas") → /src/app/api/ideas/route.ts → ecospark-backend.vercel.app
+  fetch("/api/ideas") → /src/app/api/ideas/route.ts → Event Hub-backend.vercel.app
                                 │
                          Forwards cookies
                          Keeps secrets server-side
@@ -122,8 +122,8 @@ This means:
 **1. Clone and install**
 
 ```bash
-git clone https://github.com/lucky17112000/ecospark-frontend.git
-cd ecospark-frontend
+git clone https://github.com/lucky17112000/Event Hub-frontend.git
+cd Event Hub-frontend
 npm install
 ```
 
@@ -136,7 +136,7 @@ cp .env.example .env.local
 Open `.env.local` and set:
 
 ```bash
-NEXT_PUBLIC_API_BASE_URL=https://ecospark-backend.vercel.app/api/v1
+NEXT_PUBLIC_API_BASE_URL=https://Event Hub-backend.vercel.app/api/v1
 JWT_ACCESS_SECRET=your_jwt_secret_here
 ```
 
@@ -219,8 +219,8 @@ Pages that call `cookies()` render dynamically by design — do not force static
 
 <div align="center">
 
-Built by **Alamin Mustafa Rahim** · EcoSpark Full-Stack Mission
+Built by **Alamin Mustafa Rahim** · Event Hub Full-Stack Mission
 
-_Backend lives at `ecospark-backend.vercel.app` — this repo is the frontend only._
+_Backend lives at `Event Hub-backend.vercel.app` — this repo is the frontend only._
 
 </div>

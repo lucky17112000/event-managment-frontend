@@ -27,95 +27,95 @@ import { AnimatedStatCard } from "@/components/modules/mission/MissonPage";
 
 const SERVICES = [
   {
-    icon: LightbulbIcon,
-    title: "idea Platform",
+    icon: RocketIcon,
+    title: "Event Creation",
     description:
-      "Submit, discover, and vote on sustainability ideas from across the community.",
+      "Easily create, manage, and launch events that bring people together with powerful tools.",
   },
   {
     icon: UsersIcon,
-    title: "Community Hub",
+    title: "Community Engagement",
     description:
-      "Connect with like-minded changemakers who genuinely care about the planet.",
+      "Connect attendees, speakers, and organizers in a vibrant ecosystem of shared experiences.",
   },
   {
     icon: TrendingUpIcon,
-    title: "Impact Tracking",
+    title: "Real-Time Analytics",
     description:
-      "Follow your idea's journey from first submission to real-world execution.",
+      "Track attendance, engagement, and ROI with comprehensive event analytics and insights.",
   },
   {
     icon: ShieldCheckIcon,
-    title: "Verified Projects",
+    title: "Secure Ticketing",
     description:
-      "Admin-reviewed projects ensure every funded idea creates genuine impact.",
+      "Verified tickets and secure payments ensure trust for every attendee and organizer.",
   },
   {
     icon: GlobeIcon,
-    title: "Global Reach",
+    title: "Global Events",
     description:
-      "ideas from across the world, united by one mission: a greener future.",
+      "Host events locally or reach audiences worldwide with our multi-region event platform.",
   },
   {
-    icon: HeartIcon,
-    title: "Crowdfunding Support",
+    icon: SparklesIcon,
+    title: "Interactive Experiences",
     description:
-      "Back the projects you believe in and help turn great ideas into action.",
+      "Engage attendees with live polls, networking tools, and immersive event features.",
   },
 ];
 
 const STATS = [
-  { label: "ideas Shared", value: "2,400+", icon: LightbulbIcon },
-  { label: "Community Members", value: "18K+", icon: UsersIcon },
-  { label: "Projects Funded", value: "320+", icon: RocketIcon },
-  { label: "Countries Reached", value: "42+", icon: GlobeIcon },
+  { label: "Events Hosted", value: "12,500+", icon: RocketIcon },
+  { label: "Active Users", value: "450K+", icon: UsersIcon },
+  { label: "Attendees Connected", value: "2.5M+", icon: TrendingUpIcon },
+  { label: "Countries Active", value: "87+", icon: GlobeIcon },
 ];
 
 const TEAM = [
   {
     initial: "A",
-    name: "Alamin Mustafa",
+    name: "Alex Chen",
     role: "Founder & CEO",
-    bio: "Passionate about sustainability and technology. Building EcoSpark to make green ideas accessible to everyone.",
+    bio: "Visionary event entrepreneur building the future of global event management and community connection.",
   },
   {
-    initial: "S",
-    name: "Sara Rahman",
-    role: "Head of Community",
-    bio: "Connecting eco-conscious individuals and helping ideas find the audience they deserve.",
+    initial: "M",
+    name: "Maria Rodriguez",
+    role: "Head of Events",
+    bio: "Expert event curator connecting organizers with passionate audiences and creating unforgettable experiences.",
   },
   {
-    initial: "K",
-    name: "Karim Hossain",
-    role: "Lead Engineer",
-    bio: "Building the infrastructure that powers thousands of sustainability conversations every day.",
+    initial: "J",
+    name: "James Kumar",
+    role: "VP of Technology",
+    bio: "Tech innovator building scalable infrastructure powering millions of event attendees worldwide.",
   },
 ];
 
 const MILESTONES = [
   {
-    year: "2023",
-    title: "EcoSpark Founded",
+    year: "2022",
+    title: "Event Hub Founded",
     description:
-      "Started as a small platform with a big vision: make sustainability ideas shareable and actionable.",
+      "Launched with a vision to democratize event management and empower organizers worldwide.",
   },
   {
     year: "2023",
-    title: "1,000 Members",
+    title: "100,000 Users",
     description:
-      "Reached our first community milestone just three months after launch.",
+      "Reached massive milestone connecting organizers and attendees across five continents.",
   },
   {
     year: "2024",
-    title: "First Funded Project",
+    title: "1 Million Attendees",
     description:
-      "Community voted and funded the first real-world eco project — an urban tree-planting drive.",
+      "First major achievement: facilitated one million attendees across hosted events globally.",
   },
   {
     year: "2025",
-    title: "18,000+ Members",
+    title: "Global Leader",
     description:
-      "Grew to a global community with ideas from 42+ countries and 320+ funded projects.",
+      "Became the #1 event management platform with 450K users and 2.5M+ attendees connected.",
   },
 ];
 
@@ -139,35 +139,35 @@ const AboutPage = () => {
                 <div className="flex flex-wrap items-center gap-2 animate-eco-fade-up animate-delay-100">
                   <Badge className="rounded-full border-zinc-200 bg-zinc-50 px-3 text-zinc-700 hover:bg-zinc-100 dark:border-zinc-800 dark:bg-zinc-950/50 dark:text-zinc-400">
                     <SparklesIcon className="mr-1.5 size-3" />
-                    About EcoSpark
+                    About Event Hub
                   </Badge>
                   <Badge variant="outline" className="rounded-full">
-                    Built for impact
+                    Connecting the world
                   </Badge>
                 </div>
 
                 <h1 className="font-heading text-4xl font-bold leading-tight tracking-tight sm:text-5xl lg:text-6xl animate-eco-fade-up animate-delay-200">
-                  We&apos;re on a mission to{" "}
+                  We&apos;re revolutionizing how people{" "}
                   <span className="text-zinc-600 dark:text-zinc-400">
-                    spark a greener world.
+                    connect and celebrate together.
                   </span>
                 </h1>
 
                 <p className="max-w-lg text-lg text-muted-foreground animate-eco-fade-up animate-delay-300">
-                  EcoSpark is a community-driven platform where anyone can
-                  share, discover, and support sustainability ideas — from small
-                  daily habits to large-scale eco projects.
+                  Event Hub is the world's most powerful event management
+                  platform where organizers create unforgettable experiences and
+                  attendees discover events that matter to them.
                 </p>
 
                 <div className="flex flex-col gap-3 sm:flex-row animate-eco-fade-up animate-delay-400">
                   <Link
-                    href="/idea"
+                    href="/book"
                     className={cn(
                       buttonVariants({ size: "lg" }),
                       "bg-zinc-600 text-white shadow-md shadow-zinc-600/20 hover:bg-zinc-700",
                     )}
                   >
-                    Explore ideas
+                    Explore Events
                     <ArrowRightIcon
                       className="ml-2 size-4"
                       aria-hidden="true"
@@ -180,15 +180,15 @@ const AboutPage = () => {
                       size: "lg",
                     })}
                   >
-                    Join the Community
+                    Start Organizing
                   </Link>
                 </div>
 
                 <div className="grid grid-cols-3 gap-3 pt-1 animate-eco-fade-up animate-delay-500">
                   {[
-                    { label: "Focus", value: "Sustainability" },
-                    { label: "Community", value: "Collaborative" },
-                    { label: "Outcome", value: "Real Impact" },
+                    { label: "Events", value: "12,500+" },
+                    { label: "Attendees", value: "2.5M+" },
+                    { label: "Reach", value: "87 Countries" },
                   ].map(({ label, value }) => (
                     <div
                       key={label}
@@ -215,21 +215,21 @@ const AboutPage = () => {
                     <div className="flex items-center justify-between gap-3">
                       <div className="space-y-1">
                         <p className="text-xs font-medium text-muted-foreground">
-                          Our story
+                          Our promise
                         </p>
                         <p className="font-heading text-lg font-semibold">
-                          Change your nature, change the world
+                          Powerful events, inspired communities
                         </p>
                       </div>
                       <Badge className="animate-eco-float bg-zinc-600 text-white">
-                        Eco
+                        Events
                       </Badge>
                     </div>
 
                     <div className="relative mt-4 aspect-16/10 w-full overflow-hidden rounded-xl border bg-muted/30">
                       <Image
                         src="/pexels-cottonbro-6565761.jpg"
-                        alt="EcoSpark community poster"
+                        alt="Event Hub community"
                         fill
                         className={cn(
                           "animate-eco-float object-cover opacity-95",
@@ -239,9 +239,9 @@ const AboutPage = () => {
                       />
                       <div className="absolute inset-x-0 bottom-0 p-3">
                         <div className="flex flex-wrap items-center gap-2">
-                          <Badge variant="secondary">Learn</Badge>
-                          <Badge variant="secondary">Share</Badge>
-                          <Badge variant="secondary">Build</Badge>
+                          <Badge variant="secondary">Connect</Badge>
+                          <Badge variant="secondary">Celebrate</Badge>
+                          <Badge variant="secondary">Grow</Badge>
                         </div>
                       </div>
                     </div>
@@ -257,38 +257,38 @@ const AboutPage = () => {
           <div className="mx-auto w-full max-w-7xl px-4 sm:px-6">
             <div className="mx-auto mb-14 max-w-2xl text-center">
               <Badge className="mb-4 rounded-full border-zinc-200 bg-zinc-50 text-zinc-700 dark:border-zinc-800 dark:bg-zinc-950/50 dark:text-zinc-400 animate-eco-fade-up animate-delay-100">
-                What we believe
+                What drives us
               </Badge>
               <h2 className="font-heading text-3xl font-bold tracking-tight sm:text-4xl animate-eco-fade-up animate-delay-200">
-                Clear principles that keep us focused
+                Core values that guide our platform
               </h2>
               <p className="mt-4 text-muted-foreground animate-eco-fade-up animate-delay-300">
-                Every decision we make is guided by these core values.
+                Every feature we build is rooted in our commitment to you.
               </p>
             </div>
 
             <div className="grid gap-6 md:grid-cols-3 animate-eco-fade-up animate-delay-200">
               {[
                 {
-                  icon: TargetIcon,
+                  icon: RocketIcon,
                   label: "Mission",
-                  title: "Make sustainability easier",
+                  title: "Empower event creators",
                   description:
-                    "Give everyone a place to find practical ideas and take action without feeling overwhelmed.",
+                    "Give organizers the tools to create amazing experiences and reach audiences that inspire them.",
                 },
                 {
                   icon: EyeIcon,
                   label: "Vision",
-                  title: "A community that drives change",
+                  title: "Global event community",
                   description:
-                    "Turn good intentions into shared progress through discussion, feedback, and support.",
+                    "Build a world where every event creates meaningful connections and lasting memories.",
                 },
                 {
                   icon: HeartIcon,
                   label: "Values",
-                  title: "Simple, honest, impactful",
+                  title: "Accessibility & trust",
                   description:
-                    "We keep it focused: real ideas, respectful conversations, and visible outcomes.",
+                    "Simple technology, transparent practices, and genuine care for every user.",
                 },
               ].map(({ icon: Icon, label, title, description }, idx) => (
                 <div
@@ -327,11 +327,11 @@ const AboutPage = () => {
                 What we offer
               </Badge>
               <h2 className="font-heading text-3xl font-bold tracking-tight sm:text-4xl animate-eco-fade-up animate-delay-200">
-                Everything you need to drive green change
+                Everything to host world-class events
               </h2>
               <p className="mt-4 text-muted-foreground animate-eco-fade-up animate-delay-300">
-                A platform built for everyone who wants to contribute to a
-                sustainable future.
+                Comprehensive tools and features to bring your event vision to
+                life.
               </p>
             </div>
 
@@ -369,54 +369,38 @@ const AboutPage = () => {
           <div className="mx-auto w-full max-w-7xl px-4 sm:px-6">
             <div className="mx-auto mb-12 max-w-2xl text-center">
               <Badge className="mb-4 rounded-full border-zinc-200 bg-zinc-50 text-zinc-700 dark:border-zinc-800 dark:bg-zinc-950/50 dark:text-zinc-400 animate-eco-fade-up animate-delay-100">
-                Our impact
+                Our scale
               </Badge>
               <h2 className="font-heading text-3xl font-bold tracking-tight sm:text-4xl animate-eco-fade-up animate-delay-200">
-                Numbers that speak for themselves
+                Trusted by millions worldwide
               </h2>
             </div>
 
             <div className="grid grid-cols-2 gap-4 sm:gap-6 lg:grid-cols-4 animate-eco-fade-up animate-delay-300">
-              {/* {STATS.map(({ label, value, icon: Icon }) => (
-                <div
-                  key={label}
-                  className="group flex flex-col items-center gap-3 rounded-2xl border bg-card p-6 text-center transition-all duration-300 hover:-translate-y-1 hover:border-zinc-200 hover:shadow-md dark:hover:border-zinc-800"
-                >
-                  <div className="inline-flex size-12 items-center justify-center rounded-xl bg-zinc-100 text-zinc-600 transition-colors duration-300 group-hover:bg-zinc-600 group-hover:text-white dark:bg-zinc-900/40 dark:text-zinc-400">
-                    <Icon className="size-5" />
-                  </div>
-                  <div>
-                    <p className="font-heading text-3xl font-bold">{value}</p>
-                    <p className="mt-0.5 text-sm text-muted-foreground">
-                      {label}
-                    </p>
-                  </div>
-                </div>
-              ))} */}
               <AnimatedStatCard
-                label="Countries Reached"
-                countTo={150}
-                format={(n) => `${Math.round(n)}+`}
-                icon={GlobeIcon}
+                label="Events Hosted"
+                countTo={12500}
+                format={(n) => `${n.toLocaleString()}+`}
+                icon={RocketIcon}
                 delay={0 * 150}
               />
               <AnimatedStatCard
-                label="Community Members"
-                countTo={18000}
-                format={(n) => `${n.toLocaleString()}+`}
+                label="Active Users"
+                countTo={450000}
+                format={(n) => `${(n / 1000).toFixed(0)}K+`}
                 icon={UsersIcon}
                 delay={1 * 150}
               />
               <AnimatedStatCard
-                label="Projects Funded"
-                countTo={200}
-                format={(n) => `${n}+`}
-                icon={RocketIcon}
+                label="Attendees Connected"
+                countTo={2500000}
+                format={(n) => `${(n / 1000000).toFixed(1)}M+`}
+                icon={TrendingUpIcon}
                 delay={2 * 150}
               />
               <AnimatedStatCard
-                label="Countries Reached"
-                countTo={42}
+                label="Countries Active"
+                countTo={87}
                 format={(n) => `${n}+`}
                 icon={GlobeIcon}
                 delay={3 * 150}
@@ -433,11 +417,11 @@ const AboutPage = () => {
                 Our team
               </Badge>
               <h2 className="font-heading text-3xl font-bold tracking-tight sm:text-4xl animate-eco-fade-up animate-delay-200">
-                The people behind EcoSpark
+                Visionaries behind Event Hub
               </h2>
               <p className="mt-4 text-muted-foreground animate-eco-fade-up animate-delay-300">
-                A passionate team dedicated to making sustainability accessible
-                to everyone.
+                A world-class team committed to revolutionizing event management
+                globally.
               </p>
             </div>
 
@@ -479,7 +463,7 @@ const AboutPage = () => {
                 Our journey
               </Badge>
               <h2 className="font-heading text-3xl font-bold tracking-tight sm:text-4xl animate-eco-fade-up animate-delay-200">
-                How we got here
+                From startup to global leader
               </h2>
             </div>
 
@@ -538,11 +522,11 @@ const AboutPage = () => {
             <div className="relative mx-auto w-full max-w-3xl px-4 text-center sm:px-6">
               <LeafIcon className="mx-auto mb-4 size-12 text-zinc-200 animate-eco-fade-up animate-delay-100" />
               <h2 className="font-heading mb-4 text-3xl font-bold tracking-tight text-white sm:text-4xl animate-eco-fade-up animate-delay-200">
-                Ready to share your first eco idea?
+                Type to Event Keyword?
               </h2>
               <p className="mb-8 text-lg text-zinc-100 animate-eco-fade-up animate-delay-300">
-                Join EcoSpark and post something helpful today. Together, we can
-                change the world.
+                Join Event Hub and post something helpful today. Together, we
+                can change the world.
               </p>
               <div className="flex flex-col gap-3 sm:flex-row sm:items-center sm:justify-center animate-eco-fade-up animate-delay-400">
                 <Link

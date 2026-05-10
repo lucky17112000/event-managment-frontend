@@ -514,7 +514,7 @@ const ideaManagmentPage = ({ user }: { user?: unknown }) => {
                 </p>
               ) : (
                 <p className="text-muted-foreground/50 text-xs">
-                  Type to filter ideas by keyword
+                  Type to Event Keywordd
                 </p>
               )}
             </div>

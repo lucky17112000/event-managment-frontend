@@ -56,7 +56,7 @@ export type LandingNavbarProps = {
 
 const DEFAULT_LINKS: LandingNavLink[] = [
   { label: "Home", href: "/", icon: <Home className="size-4" /> },
-  { label: "Ideas", href: "/idea", icon: <Lightbulb className="size-4" /> },
+  { label: "Events", href: "/idea", icon: <Lightbulb className="size-4" /> },
   {
     label: "Dashboard",
     href: "/dashboard",
@@ -99,13 +99,13 @@ function NavLink({
   const [hovered, setHovered] = useStateEffect(false);
   const { theme } = useTheme();
 
-  // Light mode colors: slate gray, dark mode colors: zinc
+  // Light mode colors: warm neutral gray, dark mode colors: zinc
   const baseColor =
     theme === "light"
-      ? "text-slate-600 hover:text-slate-900"
+      ? "text-gray-600 hover:text-gray-800"
       : "text-white/80 hover:text-white";
-  const activeColor = theme === "light" ? "text-slate-900" : "text-zinc-400";
-  const underlineColor = theme === "light" ? "bg-slate-300" : "bg-zinc-500";
+  const activeColor = theme === "light" ? "text-gray-800" : "text-zinc-400";
+  const underlineColor = theme === "light" ? "bg-blue-400" : "bg-zinc-500";
 
   return (
     <Link
@@ -148,7 +148,7 @@ function NavLink({
         <span
           className={cn(
             "absolute inset-0 -z-10 rounded-lg transition-all duration-300",
-            theme === "light" ? "bg-slate-100" : "bg-white/5",
+            theme === "light" ? "bg-gray-50" : "bg-white/5",
           )}
         />
       )}
@@ -157,7 +157,7 @@ function NavLink({
 }
 
 const LandingNavbar = ({
-  brandName = "ideaHub",
+  brandName = "EVENT HUB",
   brandHref = "/",
   links = DEFAULT_LINKS,
   loginHref = "/login",
@@ -183,10 +183,24 @@ const LandingNavbar = ({
           method: "GET",
           credentials: "include",
         });
+
+        const contentType = response.headers.get("content-type") || "";
+        if (!response.ok) {
+          setIsAuthenticated(false);
+          return;
+        }
+
+        if (!contentType.includes("application/json")) {
+          // Non-JSON response (likely HTML) — treat as unauthenticated.
+          console.warn("Auth check returned non-JSON response");
+          setIsAuthenticated(false);
+          return;
+        }
+
         const data = await response.json();
-        setIsAuthenticated(data.isAuthenticated);
+        setIsAuthenticated(Boolean(data?.isAuthenticated));
       } catch (error) {
-        console.error("Auth check failed:", error);
+        console.warn("Auth check failed:", error);
         setIsAuthenticated(false);
       } finally {
         setLoading(false);
@@ -232,7 +246,7 @@ const LandingNavbar = ({
       className={cn(
         "sticky top-0 z-50 w-full transition-all duration-300",
         theme === "light"
-          ? "bg-white shadow-sm shadow-slate-200/50"
+          ? "bg-white shadow-sm shadow-gray-200/30"
           : "bg-black shadow-lg shadow-black/40",
         scrolled && "shadow-lg",
         className,
@@ -250,7 +264,7 @@ const LandingNavbar = ({
             className={cn(
               "inline-flex size-9 items-center justify-center rounded-lg shadow-sm transition-all duration-200 group-hover:scale-105",
               theme === "light"
-                ? "bg-slate-200 text-slate-900 group-hover:bg-slate-300"
+                ? "bg-gray-100 text-gray-700 group-hover:bg-gray-200"
                 : "bg-zinc-600 text-white group-hover:bg-zinc-700",
             )}
           >
@@ -259,7 +273,7 @@ const LandingNavbar = ({
           <span
             className={cn(
               "text-lg font-bold tracking-tight transition-colors duration-300",
-              theme === "light" ? "text-slate-900" : "text-white",
+              theme === "light" ? "text-gray-800" : "text-white",
             )}
           >
             {brandName}
@@ -284,10 +298,10 @@ const LandingNavbar = ({
                 "group flex select-none items-center gap-1 rounded-lg px-4 py-2 text-sm font-medium outline-none transition-all duration-300",
                 exploreActive
                   ? theme === "light"
-                    ? "text-slate-900"
+                    ? "text-gray-800"
                     : "text-zinc-400"
                   : theme === "light"
-                    ? "text-slate-600 hover:text-slate-900"
+                    ? "text-gray-600 hover:text-gray-800"
                     : "text-white/80 hover:text-white",
                 "hover:scale-105",
               )}
@@ -300,7 +314,7 @@ const LandingNavbar = ({
               className={cn(
                 "w-48",
                 theme === "light"
-                  ? "border-slate-200 bg-slate-50"
+                  ? "border-gray-200 bg-gray-50"
                   : "border-zinc-800 bg-zinc-900",
               )}
             >
@@ -311,10 +325,10 @@ const LandingNavbar = ({
                   className={cn(
                     "flex items-center gap-2 transition-colors duration-300",
                     theme === "light"
-                      ? "text-slate-600 hover:bg-slate-100 hover:text-slate-900"
+                      ? "text-gray-600 hover:bg-gray-50 hover:text-gray-800"
                       : "text-white/80 hover:bg-zinc-800 hover:text-white",
                     isLinkActive(item.href, pathname) &&
-                      (theme === "light" ? "text-slate-900" : "text-zinc-400"),
+                      (theme === "light" ? "text-gray-800" : "text-zinc-400"),
                   )}
                 >
                   {item.icon}
@@ -329,7 +343,7 @@ const LandingNavbar = ({
         <div
           className={cn(
             "hidden items-center gap-3 md:flex",
-            theme === "light" ? "text-slate-900" : "text-white",
+            theme === "light" ? "text-gray-800" : "text-white",
           )}
         >
           <div className="flex items-center h-10">

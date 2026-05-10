@@ -7,29 +7,75 @@ import { QuickInsights } from "@/components/modules/Admin-mangment/analytics/Qui
 import { QuickStats } from "@/components/modules/Admin-mangment/analytics/QuickStats";
 import { RecentActivity } from "@/components/modules/Admin-mangment/analytics/RecentActivity";
 import { getAdminDashboardStatsAction } from "@/services/admin.service";
+import { getcategories } from "@/services/category.service";
+import { getidea } from "@/services/idea.services";
 import { useQuery } from "@tanstack/react-query";
 import { Lightbulb, ShieldCheck, Users2 } from "lucide-react";
+import { useEffect, useState } from "react";
 
 const AdminAnalytics = () => {
+  const [categories, setCategories] = useState<
+    Array<{ id: string; name: string }>
+  >([]);
+  const [categoryStats, setCategoryStats] = useState<Record<string, number>>(
+    {},
+  );
+
   const { data, isLoading, isError } = useQuery({
     queryKey: ["adminDashboardData"],
     queryFn: () => getAdminDashboardStatsAction(),
   });
 
+  // Fetch categories and count ideas by category
+  useEffect(() => {
+    const fetchCategoriesAndIdeas = async () => {
+      try {
+        // Fetch all categories
+        const categoriesRes = await getcategories();
+        if (categoriesRes.data) {
+          setCategories(categoriesRes.data);
+
+          // Fetch all ideas to count by category
+          const ideasRes = await getidea({ limit: 10000 }); // Fetch all ideas
+          if (ideasRes.data) {
+            const stats: Record<string, number> = {};
+
+            // Initialize all categories with 0
+            categoriesRes.data.forEach((cat) => {
+              stats[cat.name] = 0;
+            });
+
+            // Count ideas by category
+            ideasRes.data.forEach((idea: any) => {
+              if (idea.category?.name) {
+                stats[idea.category.name] =
+                  (stats[idea.category.name] || 0) + 1;
+              }
+            });
+
+            setCategoryStats(stats);
+          }
+        }
+      } catch (error) {
+        console.error("Failed to fetch categories or ideas:", error);
+      }
+    };
+    fetchCategoriesAndIdeas();
+  }, []);
+
   const stats = data?.data;
 
   const totalUsers = stats?.totalUsers ?? 0;
   const totalAdmins = stats?.totalAdmins ?? 0;
-  const totalEnergy = stats?.totalEnergyideas ?? 0;
-  const totalPlastic = stats?.totalPlasticideas ?? 0;
-  const totalTree = stats?.totalTreeideas ?? 0;
-  const totalOthers = stats?.totalOthersideas ?? 0;
-  const totalideas = totalEnergy + totalPlastic + totalTree + totalOthers;
+  const totalEvents = categories.reduce(
+    (sum, cat) => sum + (categoryStats[cat.name] || 0),
+    0,
+  );
 
   /* ── KPI card config ─────────────────────────────────────────────────── */
   const kpiCards = [
     {
-      title: "Total Creators",
+      title: "Total Event Creators",
       value: totalUsers,
       icon: Users2,
       trend: "+12% this month",
@@ -39,7 +85,7 @@ const AdminAnalytics = () => {
       delay: "animate-delay-100",
     },
     {
-      title: "Total Admins",
+      title: "Moderators",
       value: totalAdmins,
       icon: ShieldCheck,
       trend: "+2 new this week",
@@ -49,8 +95,8 @@ const AdminAnalytics = () => {
       delay: "animate-delay-200",
     },
     {
-      title: "Total ideas",
-      value: totalideas,
+      title: "Total Events",
+      value: totalEvents,
       icon: Lightbulb,
       trend: "+34 this month",
       trendUp: true,
@@ -63,72 +109,41 @@ const AdminAnalytics = () => {
   /* ── Donut chart data ─────────────────────────────────────────────────── */
   const donutData = [
     { label: "Creators", value: totalUsers, color: "#10b981" },
-    { label: "Admins", value: totalAdmins, color: "#3b82f6" },
+    { label: "Moderators", value: totalAdmins, color: "#3b82f6" },
   ];
 
-  /* ── Bar chart data ───────────────────────────────────────────────────── */
-  const barData = [
-    {
-      label: "Energy",
-      value: totalEnergy,
-      color: "#d97706",
-      lightColor: "#fbbf24",
-    },
-    {
-      label: "Plastic",
-      value: totalPlastic,
-      color: "#2563eb",
-      lightColor: "#60a5fa",
-    },
-    {
-      label: "Tree",
-      value: totalTree,
-      color: "#059669",
-      lightColor: "#34d399",
-    },
-    {
-      label: "Others",
-      value: totalOthers,
-      color: "#7c3aed",
-      lightColor: "#a78bfa",
-    },
+  /* ── Color palette for categories ─────────────────────────────────────── */
+  const colors = [
+    { color: "#d97706", lightColor: "#fbbf24" }, // amber
+    { color: "#2563eb", lightColor: "#60a5fa" }, // blue
+    { color: "#059669", lightColor: "#34d399" }, // emerald
+    { color: "#7c3aed", lightColor: "#a78bfa" }, // violet
+    { color: "#dc2626", lightColor: "#f87171" }, // red
+    { color: "#0891b2", lightColor: "#06b6d4" }, // cyan
   ];
+
+  /* ── Bar chart data from real categories ─────────────────────────────── */
+  const barData = categories.map((cat, idx) => ({
+    label: cat.name,
+    value: categoryStats[cat.name] || 0,
+    color: colors[idx % colors.length].color,
+    lightColor: colors[idx % colors.length].lightColor,
+  }));
 
   /* ── Quick insights data ─────────────────────────────────────────────── */
-  const insightCategories = [
-    { label: "Energy", value: totalEnergy, color: "#f59e0b" },
-    { label: "Plastic", value: totalPlastic, color: "#3b82f6" },
-    { label: "Tree", value: totalTree, color: "#10b981" },
-    { label: "Others", value: totalOthers, color: "#8b5cf6" },
-  ];
+  const insightCategories = barData.map((item) => ({
+    label: item.label,
+    value: item.value,
+    color: item.color,
+  }));
 
   /* ── Quick stats data ─────────────────────────────────────────────────── */
-  const quickStatsItems = [
-    {
-      label: "Energy ideas",
-      value: totalEnergy,
-      total: totalideas,
-      color: "#f59e0b",
-    },
-    {
-      label: "Plastic ideas",
-      value: totalPlastic,
-      total: totalideas,
-      color: "#3b82f6",
-    },
-    {
-      label: "Tree ideas",
-      value: totalTree,
-      total: totalideas,
-      color: "#10b981",
-    },
-    {
-      label: "Others ideas",
-      value: totalOthers,
-      total: totalideas,
-      color: "#8b5cf6",
-    },
-  ];
+  const quickStatsItems = barData.map((item) => ({
+    label: `${item.label} events`,
+    value: item.value,
+    total: totalEvents,
+    color: item.color,
+  }));
 
   /* ── Loading skeleton ─────────────────────────────────────────────────── */
   if (isLoading) {
@@ -157,10 +172,10 @@ const AdminAnalytics = () => {
       {/* ── Page header ─────────────────────────────────────────────────── */}
       <div className="animate-eco-fade-down">
         <h1 className="text-2xl font-bold tracking-tight">
-          Analytics Overview
+          Event Hub Analytics
         </h1>
         <p className="mt-1 text-sm text-muted-foreground">
-          Platform statistics and activity at a glance.
+          Platform statistics and event performance at a glance.
         </p>
       </div>
 
@@ -195,7 +210,7 @@ const AdminAnalytics = () => {
             animationDelay="animate-delay-400"
           />
           <BarChart
-            title="ideas Overview"
+            title="Events by Category"
             data={barData}
             animationDelay="animate-delay-500"
           />
@@ -217,7 +232,7 @@ const AdminAnalytics = () => {
         </h2>
         <div className="grid grid-cols-1 gap-4 lg:grid-cols-2">
           <QuickStats
-            title="idea Breakdown"
+            title="Event Category Breakdown"
             items={quickStatsItems}
             animationDelay="animate-delay-600"
           />

@@ -283,7 +283,7 @@ export const forgotPasswordAction = async (
       return {
         success: false,
         message:
-          "API server is not reachable (ECONNREFUSED). Start ecospark-backend or check NEXT_PUBLIC_API_BASE_URL.",
+          "API server is not reachable (ECONNREFUSED). Start event-hub-backend or check NEXT_PUBLIC_API_BASE_URL.",
         data: null,
       };
     }

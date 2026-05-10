@@ -18,7 +18,11 @@ export function ModeToggle() {
       variant="outline"
       size="icon"
       onClick={toggleTheme}
-      className="bg-zinc-800 border-zinc-700 hover:bg-zinc-700"
+      className={
+        theme === "light"
+          ? "bg-gray-100 border-gray-300 text-gray-700 hover:bg-gray-200 hover:text-gray-800"
+          : "bg-zinc-800 border-zinc-700 text-gray-200 hover:bg-zinc-700 hover:text-white"
+      }
     >
       <Sun className="h-[1.2rem] w-[1.2rem] scale-100 rotate-0 transition-all dark:scale-0 dark:-rotate-90" />
       <Moon className="absolute h-[1.2rem] w-[1.2rem] scale-0 rotate-90 transition-all dark:scale-100 dark:rotate-0" />

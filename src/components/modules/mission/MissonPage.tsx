@@ -80,48 +80,48 @@ export function AnimatedStatCard({
 const CORE_VALUES = [
   {
     icon: TargetIcon,
-    label: "Purpose-Driven",
+    label: "Experience-First",
     description:
-      "Every initiative we undertake is designed with environmental impact at its core, ensuring meaningful progress toward sustainability.",
+      "Every event we power is designed to create unforgettable moments, meaningful connections, and lasting memories for attendees.",
   },
   {
     icon: LightbulbIcon,
     label: "Innovation",
     description:
-      "We embrace cutting-edge technology and creative solutions to tackle environmental challenges in new and effective ways.",
+      "Cutting-edge technology and creative features empower organizers to host world-class events that stand out.",
   },
   {
     icon: UsersIcon,
     label: "Community",
     description:
-      "Building a global network of eco-conscious individuals and organizations working together for a sustainable future.",
+      "Building a global network of event creators and attendees united by the passion to connect, celebrate, and grow together.",
   },
   {
     icon: HeartIcon,
-    label: "Integrity",
+    label: "Trust",
     description:
-      "We hold ourselves accountable to the highest standards of transparency, honesty, and ethical responsibility.",
+      "Transparent practices and unwavering commitment to both event organizers and attendees ensure peace of mind.",
   },
 ];
 
 const GOALS = [
   {
     icon: GlobeIcon,
-    title: "Global Reach",
+    title: "Global Platform",
     description:
-      "Expand our sustainable solutions to 100+ countries, making eco-friendly practices accessible to communities worldwide.",
+      "Host and connect events across 150+ countries, making world-class event management accessible to organizers everywhere.",
   },
   {
     icon: TrendingUpIcon,
-    title: "Carbon Reduction",
+    title: "Creator Success",
     description:
-      "Help individuals and businesses reduce their carbon footprint by 50% through our innovative tracking and offset programs.",
+      "Empower 1 million event creators to host successful, profitable events with advanced tools and support.",
   },
   {
     icon: AwardIcon,
-    title: "Education First",
+    title: "Attendee Growth",
     description:
-      "Educate 10 million people on sustainable practices through our free resources, workshops, and community programs.",
+      "Connect 10 million passionate attendees with events they love through intelligent discovery and recommendations.",
   },
 ];
 
@@ -148,19 +148,19 @@ export default function MissionPage() {
           <div className="mx-auto max-w-3xl space-y-6 text-center animate-eco-fade-up animate-delay-100">
             <Badge className="rounded-full border-zinc-200 bg-zinc-50 px-3 text-zinc-700 hover:bg-zinc-100 dark:border-zinc-800 dark:bg-zinc-950/50 dark:text-zinc-400 ">
               <SparklesIcon className="mr-1.5 size-3" />
-              Our Mission
+              Event Hub Mission
             </Badge>
 
             <h1 className="font-heading text-5xl font-bold leading-tight tracking-tight sm:text-6xl lg:text-7xl animate-eco-fade-up animate-delay-100">
-              Sparking a{" "}
+              Empowering events that{" "}
               <span className="bg-linear-to-r from-zinc-600 via-teal-500 to-zinc-500 bg-clip-text text-transparent dark:from-zinc-400 dark:via-teal-400 dark:to-zinc-400">
-                greener world
+                inspire connection
               </span>
             </h1>
 
             <p className="mx-auto max-w-2xl text-lg text-muted-foreground sm:text-xl">
-              Empowering a sustainable future through innovation, education, and
-              collective action for our planet.
+              Revolutionizing event management through innovation, community,
+              and the collective power of live experiences.
             </p>
 
             <div className="flex flex-col gap-3 sm:flex-row sm:items-center sm:justify-center">
@@ -171,14 +171,14 @@ export default function MissionPage() {
                   "bg-zinc-600 text-white shadow-md shadow-zinc-600/20 hover:bg-zinc-700",
                 )}
               >
-                Join Our Movement
+                Start Organizing
                 <ArrowRightIcon className="ml-2 size-4" />
               </Link>
               <Link
-                href="/idea"
+                href="/book"
                 className={buttonVariants({ variant: "outline", size: "lg" })}
               >
-                Explore ideas
+                Discover Events
               </Link>
             </div>
           </div>
@@ -191,7 +191,7 @@ export default function MissionPage() {
           <div className="rounded-2xl border bg-card p-8 shadow-sm sm:p-12">
             <div className="flex justify-center mb-6">
               <div className="inline-flex size-16 items-center justify-center rounded-2xl bg-zinc-600 text-white shadow-md shadow-zinc-600/25">
-                <LeafIcon className="size-8" />
+                <RocketIcon className="size-8" />
               </div>
             </div>
 
@@ -206,17 +206,17 @@ export default function MissionPage() {
 
             <div className="space-y-4 text-center">
               <p className="mx-auto max-w-2xl text-base leading-relaxed text-muted-foreground sm:text-lg">
-                At EcoSpark, we believe that every action counts in the fight
-                against climate change. Our mission is to ignite sustainable
-                living by providing innovative solutions, education, and tools
-                that empower individuals and businesses to reduce their
-                environmental footprint.
+                At Event Hub, we believe that every event has the power to
+                create meaningful connections and lasting memories. Our mission
+                is to revolutionize event management by providing innovative
+                tools, intelligent features, and exceptional support that
+                empower organizers to host world-class events.
               </p>
               <p className="mx-auto max-w-2xl text-base leading-relaxed text-muted-foreground sm:text-lg">
-                We envision a world where sustainability is not just an option,
-                but a way of life — where communities thrive in harmony with
-                nature, and future generations inherit a healthier, greener
-                planet.
+                We envision a world where every person can easily create,
+                discover, and attend events that inspire them — where event
+                organizers of all sizes succeed, and where attendees experience
+                the full power of live connection and community.
               </p>
             </div>
           </div>
@@ -231,10 +231,10 @@ export default function MissionPage() {
               Core values
             </Badge>
             <h2 className="font-heading text-3xl font-bold tracking-tight sm:text-4xl">
-              Principles that guide everything we do
+              Principles that drive our platform
             </h2>
             <p className="mt-4 text-muted-foreground">
-              These values shape our commitment to creating lasting change.
+              These values shape our commitment to event excellence worldwide.
             </p>
           </div>
 
@@ -294,10 +294,10 @@ export default function MissionPage() {
               Our goals
             </Badge>
             <h2 className="font-heading text-3xl font-bold tracking-tight sm:text-4xl">
-              Measurable targets, real impact
+              Ambitious targets, extraordinary outcomes
             </h2>
             <p className="mt-4 text-muted-foreground">
-              Concrete targets that drive our mission forward every day.
+              Measurable goals that drive impact every single day.
             </p>
           </div>
 
@@ -343,28 +343,28 @@ export default function MissionPage() {
               </div>
             ))} */}
             <AnimatedStatCard
-              label="Active Members"
-              countTo={50000}
-              format={(n) => `${Math.round(n / 1000)}K+`}
-              icon={UsersIcon}
+              label="Events Hosted"
+              countTo={12500}
+              format={(n) => `${n.toLocaleString()}+`}
+              icon={RocketIcon}
             />
             <AnimatedStatCard
-              label="Trees Planted"
-              countTo={2000000}
-              format={(n) => `${Math.round(n / 1000000)}M+`}
-              icon={LeafIcon}
+              label="Active Organizers"
+              countTo={450000}
+              format={(n) => `${(n / 1000).toFixed(0)}K+`}
+              icon={UsersIcon}
               delay={500}
             />
             <AnimatedStatCard
-              label="Avg. Carbon Reduction"
-              countTo={75}
-              format={(n) => `${Math.round(n)}%`}
+              label="Attendees Connected"
+              countTo={2500000}
+              format={(n) => `${(n / 1000000).toFixed(1)}M+`}
               icon={TrendingUpIcon}
               delay={1000}
             />
             <AnimatedStatCard
-              label="Countries Reached"
-              countTo={150}
+              label="Countries Active"
+              countTo={87}
               format={(n) => `${Math.round(n)}+`}
               icon={GlobeIcon}
               delay={1500}
@@ -383,12 +383,12 @@ export default function MissionPage() {
           <div className="relative mx-auto w-full max-w-3xl px-4 text-center sm:px-6">
             <RocketIcon className="mx-auto mb-4 size-12 text-zinc-200" />
             <h2 className="font-heading mb-4 text-3xl font-bold tracking-tight text-white sm:text-4xl">
-              Together, we create impact
+              Ready to host amazing events?
             </h2>
             <p className="mb-8 text-lg text-zinc-100">
-              Every small action adds up to significant change. Join us in
-              building a sustainable future where people, planet, and prosperity
-              thrive together.
+              Join thousands of successful event organizers creating
+              unforgettable experiences. Whether your first event or your
+              hundredth, we've got the tools to make it incredible.
             </p>
             <div className="flex flex-col gap-3 sm:flex-row sm:items-center sm:justify-center">
               <Link
@@ -398,17 +398,17 @@ export default function MissionPage() {
                   "bg-white text-zinc-700 shadow-lg hover:bg-zinc-50",
                 )}
               >
-                Join Our Movement
+                Create Your Event
                 <ArrowRightIcon className="ml-2 size-4" />
               </Link>
               <Link
-                href="/idea"
+                href="/book"
                 className={cn(
                   buttonVariants({ variant: "outline", size: "lg" }),
                   "border-white/40 text-white hover:bg-white/10 hover:text-white",
                 )}
               >
-                Learn More
+                Explore Events
               </Link>
             </div>
           </div>

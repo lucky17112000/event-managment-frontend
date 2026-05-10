@@ -300,7 +300,7 @@ const CreateideaPage = ({ id }: { id: string }) => {
             Create New idea
           </h1>
           <p className="mt-1 text-sm text-muted-foreground">
-            Share your sustainability idea with the EcoSpark community.
+            Share your sustainability idea with the Event Hub community.
           </p>
         </div>
       </div>
